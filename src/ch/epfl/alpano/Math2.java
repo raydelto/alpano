@@ -1,3 +1,9 @@
+/**
+ * Math2
+ * 
+ * @author Andrea Scalisi (259183)
+ * @author Gerald Sula (257396)
+ */
 package ch.epfl.alpano;
 
 import java.util.function.DoubleUnaryOperator;
@@ -35,8 +41,7 @@ public interface Math2 {
     * @param a2 angle 2
     * @return the angular distance between a1 and a2
     */
-   static double angularDistance(double a1, double a2)
-   {
+   static double angularDistance(double a1, double a2){
        return floorMod(a2-a1+Math.PI,PI2)-Math.PI;
    }
    
@@ -119,8 +124,8 @@ public interface Math2 {
     * @param epsilon maximal distance desired between the two bounds
     * @return the lower bound once the distance between the two bounds is reduced to less than epsilon
     */
-   static double improveRoot(DoubleUnaryOperator f, double x1, double x2, double epsilon)
-   {
+   static double improveRoot(DoubleUnaryOperator f, double x1, double x2, double epsilon){
+
        //if the function applied in any of the initial bounds is already zero, then that bound is returned (the first one if they both are) 
        if(f.applyAsDouble(x1)==0){
            return x1;

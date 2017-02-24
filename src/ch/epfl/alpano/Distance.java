@@ -1,3 +1,9 @@
+/**
+ * Distance
+ * 
+ * @author Andrea Scalisi (259183)
+ * @author Gerald Sula (257396)
+ */
 package ch.epfl.alpano;
 
 public interface Distance {
