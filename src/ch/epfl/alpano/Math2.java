@@ -135,7 +135,7 @@ public interface Math2 {
        }
        
      //checks if the function in the two points has opposite signs
-       Preconditions.checkArgument(isSameSign(f.applyAsDouble(x1),(f.applyAsDouble(x2))));
+       Preconditions.checkArgument(!isSameSign(f.applyAsDouble(x1),(f.applyAsDouble(x2))));
        
        //the lower bound is assigned to a1, the other to a2
        double a1,a2;
@@ -160,7 +160,7 @@ public interface Math2 {
            
            //Check if the function between the two bounds has a different sign
            //If so, assign it to the lower bound
-           if(isSameSign(f.applyAsDouble(a1), f.applyAsDouble(average))){
+           if(!isSameSign(f.applyAsDouble(a1), f.applyAsDouble(average))){
                a2=xTemp;
            }
               
