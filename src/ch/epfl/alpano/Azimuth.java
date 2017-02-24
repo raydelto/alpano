@@ -89,6 +89,9 @@ public interface Azimuth {
      */
     public static String toOctantString(double azimuth, String n, String e, String s, String w) {
        
+        if(!(isCanonical(azimuth))){
+            throw new IllegalArgumentException();
+        }
         String direction = "";
         if ((azimuth >= 0 && azimuth <= 3 * PI / 8) || azimuth >= (13 * PI / 8)) {
             direction += n;
