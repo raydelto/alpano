@@ -82,17 +82,16 @@ public interface Azimuth {
      * @return
      */
     public static String toOctantString(double azimuth, String n, String e, String s, String w) {
-        double mathAzimuth = azimuth;
        
         String direction = "";
-        if ((mathAzimuth >= 0 && mathAzimuth <= 3 * PI / 8) || mathAzimuth >= (13 * PI / 8)) {
+        if ((azimuth >= 0 && azimuth <= 3 * PI / 8) || azimuth >= (13 * PI / 8)) {
             direction += n;
-        } else if (mathAzimuth >= (5 * PI / 8) && mathAzimuth <= 11 * PI / 8) {
+        } else if (azimuth >= (5 * PI / 8) && azimuth <= 11 * PI / 8) {
             direction += s;
         }
-        if (mathAzimuth >= PI / 8 && mathAzimuth <= 7 * PI / 8) {
+        if (azimuth >= PI / 8 && azimuth <= 7 * PI / 8) {
             direction += e;
-        } else if (mathAzimuth >= (9 * PI / 8) && mathAzimuth <= (15 * PI / 8)) {
+        } else if (azimuth >= (9 * PI / 8) && azimuth <= (15 * PI / 8)) {
             direction += w;
         }
 
