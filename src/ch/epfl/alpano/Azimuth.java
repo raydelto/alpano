@@ -104,7 +104,6 @@ public interface Azimuth {
             direction += w;
         }
 
-        System.out.println(direction);
         return direction;
 
     }
