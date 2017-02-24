@@ -52,12 +52,24 @@ public interface Azimuth {
    //////////////////////////////////////
     public static String toOctantString(double azimuth, String n, String e, String s, String w)
     {
-        Preconditions.checkArgument(isCanonical(azimuth));
-        if(azimuth>0&&azimuth<PI/2) return n+e;
-        if(azimuth>PI/2&&azimuth<PI) return e+s;
-        if(azimuth>PI&&azimuth<PI*3/2) return s+w;
-        if(azimuth>PI*3/2&&azimuth<Math2.PI2) return n+w;
-        return null;
+        double mathAzimuth = toMath(azimuth);
+        String direction = "";
+        if((mathAzimuth>=0 && mathAzimuth <=3*PI/8) || mathAzimuth>=(13*PI/8)){
+            direction+=n;
+        }
+        else if(mathAzimuth>=(5*PI/8) && mathAzimuth <=11*PI/8){
+            direction += s;
+        }
+        if(mathAzimuth>=PI/8 && mathAzimuth <=7*PI/8){
+            direction+=w;
+        }
+        else if(mathAzimuth>=(9*PI/8) && mathAzimuth <=(15*PI/8)){
+            direction+=e;
+        }
+        
+        System.out.println(direction);
+        return direction;
+    
     }
 
 }
