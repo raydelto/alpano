@@ -39,9 +39,9 @@ public final class Interval1D {
     
     /**
      * size of the interval
-     * @return eturns the size of the interval
+     * @return returns the size of the interval
      */
-    public int size()
+    public int size()//sizeok??? apo do +1? kontrollo dhe gjithanej
     {
         return includedTo-includedFrom;
     }
@@ -57,7 +57,7 @@ public final class Interval1D {
     }
     
     /**
-     * Calculates the size of a intersection between two intervals, throws IllegalArgumentException if the two don't intersect
+     * Calculates the size of a intersection between two intervals, return 0 if the two don't intersect
      * @param that the second interval
      * @return the size of the intersection
      */
@@ -83,9 +83,10 @@ public final class Interval1D {
     }
     
     /**
-     * Bounds two intervals into one
+     * Unites two intervals into one
      * @param that the second interval
-     * @return a new interval that bounds two intervals into one
+     * @return a new interval that unites two intervals into one
+     * @throws throws IllegalArgumentException if the intervals are not unionizable
      */
     public Interval1D union(Interval1D that)
     {
@@ -97,9 +98,9 @@ public final class Interval1D {
     }
     
     /**
-     * Bounds inclusively (englobante) two intervals into one
+     * Unites inclusively (englobante) two intervals into one
      * @param that the second interval
-     * @return a new interval that bounds two intervals into one
+     * @return a new interval that unites two intervals into one
      */
     public Interval1D boundingUnion(Interval1D that)//Pyt per kte a esht ok
     {
@@ -119,13 +120,16 @@ public final class Interval1D {
         return new Interval1D(low,up);
     }
     
+    ///comments\/
     @Override
     public boolean equals(Object thatO)
     {
         if(thatO==null)return false;
         if(thatO.getClass()!=this.getClass())return false;
-        if(this.hashCode()!=thatO.hashCode()) return false;
+        
         Interval1D that= (Interval1D)thatO;
+        if(this.hashCode()!=that.hashCode()) return false;
+        
         return(this.includedTo()==that.includedTo()&&this.includedFrom()==that.includedFrom());
     }
     
