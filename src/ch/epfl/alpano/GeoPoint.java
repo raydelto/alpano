@@ -14,12 +14,14 @@ public final class GeoPoint {
     private double latitude;
     
     public GeoPoint(double longitude, double latitude){
-        if(!(longitude >= -Math.PI && longitude <= Math.PI && latitude >= -Math.PI/2 && latitude <=Math.PI/2)){
+        
+        this.longitude = toRad(longitude);
+        this.latitude = toRad(latitude);
+        
+        if(!(this.longitude >= -Math.PI && this.longitude <= Math.PI && this.latitude >= -Math.PI/2 && this.latitude <=Math.PI/2)){
             throw new IllegalArgumentException();
         }
         
-        this.longitude = longitude;
-        this.latitude = latitude;
     }
     
     public double longitude(){
@@ -31,24 +33,29 @@ public final class GeoPoint {
     }
     
     public double distanceTo(GeoPoint that){
-        double angle = 2*asin(sqrt(haversin(this.latitude()-that.latitude())+cos(this.latitude())*cos(that.latitude())*haversin(this.longitude()-that.longitude())));
+        double angle = 2*(asin(sqrt(haversin(this.latitude()-that.latitude())+cos(this.latitude())*cos(that.latitude())*haversin(this.longitude()-that.longitude()))));
         return Distance.toMeters(angle);
     }
     
+    //Retourne en degrés ou en radians ?
     public double azimuthTo(GeoPoint that){
         
-        double angle = atan2((sin(this.longitude()-that.longitude())*cos(that.latitude())),(cos(this.latitude())*sin(that.latitude())-sin(this.latitude())*cos(that.latitude())*cos(this.longitude()-that.longitude())));
-        return Azimuth.fromMath(Azimuth.canonicalize(angle));
+        double angle = atan2((sin(this.longitude()-that.longitude())*cos(that.latitude())),(cos(this.latitude())*sin(that.latitude()))-sin(this.latitude())*cos(that.latitude())*cos(this.longitude()-that.longitude()));
+        return toDeg(Azimuth.fromMath(Azimuth.canonicalize(angle)));
     }
     
     public String toString(){
         Locale l = null;
-        String s = String.format(l, "[%.4f; %.4f]", toDegree(this.longitude()), toDegree(this.latitude()));
+        String s = String.format(l, "(%.4f,%.4f)", toDeg(this.longitude()), toDeg(this.latitude()));
         return s;
     }
     
-    public double toDegree(double angleInRad){
+    public double toDeg(double angleInRad){
         return (angleInRad*180/PI);
+    }
+    
+    public double toRad(double angleInDeg){
+        return (angleInDeg*PI/180);
     }
 
 }
