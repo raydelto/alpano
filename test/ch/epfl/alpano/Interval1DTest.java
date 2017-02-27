@@ -114,9 +114,9 @@ public class Interval1DTest {
         */
         assertTrue(i.isUnionableWith(i2));
         assertTrue(i.isUnionableWith(i3));
-        assertFalse(i.isUnionableWith(i4));
+        assertTrue(i.isUnionableWith(i4));
         assertFalse(i.isUnionableWith(i5));
-        assertFalse(i6.isUnionableWith(i7));
+        assertTrue(i6.isUnionableWith(i7));
     }
     
     @Test(expected = IllegalArgumentException.class)
@@ -133,8 +133,22 @@ public class Interval1DTest {
         Interval1D i = new Interval1D(-12, -4);
         Interval1D i2 = new Interval1D(-5, 1);
         Interval1D i3 = i.union(i2);
+        Interval1D united = new Interval1D(-12, 1);
         assertEquals(-12, i3.includedFrom(), 0);
         assertEquals(1, i3.includedTo(), 0);
+        assertTrue(united.equals(i.union(i2)));
+    }
+    
+    @Test
+    public void equalsWorks(){
+        Interval1D i = new Interval1D(-12, -4);
+        Interval1D i2 = new Interval1D(-12, -4);
+        Interval1D i3 = new Interval1D(-11, -4);
+        Interval1D i4 = i.union(i3);
+            
+        assertTrue(i.equals(i2));
+        assertFalse(i2.equals(i3));
+        assertTrue(i4.equals(i));
     }
     
     
