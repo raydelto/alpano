@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import static java.lang.Math.PI;
-import static ch.epfl.alpano.Math2.toRad;
-import static ch.epfl.alpano.Math2.toDeg;
 
 public class GeoPointTest {
 
@@ -33,9 +31,9 @@ public class GeoPointTest {
     
     @Test
     public void distanceToWorks(){
-        GeoPoint lausanne = new GeoPoint(toRad(6.631), toRad(46.521));
-        GeoPoint moscow = new GeoPoint(toRad(37.623), toRad(55.753));
-        GeoPoint vevey = new GeoPoint(toRad(6.85), toRad(46.45));
+        GeoPoint lausanne = new GeoPoint(Math.toRadians(6.631), Math.toRadians(46.521));
+        GeoPoint moscow = new GeoPoint(Math.toRadians(37.623), Math.toRadians(55.753));
+        GeoPoint vevey = new GeoPoint(Math.toRadians(6.85), Math.toRadians(46.45));
         
         assertEquals(2370000, lausanne.distanceTo(moscow), 3000);
         assertEquals(18000, lausanne.distanceTo(vevey), 1000);
@@ -43,16 +41,16 @@ public class GeoPointTest {
     
     @Test
     public void azimuthToWorks(){
-        GeoPoint lausanne = new GeoPoint(toRad(6.631), toRad(46.521));
-        GeoPoint moscow = new GeoPoint(toRad(37.623), toRad(55.753));
+        GeoPoint lausanne = new GeoPoint(Math.toRadians(6.631), Math.toRadians(46.521));
+        GeoPoint moscow = new GeoPoint(Math.toRadians(37.623), Math.toRadians(55.753));
         
-        assertEquals(toRad(52.95), lausanne.azimuthTo(moscow), 1e-3);
+        assertEquals(Math.toRadians(52.95), lausanne.azimuthTo(moscow), 1e-3);
         
     }
     
     @Test
     public void toStringWorks(){
-        GeoPoint lausanne = new GeoPoint(toRad(6.631), toRad(46.521));
+        GeoPoint lausanne = new GeoPoint(Math.toRadians(6.631), Math.toRadians(46.521));
         String s = "(6.6310,46.5210)";
         assertTrue(s.equals(lausanne.toString()));
         

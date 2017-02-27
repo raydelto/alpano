@@ -6,10 +6,8 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.atan2;
 import static java.lang.Math.PI;
 import static ch.epfl.alpano.Math2.haversin;
-import static ch.epfl.alpano.Math2.toRad;
-import static ch.epfl.alpano.Math2.toDeg;
 import java.util.Locale;
-
+import static java.lang.Math.toDegrees;
 
 
 public final class GeoPoint {
@@ -79,7 +77,7 @@ public final class GeoPoint {
     @Override
     public String toString(){
         Locale l = null;
-        String s = String.format(l, "(%.4f,%.4f)", toDeg(this.longitude()), toDeg(this.latitude()));
+        String s = String.format(l, "(%.4f,%.4f)", toDegrees(this.longitude()), toDegrees(this.latitude()));
         return s;
     }
     

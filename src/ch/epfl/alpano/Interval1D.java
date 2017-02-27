@@ -86,7 +86,7 @@ public final class Interval1D {
      * @param that the second interval
      * @return
      */
-    public boolean isContinuous(Interval1D that)
+    private boolean isContinuous(Interval1D that)
     {
         return(this.includedFrom()<=that.includedTo()&&this.includedTo()>=that.includedFrom());
     }
