@@ -6,27 +6,31 @@ import static java.lang.Math.sqrt;
 import static java.lang.Math.atan2;
 import static java.lang.Math.PI;
 import static ch.epfl.alpano.Math2.haversin;
+import static ch.epfl.alpano.Math2.toRad;
+import static ch.epfl.alpano.Math2.toDeg;
 import java.util.Locale;
+
+
 
 public final class GeoPoint {
     
     private double longitude;
     private double latitude;
     
-    //Radians or degree ?
+    //Radians 
     /**
      * Creates a GeoPoint
-     * @param longitude, the longitude of the point in degrees
-     * @param latitude, the latitude of the point in degrees
+     * @param longitude, the longitude of the point in radians
+     * @param latitude, the latitude of the point in radians
      */
     public GeoPoint(double longitude, double latitude){
-        
-        this.longitude = toRad(longitude);
-        this.latitude = toRad(latitude);
-        
-        if(!(this.longitude >= -Math.PI && this.longitude <= Math.PI && this.latitude >= -Math.PI/2 && this.latitude <=Math.PI/2)){
+           
+        if(!(longitude >= -PI && longitude <= PI && latitude >= -PI/2 && latitude <=PI/2)){
             throw new IllegalArgumentException();
         }
+        
+        this.longitude = longitude;
+        this.latitude = latitude;
         
     }
     
@@ -57,16 +61,15 @@ public final class GeoPoint {
         return Distance.toMeters(angle);
     }
     
-    //Retourne en degrés ou en radians ?
     /**
      * Calculate the azimuth between two geopoints
      * @param that, a geopoint
-     * @return the azimuth between the two geopoints, in degrees
+     * @return the azimuth between the two geopoints, in radians
      */
     public double azimuthTo(GeoPoint that){
         
         double angle = atan2((sin(this.longitude()-that.longitude())*cos(that.latitude())),(cos(this.latitude())*sin(that.latitude()))-sin(this.latitude())*cos(that.latitude())*cos(this.longitude()-that.longitude()));
-        return toDeg(Azimuth.fromMath(Azimuth.canonicalize(angle)));
+        return Azimuth.fromMath(Azimuth.canonicalize(angle));
     }
     
     /**
@@ -79,22 +82,5 @@ public final class GeoPoint {
         return s;
     }
     
-    /**
-     * Converts an angle from radians to degrees
-     * @param angleInRad, the angle in radians to be converted
-     * @return the angle in degree
-     */
-    public double toDeg(double angleInRad){
-        return (angleInRad*180/PI);
-    }
-    
-    /**
-     * Converts an angle from degrees to radians
-     * @param angleInDeg, the angle in degrees to be converted
-     * @return the angle in radians
-     */
-    public double toRad(double angleInDeg){
-        return (angleInDeg*PI/180);
-    }
-
+   
 }

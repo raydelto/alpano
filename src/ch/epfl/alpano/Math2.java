@@ -6,6 +6,8 @@
  */
 package ch.epfl.alpano;
 
+import static java.lang.Math.PI;
+
 import java.util.function.DoubleUnaryOperator;
 
 public interface Math2 {
@@ -171,6 +173,25 @@ public interface Math2 {
        }
 
    }
+   
+   /**
+    * Converts an angle from radians to degrees
+    * @param angleInRad, the angle in radians to be converted
+    * @return the angle in degree
+    */
+   static double toDeg(double angleInRad){
+       return (angleInRad*180/PI);
+   }
+   
+   /**
+    * Converts an angle from degrees to radians
+    * @param angleInDeg, the angle in degrees to be converted
+    * @return the angle in radians
+    */
+   static double toRad(double angleInDeg){
+       return (angleInDeg*PI/180);
+   }
+
     
 
 }
