@@ -57,10 +57,12 @@ public class Interval2DTest {
         Interval2D i = new Interval2D(x, y);
         Interval2D i2 = new Interval2D(x1, y1);
         
-        assertEquals(11, i.size(), 0);
-        assertEquals(15, i2.size(), 0);
+        assertEquals(30, i.size(), 0);
+        assertEquals(143, i2.size(), 0);
         
     }
+    
+  
     
     
     
