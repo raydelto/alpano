@@ -73,9 +73,10 @@ public final class GeoPoint {
     }
     
     /**
-     * Redefinition of the method toString89 from Object
+     * Redefinition of the method toString from Object
      * @return a String that indicates the longitude and the latitude of the geopoint in degrees
      */
+    @Override
     public String toString(){
         Locale l = null;
         String s = String.format(l, "(%.4f,%.4f)", toDeg(this.longitude()), toDeg(this.latitude()));

@@ -52,7 +52,7 @@ public final class Interval2D
      * Returns the size of the bi-dimensional interval
      * @return the size of the bi-dimensional interval
      */
-    public int size()//ok?
+    public int size()
     {
         return iX().size()+iY().size();
     }
@@ -99,7 +99,10 @@ public final class Interval2D
         return new Interval2D(this.iX().union(that.iX()), this.iY().union(that.iY()));
     }
     
-    ///comments\/
+    /**
+     * Redefinition of the method equals from Object
+     * @return true if the two objects are both intervals, have the same hash code, same bounds, and the second one is not null
+     */
     @Override
     public boolean equals(Object thatO)
     {
@@ -112,13 +115,21 @@ public final class Interval2D
         return (this.iX().equals(that.iX())&&this.iY().equals(that.iY()));
     }
     
+    /**
+     * Redefinition of the method toString from Object
+     * @return a String that indicates the lower and the upper bounds of the bi-dimensional interval
+     */
     @Override
     public String toString()
     {
         return this.iX().toString()+"x"+this.iY().toString();
     }
     
-    @Override//OK?
+    /**
+     * Redefinition of the method hashCode 
+     * @return returns a new hash-code created using the first pair and second of bounds of the bi-dimensional interval
+     */
+    @Override
     public int hashCode() {
       return Objects.hash(this.iX(), this.iY());
     }

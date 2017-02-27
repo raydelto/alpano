@@ -41,9 +41,9 @@ public final class Interval1D {
      * size of the interval
      * @return returns the size of the interval
      */
-    public int size()//sizeok??? apo do +1? kontrollo dhe gjithanej
+    public int size()
     {
-        return includedTo-includedFrom;
+        return includedTo-includedFrom+1;
     }
     
     /**
@@ -63,23 +63,32 @@ public final class Interval1D {
      */
     public int sizeOfIntersectionWith(Interval1D that)
     {
-        if(!this.isUnionableWith(that)) return 0;
+        if(!this.isContinuous(that)) return 0;
         int iArr[] = {this.includedTo(),that.includedFrom(),that.includedTo(),this.includedFrom()};
         Arrays.sort(iArr);
-        return iArr[2]-iArr[1];
+        return iArr[2]-iArr[1]+1; //to calculate the size if the intersection, after making sure that the intersections are unionable,
+                                //substract the 2° biggest bound to the 3° biggest bound to calculate the size
         
     }
     
     /**
-     * Checks if the bounding two intervals is a continuous interval
-     * @param i1 the first interval
-     * @param i2 the second interval
+     * Checks if the union of two intervals is possible
+     * @param that the second interval
      * @return
      */
-    public boolean isUnionableWith(Interval1D that)//PYT: esht ok nqs e bojm ndryshe
+    public boolean isUnionableWith(Interval1D that)
+    {
+        return((this.size()+that.size()-this.sizeOfIntersectionWith(that))==this.boundingUnion(that).size());
+    }
+    
+    /**
+     * Checks if two intervals are continuous (meaning that they have at least one point in common)
+     * @param that the second interval
+     * @return
+     */
+    public boolean isContinuous(Interval1D that)
     {
         return(this.includedFrom()<=that.includedTo()&&this.includedTo()>=that.includedFrom());
-        //return((this.size()+that.size()-this.sizeOfIntersectionWith(that))==this.boundingUnion(that).size());
     }
     
     /**
@@ -102,10 +111,10 @@ public final class Interval1D {
      * @param that the second interval
      * @return a new interval that unites two intervals into one
      */
-    public Interval1D boundingUnion(Interval1D that)//Pyt per kte a esht ok
+    public Interval1D boundingUnion(Interval1D that)
     {
         int low, up;
-        if(this.includedFrom()<=that.includedFrom()) 
+        if(this.includedFrom()<=that.includedFrom()) //assign the smallest of the 4 total bounds to 'low', and the biggest to 'up'
             {
             low=this.includedFrom();
             }
@@ -117,10 +126,10 @@ public final class Interval1D {
         }
         else up=that.includedTo();
         
-        return new Interval1D(low,up);
+        return new Interval1D(low,up);//create an interval using the two minimal/maximal bounds
     }
     
-    ///comments\/
+   
     @Override
     public boolean equals(Object thatO)
     {
@@ -132,7 +141,10 @@ public final class Interval1D {
         
         return(this.includedTo()==that.includedTo()&&this.includedFrom()==that.includedFrom());
     }
-    
+    /**
+     * Redefinition of the method toString from Object
+     * @return a String that indicates the lower and the upper bound of the interval
+     */
     @Override
     public String toString()
     {

@@ -92,7 +92,7 @@ public class Interval1DTest {
     @Test
     public void boundingUnionWorksWithIntersectionOfOne(){
         Interval1D i = new Interval1D(-2, 4);
-        Interval1D i2 = new Interval1D(4, 18);
+        Interval1D i2 = new Interval1D(7, 18);
         Interval1D i3 = new Interval1D(-2, 18);
         assertTrue(i3.equals(i.boundingUnion(i2)));
     }
