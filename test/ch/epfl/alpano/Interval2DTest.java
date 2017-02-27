@@ -45,7 +45,7 @@ public class Interval2DTest {
         assertFalse(i.contains(-7, -2));
         assertFalse(i.contains(-5, 0));
         assertFalse(i.contains(4, 8));
-        assertTrue(i.contains(0, 4));
+        assertFalse(i.contains(0, 4));
     }
     
     @Test
@@ -61,6 +61,7 @@ public class Interval2DTest {
         assertEquals(15, i2.size(), 0);
         
     }
+    
     
     
     

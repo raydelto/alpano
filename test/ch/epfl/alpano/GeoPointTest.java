@@ -46,7 +46,7 @@ public class GeoPointTest {
         GeoPoint lausanne = new GeoPoint(toRad(6.631), toRad(46.521));
         GeoPoint moscow = new GeoPoint(toRad(37.623), toRad(55.753));
         
-        assertEquals(toRad(52.95), lausanne.azimuthTo(moscow), 0.1);
+        assertEquals(toRad(52.95), lausanne.azimuthTo(moscow), 1e-3);
         
     }
     
