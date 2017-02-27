@@ -114,9 +114,9 @@ public class Interval1DTest {
         */
         assertTrue(i.isUnionableWith(i2));
         assertTrue(i.isUnionableWith(i3));
-        assertTrue(i.isUnionableWith(i4));
+        assertFalse(i.isUnionableWith(i4));
         assertFalse(i.isUnionableWith(i5));
-        assertTrue(i6.isUnionableWith(i7));
+        assertFalse(i6.isUnionableWith(i7));
     }
     
     @Test(expected = IllegalArgumentException.class)
