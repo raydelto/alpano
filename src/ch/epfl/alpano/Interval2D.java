@@ -54,7 +54,7 @@ public final class Interval2D
      */
     public int size()
     {
-        return iX().size()+iY().size();
+        return iX().size()*iY().size();
     }
     
     /**
@@ -74,7 +74,7 @@ public final class Interval2D
      */
     public int sizeOfIntersectionWith(Interval2D that)
     {
-        return this.iX().sizeOfIntersectionWith(that.iX())+this.iY().sizeOfIntersectionWith(that.iY());
+        return this.iX().sizeOfIntersectionWith(that.iX())*this.iY().sizeOfIntersectionWith(that.iY());
     }
     
     /**
