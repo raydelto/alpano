@@ -1,3 +1,9 @@
+/**
+ * Interval2D
+ * 
+ * @author Andrea Scalisi (259183)
+ * @author Gerald Sula (257396)
+ */
 package ch.epfl.alpano;
 
 import java.util.Objects;
@@ -64,13 +70,22 @@ public final class Interval2D
      */
     public boolean isUnionableWith(Interval2D that)
     {
-        //return (this.iX.isUnionableWith(that.iX())&&this.iY().isUnionableWith(that.iY()));
+        
         if(this.iX().isUnionableWith(that.iX())&&this.iY().equals(that.iY()))return true;
         if(this.iY().isUnionableWith(that.iY())&&this.iX().equals(that.iX()))return true;
-        if(this.iX().includedFrom()<=that.iX().includedFrom()&&this.iX().includedTo()>=that.iX().includedTo()&&
-                this.iY().includedFrom()<=that.iY().includedFrom()&&this.iY().includedTo()>=that.iY().includedTo())return true;
-        if(that.iX().includedFrom()<=this.iX().includedFrom()&&that.iX().includedTo()>=this.iX().includedTo()&&
-                that.iY().includedFrom()<=this.iY().includedFrom()&&that.iY().includedTo()>=this.iY().includedTo())return true;
+        
+        Interval2D a=this;
+        Interval2D b =that;
+        int c=0;
+        do{
+        if(a.iX().contains(b.iX().includedFrom())&&a.iX().contains(b.iX().includedTo())
+                &&a.iY().contains(b.iY().includedFrom())&&a.iY().contains(b.iY().includedTo())) return true;
+        c++;
+        a=that;
+        b=this;
+        }while(c<1);
+        
+       
         return false;
     }
     

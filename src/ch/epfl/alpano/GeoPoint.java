@@ -1,5 +1,5 @@
 /**
- * Azimuth
+ * Geo Point
  * 
  * @author Andrea Scalisi (259183)
  * @author Gerald Sula (257396)

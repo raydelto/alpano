@@ -109,7 +109,7 @@ public interface Math2 {
       * @return true if x1 and x2 have the same sign, false otherwise
       */
      
-     static boolean isSameSign(double x1, double x2){
+    static boolean isSameSign(double x1, double x2){
          
          if((x1>=0 && x2>=0) || (x1<0 && x2<0)){
              return true;

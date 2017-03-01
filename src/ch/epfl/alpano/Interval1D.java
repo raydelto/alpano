@@ -1,12 +1,12 @@
 /**
- * Azimuth
+ * Interval1D
  * 
  * @author Andrea Scalisi (259183)
  * @author Gerald Sula (257396)
  */
 package ch.epfl.alpano;
 
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Objects;
 
