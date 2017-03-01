@@ -128,7 +128,7 @@ public class Interval2DTest {
         Interval1D y4 = new Interval1D(0, 5);
         
         Interval1D x5 = new Interval1D(-7, -2);
-        Interval1D y5 = new Interval1D(-4, 2);
+        Interval1D y5 = new Interval1D(-4, 5);
         
         Interval1D x6 = new Interval1D(-4, -3);
         Interval1D y6 = new Interval1D(5, 6);
