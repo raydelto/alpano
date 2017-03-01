@@ -1,3 +1,9 @@
+/**
+ * Azimuth
+ * 
+ * @author Andrea Scalisi (259183)
+ * @author Gerald Sula (257396)
+ */
 package ch.epfl.alpano;
 
 import java.util.ArrayList;
@@ -12,8 +18,7 @@ public final class Interval1D {
      * @param includedFrom lower bound of the interval
      * @param includedTo upper bound of the interval
      */
-    public Interval1D(int includedFrom, int includedTo) 
-    { 
+    public Interval1D(int includedFrom, int includedTo){ 
         Preconditions.checkArgument(!(includedTo<includedFrom));
         this.includedFrom=includedFrom;
         this.includedTo=includedTo;
@@ -23,8 +28,7 @@ public final class Interval1D {
      * 
      * @return returns the lower bound of the interval
      */
-    public int includedFrom()
-    {
+    public int includedFrom(){
         return includedFrom;
     }
     
@@ -32,8 +36,7 @@ public final class Interval1D {
      * 
      * @return returns the upper bound of the interval
      */
-    public int includedTo() 
-    {
+    public int includedTo(){
         return includedTo;
     }
     
@@ -41,8 +44,7 @@ public final class Interval1D {
      * size of the interval
      * @return returns the size of the interval
      */
-    public int size()
-    {
+    public int size(){
         return includedTo-includedFrom+1;
     }
     
@@ -51,8 +53,7 @@ public final class Interval1D {
      * @param v the element to be checked
      * @return returns true if the element is contained in the interval
      */
-    public boolean contains(int v)
-    {
+    public boolean contains(int v){
         return (v>=includedFrom()&&v<=includedTo());
     }
     
@@ -61,8 +62,7 @@ public final class Interval1D {
      * @param that the second interval
      * @return the size of the intersection
      */
-    public int sizeOfIntersectionWith(Interval1D that)
-    {
+    public int sizeOfIntersectionWith(Interval1D that){
         if(!this.isContinuous(that)) return 0;
         int iArr[] = {this.includedTo(),that.includedFrom(),that.includedTo(),this.includedFrom()};
         Arrays.sort(iArr);
@@ -76,8 +76,7 @@ public final class Interval1D {
      * @param that the second interval
      * @return
      */
-    public boolean isUnionableWith(Interval1D that)
-    {
+    public boolean isUnionableWith(Interval1D that){
         return((this.size()+that.size()-this.sizeOfIntersectionWith(that))==this.boundingUnion(that).size());
     }
     
@@ -86,8 +85,7 @@ public final class Interval1D {
      * @param that the second interval
      * @return
      */
-    private boolean isContinuous(Interval1D that)
-    {
+    private boolean isContinuous(Interval1D that){
         return(this.includedFrom()<=that.includedTo()&&this.includedTo()>=that.includedFrom());
     }
     
@@ -97,8 +95,7 @@ public final class Interval1D {
      * @return a new interval that unites two intervals into one
      * @throws throws IllegalArgumentException if the intervals are not unionizable
      */
-    public Interval1D union(Interval1D that)
-    {
+    public Interval1D union(Interval1D that){
         Preconditions.checkArgument(this.isUnionableWith(that));
         int iArr[] = {this.includedTo(),that.includedFrom(),that.includedTo(),this.includedFrom()};
         Arrays.sort(iArr);
@@ -111,8 +108,7 @@ public final class Interval1D {
      * @param that the second interval
      * @return a new interval that unites two intervals into one
      */
-    public Interval1D boundingUnion(Interval1D that)
-    {
+    public Interval1D boundingUnion(Interval1D that){
         int low, up;
         if(this.includedFrom()<=that.includedFrom()) //assign the smallest of the 4 total bounds to 'low', and the biggest to 'up'
             {
@@ -131,8 +127,7 @@ public final class Interval1D {
     
    
     @Override
-    public boolean equals(Object thatO)
-    {
+    public boolean equals(Object thatO){
         if(thatO==null)return false;
         if(thatO.getClass()!=this.getClass())return false;
         
@@ -146,8 +141,7 @@ public final class Interval1D {
      * @return a String that indicates the lower and the upper bound of the interval
      */
     @Override
-    public String toString()
-    {
+    public String toString(){
         return "["+this.includedFrom+".."+this.includedTo+"]";
     }
     
