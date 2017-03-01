@@ -127,8 +127,16 @@ public class Interval2DTest {
         Interval1D x4 = new Interval1D(0, 2);
         Interval1D y4 = new Interval1D(0, 5);
         
-        Interval1D x5 = new Interval1D(-3, 2);
+        Interval1D x5 = new Interval1D(-7, -2);
         Interval1D y5 = new Interval1D(-4, 2);
+        
+        Interval1D x6 = new Interval1D(-4, -3);
+        Interval1D y6 = new Interval1D(5, 6);
+        
+        Interval1D x7 = new Interval1D(-7, -2);
+        Interval1D y7 = new Interval1D(4, 8);
+       
+        
         
         Interval2D i = new Interval2D(x, y);
         Interval2D i1 = new Interval2D(x1, y1);
@@ -136,11 +144,16 @@ public class Interval2DTest {
         Interval2D i3 = new Interval2D(x3, y3);
         Interval2D i4 = new Interval2D(x4, y4);
         Interval2D i5 = new Interval2D(x5, y5);
+        Interval2D i6 = new Interval2D(x6, y6);
+        Interval2D i7 = new Interval2D(x7, y7);
         
-        assertTrue(i.isUnionableWith(i1));
+        assertFalse(i.isUnionableWith(i1));
         assertFalse(i.isUnionableWith(i2));
-        assertTrue(i.isUnionableWith(i3));
+        assertFalse(i.isUnionableWith(i3));
         assertFalse(i.isUnionableWith(i4));
+        assertTrue(i.isUnionableWith(i5));
+        assertTrue(i.isUnionableWith(i6));
+        assertTrue(i.isUnionableWith(i7));
                 
     }
     
@@ -166,17 +179,17 @@ public class Interval2DTest {
         Interval1D y = new Interval1D(4, 8);
 
         Interval1D x1 = new Interval1D(-6, 4);
-        Interval1D y1 = new Interval1D(-4, 8);
+        Interval1D y1 = new Interval1D(4, 8);
         
-        Interval1D x2 = new Interval1D(4, 9);
-        Interval1D y2 = new Interval1D(-8, -4);
+        Interval1D x2 = new Interval1D(-6, 4);
+        Interval1D y2 = new Interval1D(-8, 6);
                       
         Interval2D i = new Interval2D(x, y);
         Interval2D i1 = new Interval2D(x1, y1);
         Interval2D i2 = new Interval2D(x2, y2);
         
-        Interval2D u = new Interval2D(new Interval1D(-7, 4), new Interval1D(-4, 8));
-        Interval2D u1 = new Interval2D(new Interval1D(-6, 9), new Interval1D(-8, 8));
+        Interval2D u = new Interval2D(new Interval1D(-7, 4), new Interval1D(4, 8));
+        Interval2D u1 = new Interval2D(new Interval1D(-6, 4), new Interval1D(-8, 8));
         assertEquals(u, i.union(i1));
         assertEquals(u1, i1.union(i2));
         
