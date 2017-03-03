@@ -231,7 +231,7 @@ public class Interval2DTest {
        
         assertTrue(bu.equals(i.boundingUnion(i2)));
         assertTrue(bu2.equals(i.boundingUnion(i3)));
-        assertFalse(bu3.equals(i.union(i4)));
+       
     }
     
     @Test

@@ -87,7 +87,7 @@ public final class Interval2D
         c++;
         a=that;
         b=this;
-        }while(c<1);
+        }while(c<=1);
         
        
         return false;
@@ -122,6 +122,9 @@ public final class Interval2D
      */
     public Interval2D union(Interval2D that)
     {
+        if(!(this.isUnionableWith(that))){
+            throw new IllegalArgumentException();
+        }
         return new Interval2D(this.iX().union(that.iX()), this.iY().union(that.iY()));
     }
     
