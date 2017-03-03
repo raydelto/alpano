@@ -21,7 +21,6 @@ public final class GeoPoint {
     private double longitude;
     private double latitude;
     
-    //Radians 
     /**
      * Creates a GeoPoint
      * @param longitude, the longitude of the point in radians
@@ -54,7 +53,6 @@ public final class GeoPoint {
         return latitude;
     }
     
-    //Précision ?
     /**
      * This method calculates a distance between two geopoints
      * @param that, a geopoint
