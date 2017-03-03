@@ -130,10 +130,7 @@ public final class Interval1D {
     public boolean equals(Object thatO){
         if(thatO==null)return false;
         if(thatO.getClass()!=this.getClass())return false;
-        
         Interval1D that= (Interval1D)thatO;
-        if(this.hashCode()!=that.hashCode()) return false;
-        
         return(this.includedTo()==that.includedTo()&&this.includedFrom()==that.includedFrom());
     }
     /**

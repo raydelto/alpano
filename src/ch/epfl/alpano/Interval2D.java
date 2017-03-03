@@ -70,10 +70,14 @@ public final class Interval2D
      */
     public boolean isUnionableWith(Interval2D that)
     {
-        
+        //First case, the first pair of intervals is unionable, an the second pair is the same
         if(this.iX().isUnionableWith(that.iX())&&this.iY().equals(that.iY()))return true;
+        
+        //Second case, the second pair of intervals is unionable, an the first pair is the same
+
         if(this.iY().isUnionableWith(that.iY())&&this.iX().equals(that.iX()))return true;
         
+        //Third case, one of the bi-dimensional intervals contains the other
         Interval2D a=this;
         Interval2D b =that;
         int c=0;
@@ -130,10 +134,7 @@ public final class Interval2D
     {
         if(thatO==null)return false;
         if(thatO.getClass()!=this.getClass())return false;
-        
-        Interval2D that= (Interval2D)thatO;
-        if(this.hashCode()!=that.hashCode()) return false;
-        
+        Interval2D that= (Interval2D)thatO;  
         return (this.iX().equals(that.iX())&&this.iY().equals(that.iY()));
     }
     
