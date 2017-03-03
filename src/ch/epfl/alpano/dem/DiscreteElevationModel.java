@@ -1,5 +1,7 @@
-package ch.epfl.alpano;
+package ch.epfl.alpano.dem;
 import static java.lang.Math.PI;
+
+import ch.epfl.alpano.Interval2D;
 
 public interface DiscreteElevationModel extends AutoCloseable{
     
