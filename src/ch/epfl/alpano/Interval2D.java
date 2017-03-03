@@ -18,7 +18,7 @@ public final class Interval2D
      * @param iY the second interval
      * @throws throws NullPointerException id either iX or iY are null
      */
-    Interval2D(Interval1D iX, Interval1D iY)
+    public Interval2D(Interval1D iX, Interval1D iY)
     {
         if(iX==null||iY==null)throw new NullPointerException();
         this.iX=iX;
