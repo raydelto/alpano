@@ -93,7 +93,7 @@ public final class Interval1D {
      * Unites two intervals into one
      * @param that the second interval
      * @return a new interval that unites two intervals into one
-     * @throws throws IllegalArgumentException if the intervals are not unionizable
+     * @throws throws IllegalArgumentException if the intervals are not unionable
      */
     public Interval1D union(Interval1D that){
         Preconditions.checkArgument(this.isUnionableWith(that));
@@ -110,14 +110,13 @@ public final class Interval1D {
      */
     public Interval1D boundingUnion(Interval1D that){
         int low, up;
-        if(this.includedFrom()<=that.includedFrom()) //assign the smallest of the 4 total bounds to 'low', and the biggest to 'up'
-            {
+        if(this.includedFrom()<=that.includedFrom()){
+          //assign the smallest of the 4 total bounds to 'low', and the biggest to 'up'
             low=this.includedFrom();
-            }
+        }
         else low=that.includedFrom();
         
-        if(this.includedTo()>=that.includedTo()) 
-        {
+        if(this.includedTo()>=that.includedTo()){
         up=this.includedTo();
         }
         else up=that.includedTo();

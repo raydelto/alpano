@@ -18,8 +18,7 @@ public final class Interval2D
      * @param iY the second interval
      * @throws throws NullPointerException id either iX or iY are null
      */
-    public Interval2D(Interval1D iX, Interval1D iY)
-    {
+    public Interval2D(Interval1D iX, Interval1D iY){
         if(iX==null||iY==null)throw new NullPointerException();
         this.iX=iX;
         this.iY=iY;        
@@ -29,8 +28,7 @@ public final class Interval2D
      *  Returns the first uni-dimensional interval
      * @return the first interval
      */
-    public Interval1D iX()
-    {
+    public Interval1D iX(){
         return iX;
     }
     
@@ -39,8 +37,7 @@ public final class Interval2D
      * @return the second interval
 
      */
-    public Interval1D iY()
-    {
+    public Interval1D iY(){
         return iY;
     }
     
@@ -50,16 +47,14 @@ public final class Interval2D
      * @param y the second element to be checked
      * @return true if the pair is contained in the bi-dimensional interval contains the pair (x,y)
      */
-    public boolean contains(int x, int y)
-    {
+    public boolean contains(int x, int y){
         return (iX().contains(x)&&iY().contains(y));
     }
     /**
      * Returns the size of the bi-dimensional interval
      * @return the size of the bi-dimensional interval
      */
-    public int size()
-    {
+    public int size(){
         return iX().size()*iY().size();
     }
     
@@ -68,8 +63,7 @@ public final class Interval2D
      * @param that the second bi-dimensional interval
      * @return true if the two bi-dimenional intervals are unionable
      */
-    public boolean isUnionableWith(Interval2D that)
-    {
+    public boolean isUnionableWith(Interval2D that){
         //First case, the first pair of intervals is unionable, an the second pair is the same
         if(this.iX().isUnionableWith(that.iX())&&this.iY().equals(that.iY()))return true;
         
@@ -98,8 +92,7 @@ public final class Interval2D
      * @param that the second  bi-dimensional interval
      * @return the size of a intersection between two bi-dimensional intervals
      */
-    public int sizeOfIntersectionWith(Interval2D that)
-    {
+    public int sizeOfIntersectionWith(Interval2D that){
         return this.iX().sizeOfIntersectionWith(that.iX())*this.iY().sizeOfIntersectionWith(that.iY());
     }
     
@@ -108,8 +101,7 @@ public final class Interval2D
      * @param that that the second bi-dimensional interval
      * @return a new bi-dimensional interval that unites two bi-dimensional intervals into one
      */
-    public Interval2D boundingUnion(Interval2D that)
-    {
+    public Interval2D boundingUnion(Interval2D that){
         return new Interval2D(this.iX().boundingUnion(that.iX()), this.iY().boundingUnion(that.iY()));
     }
     
@@ -120,8 +112,7 @@ public final class Interval2D
      * @throws throws IllegalArgumentException if either of the two pairs of uni-dimensional intervals 
      *         that compose the two bi-dimensional intervals are not unionizable
      */
-    public Interval2D union(Interval2D that)
-    {
+    public Interval2D union(Interval2D that){
         if(!(this.isUnionableWith(that))){
             throw new IllegalArgumentException();
         }
@@ -133,8 +124,7 @@ public final class Interval2D
      * @return true if the two objects are both intervals, have the same hash code, same bounds, and the second one is not null
      */
     @Override
-    public boolean equals(Object thatO)
-    {
+    public boolean equals(Object thatO){
         if(thatO==null)return false;
         if(thatO.getClass()!=this.getClass())return false;
         Interval2D that= (Interval2D)thatO;  
@@ -146,8 +136,7 @@ public final class Interval2D
      * @return a String that indicates the lower and the upper bounds of the bi-dimensional interval
      */
     @Override
-    public String toString()
-    {
+    public String toString(){
         return this.iX().toString()+"x"+this.iY().toString();
     }
     
