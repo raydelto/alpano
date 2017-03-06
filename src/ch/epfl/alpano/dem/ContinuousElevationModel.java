@@ -31,22 +31,35 @@ public final class ContinuousElevationModel {
         double indexLatitude = DiscreteElevationModel.sampleIndex(p.latitude());
         int x = ((int)Math.floor(indexLongitude));
         int y = ((int)Math.floor(indexLatitude));
-        
-        return bilerp(dem.elevationSample(x, y), dem.elevationSample(x+1, y), dem.elevationSample(x, y+1), dem.elevationSample(x+1, y+1), indexLongitude-x, indexLatitude-y);
+                
+        return bilerp(checkSample(x, y), checkSample(x+1, y), checkSample(x, y+1), checkSample(x+1, y+1), indexLongitude-x, indexLatitude-y);
     }
     
     public double slopeAt(GeoPoint p){
         
-        int x = ((int)Math.floor(DiscreteElevationModel.sampleIndex(p.longitude())));
-        int y = ((int)Math.floor(DiscreteElevationModel.sampleIndex(p.latitude())));
+        double indexLongitude = DiscreteElevationModel.sampleIndex(p.longitude());
+        double indexLatitude = DiscreteElevationModel.sampleIndex(p.latitude());
+        int x = ((int)Math.floor(indexLongitude));
+        int y = ((int)Math.floor(indexLatitude));
         
-        double za = dem.elevationSample(x+1, y)-dem.elevationSample(x, y);
-        double zb = dem.elevationSample(x, y+1)-dem.elevationSample(x, y);
-        
+        return bilerp(doTheta(x, y), doTheta(x+1, y), doTheta(x, y+1), doTheta(x+1, y+1), indexLongitude-x, indexLatitude-y);
+          
+    }
+    
+    private double doTheta(int x, int y){
+        double za = checkSample(x+1, y)-checkSample(x, y);
+        double zb = checkSample(x, y+1)-checkSample(x, y);
         
         return acos(d/(sqrt(sq(za)+sq(zb)+sq(d))));
-        
-          
+    }
+    
+    private double checkSample(int x, int y){
+        try{
+            return dem.elevationSample(x, y);
+                        
+        }catch(IllegalArgumentException e){
+            return 0;
+        }
     }
 
 }
