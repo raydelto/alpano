@@ -32,7 +32,7 @@ public final class ContinuousElevationModel {
         int x = ((int)Math.floor(indexLongitude));
         int y = ((int)Math.floor(indexLatitude));
         
-        return bilerp(dem.elevationSample(x, y), dem.elevationSample(x+1, y), dem.elevationSample(x, y+1), dem.elevationSample(x+1, y+1), indexLongitude, indexLatitude);
+        return bilerp(dem.elevationSample(x, y), dem.elevationSample(x+1, y), dem.elevationSample(x, y+1), dem.elevationSample(x+1, y+1), indexLongitude-x, indexLatitude-y);
     }
     
     public double slopeAt(GeoPoint p){
