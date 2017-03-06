@@ -18,7 +18,7 @@ public interface DiscreteElevationModel extends AutoCloseable{
     }
 
     /**
-     * Calculates and return the area of the MNT
+     * Calculates and returns the area of the MNT
      * @return an interval2D that corresponds to the area of the MNT
      */
     abstract Interval2D extent();
@@ -31,9 +31,9 @@ public interface DiscreteElevationModel extends AutoCloseable{
     abstract double elevationSample(int x, int y);
     
     /**
-     * 
-     * @param that
-     * @return
+     * Creates an MNT, that represents the union of two DiscreteElevationModels
+     * @param that the second DiscreteElevationModel used in the union
+     * @return an MNT that represents the union of two DiscreteElevationModels
      */
     default DiscreteElevationModel union(DiscreteElevationModel that){
         if(!(this.extent().isUnionableWith(that.extent()))){

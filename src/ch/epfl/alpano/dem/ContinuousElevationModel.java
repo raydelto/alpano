@@ -4,6 +4,7 @@ import static ch.epfl.alpano.dem.DiscreteElevationModel.SAMPLES_PER_RADIAN;
 import static java.lang.Math.acos;
 import static java.lang.Math.sqrt;
 import static ch.epfl.alpano.Math2.sq;
+import static java.util.Objects.requireNonNull;
 
 
 
@@ -19,11 +20,9 @@ public final class ContinuousElevationModel {
     
     
     public ContinuousElevationModel(DiscreteElevationModel dem){
-        if(dem == null){
-            throw new NullPointerException();
-        }
         
-        this.dem = dem;
+        
+        this.dem = requireNonNull(dem);
         
     }
     
