@@ -1,3 +1,9 @@
+/**
+ * DiscreteElevationModel
+ * 
+ * @author Andrea Scalisi (259183)
+ * @author Gerald Sula (257396)
+ */
 package ch.epfl.alpano.dem;
 import static java.lang.Math.PI;
 

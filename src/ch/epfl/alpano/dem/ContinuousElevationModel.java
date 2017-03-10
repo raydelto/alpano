@@ -1,3 +1,9 @@
+/**
+ * ContinuousElevationModel
+ * 
+ * @author Andrea Scalisi (259183)
+ * @author Gerald Sula (257396)
+ */
 package ch.epfl.alpano.dem;
 import static ch.epfl.alpano.Math2.bilerp;
 import static ch.epfl.alpano.dem.DiscreteElevationModel.SAMPLES_PER_RADIAN;
