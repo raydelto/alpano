@@ -1,5 +1,6 @@
-package ch.epfl.alpano;
+package ch.epfl.alpano.dem;
 
+import ch.epfl.alpano.Interval2D;
 import ch.epfl.alpano.dem.DiscreteElevationModel;
 
 import static ch.epfl.alpano.Math2.sq;

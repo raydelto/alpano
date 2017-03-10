@@ -23,10 +23,11 @@ public interface DiscreteElevationModel extends AutoCloseable{
      */
     abstract Interval2D extent();
     /**
-     * 
-     * @param x
-     * @param y
+     *  Calculate the sample of the index
+     * @param x first coordinate of the index
+     * @param y second coordinate of the index
      * @return the elevation sample in meters
+     * @throws IllegalArgumentException if the index is not included in the MNT
      */
     abstract double elevationSample(int x, int y);
     

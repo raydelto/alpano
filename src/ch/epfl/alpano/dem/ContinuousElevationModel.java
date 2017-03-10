@@ -19,8 +19,8 @@ public final class ContinuousElevationModel {
     private static double d = toMeters(1/SAMPLES_PER_RADIAN);
     
     /**
-     * Constructs a new continous dem based on a discrete dem
-     * @param dem
+     * Constructs a new continuous dem based on a discrete dem
+     * @param dem the dem
      */
     public ContinuousElevationModel(DiscreteElevationModel dem){
         
