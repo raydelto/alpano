@@ -42,8 +42,7 @@ public final class CompositeDiscreteElevationModel implements DiscreteElevationM
        if(dem2.extent().iX().contains(x)&&dem2.extent().iY().contains(y))return dem2.elevationSample(x, y);
        throw new IllegalArgumentException();
        
-       
-       
+
     }
     
 
