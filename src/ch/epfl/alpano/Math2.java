@@ -11,7 +11,7 @@ import static java.lang.Math.PI;
 import java.util.function.DoubleUnaryOperator;
 
 public interface Math2 {
-    static double PI2= Math.PI*2;
+    final static double PI2= Math.PI*2;
     /**
      * A method that calculate the square of x
      * @param x the real number to be squared

@@ -21,8 +21,8 @@ import static ch.epfl.alpano.Distance.toMeters;
 
 public final class ContinuousElevationModel {
     
-    private DiscreteElevationModel dem;
-    private static double d = toMeters(1/SAMPLES_PER_RADIAN);
+    private final DiscreteElevationModel dem;
+    private final static double d = toMeters(1/SAMPLES_PER_RADIAN);
     
     /**
      * Constructs a new continuous dem based on a discrete dem

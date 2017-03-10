@@ -47,6 +47,7 @@ public interface DiscreteElevationModel extends AutoCloseable{
             throw new IllegalArgumentException();
         }
         return new CompositeDiscreteElevationModel(this, that);
+        //Preconditions
         
     }
 }

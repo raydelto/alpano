@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public final class Interval2D 
 {
-    private Interval1D iX,iY;
+    private final Interval1D iX,iY;
     
     /**
      * Creates the cartesian product of two uni-dimensional intervals

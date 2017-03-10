@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public final class Interval1D {
-    private  int includedFrom,  includedTo;
+    private final int includedFrom,  includedTo;
     
     /**
      * Creates a uni-dimensional interval, throws IllegalArgumentException is includeTo is strictly smaller than Includedfrom

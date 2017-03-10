@@ -18,8 +18,8 @@ import static java.lang.Math.toDegrees;
 
 public final class GeoPoint {
     
-    private double longitude;
-    private double latitude;
+    private final double longitude;
+    private final double latitude;
     
     /**
      * Creates a GeoPoint

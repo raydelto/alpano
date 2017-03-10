@@ -12,8 +12,8 @@ import static java.util.Objects.requireNonNull;
 
 public final class CompositeDiscreteElevationModel implements DiscreteElevationModel
 {
-    private DiscreteElevationModel dem1,dem2;
-    private Interval2D ext;
+    private final DiscreteElevationModel dem1,dem2;
+    private final Interval2D ext;
     
     /**
      *  Creates a new  CompositeDiscreteElevationModel from the union of two DiscreteElevationModels
@@ -47,6 +47,7 @@ public final class CompositeDiscreteElevationModel implements DiscreteElevationM
        if(dem1.extent().iX().contains(x)&&dem1.extent().iY().contains(y))return dem1.elevationSample(x, y);
        if(dem2.extent().iX().contains(x)&&dem2.extent().iY().contains(y))return dem2.elevationSample(x, y);
        throw new IllegalArgumentException();
+     
        
 
     }
