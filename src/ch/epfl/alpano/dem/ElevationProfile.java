@@ -90,11 +90,13 @@ public final class ElevationProfile {
        
         
         double longitude = lerp(table[lowerBound].longitude(), table[upperBound].longitude(), x/STEP-lowerBound);
-        double latitude= lerp(table[lowerBound].longitude(), table[upperBound].longitude(), x/STEP-lowerBound);
+        double latitude= lerp(table[lowerBound].latitude(), table[upperBound].latitude(), x/STEP-lowerBound);
         
-        System.out.println("Longitude : "+longitude+", latitude : "+latitude);
+        //System.out.println("Longitude : "+longitude+", latitude : "+latitude);
         //System.out.println();
-        return new GeoPoint(longitude, latitude);
+        GeoPoint p = new GeoPoint(longitude, latitude);
+        System.out.println(p);
+        return p;
         
         
         
