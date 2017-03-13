@@ -52,6 +52,7 @@ public final class ElevationProfile {
             double lambda = (floorMod((lambda0-asin((sin(direction)*sin(x))/cos(phi))+ PI), PI2) - PI);
           
             table[i] = new GeoPoint(lambda, phi);
+           // System.out.println(lambda);
         }
         
         
@@ -70,6 +71,7 @@ public final class ElevationProfile {
         int upperBound=0;
         int index =0;
         
+        /*
         do{
             if(x == index*STEP){
                 return new GeoPoint(table[index].longitude(), table[index].latitude());
@@ -77,14 +79,23 @@ public final class ElevationProfile {
                         
             lowerBound = index;
             index++;
+      
+            
         }while(index*STEP<=x);
+        */
         
-        upperBound = index +1;
+        lowerBound = (int)Math.floor(x/4096);
+       
+        upperBound = lowerBound +1;
+       
         
         double longitude = lerp(table[lowerBound].longitude(), table[upperBound].longitude(), x/STEP-lowerBound);
         double latitude= lerp(table[lowerBound].longitude(), table[upperBound].longitude(), x/STEP-lowerBound);
         
+        System.out.println("Longitude : "+longitude+", latitude : "+latitude);
+        //System.out.println();
         return new GeoPoint(longitude, latitude);
+        
         
         
     }
