@@ -19,11 +19,11 @@ import java.util.ArrayList;
 
 public final class ElevationProfile {
     
-    private ContinuousElevationModel elevationModel;
-    private GeoPoint origin;
-    private double azimuth;
-    private double length;
-    private GeoPoint[] table;
+    private final ContinuousElevationModel elevationModel;
+    private final GeoPoint origin;
+    private final double azimuth;
+    private final double length;
+    private final GeoPoint[] table;
     private final int STEP = 4096;
     
     public ElevationProfile(ContinuousElevationModel elevationModel, GeoPoint origin, double azimuth, double length){
@@ -52,11 +52,8 @@ public final class ElevationProfile {
             double lambda = (floorMod((lambda0-asin((sin(direction)*sin(x))/cos(phi))+ PI), PI2) - PI);
           
             table[i] = new GeoPoint(lambda, phi);
-           // System.out.println(lambda);
+          
         }
-        
-        
-           
     }
     
     public double elevationAt(double x){
@@ -69,37 +66,16 @@ public final class ElevationProfile {
         isInBounds(x);
         int lowerBound=0;
         int upperBound=0;
-        int index =0;
-        
-        /*
-        do{
-            if(x == index*STEP){
-                return new GeoPoint(table[index].longitude(), table[index].latitude());
-            }
-                        
-            lowerBound = index;
-            index++;
-      
-            
-        }while(index*STEP<=x);
-        */
-        
+                
         lowerBound = (int)Math.floor(x/4096);
-       
         upperBound = lowerBound +1;
-       
         
         double longitude = lerp(table[lowerBound].longitude(), table[upperBound].longitude(), x/STEP-lowerBound);
         double latitude= lerp(table[lowerBound].latitude(), table[upperBound].latitude(), x/STEP-lowerBound);
         
-        //System.out.println("Longitude : "+longitude+", latitude : "+latitude);
-        //System.out.println();
         GeoPoint p = new GeoPoint(longitude, latitude);
-        System.out.println(p);
-        return p;
-        
-        
-        
+       
+        return p;        
     }
     
     public double slopeAt(double x){
@@ -112,6 +88,5 @@ public final class ElevationProfile {
             throw new IllegalArgumentException();
         }
     }
-    
 
 }
