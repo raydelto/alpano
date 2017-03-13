@@ -1,3 +1,9 @@
+/**
+ * HgtDiscreteElevationModel
+ * 
+ * @author Andrea Scalisi (259183)
+ * @author Gerald Sula (257396)
+ */
 package ch.epfl.alpano.dem;
 
 import java.io.File;
@@ -14,43 +20,46 @@ import ch.epfl.alpano.Preconditions;
 
 public final class HgtDiscreteElevationModel implements DiscreteElevationModel
 {
-    
+    //FINAL??
     private Interval2D ext;
     private int latitude, longitude;
     private char horizontal, vertical;
-    private int latitudeRad, longitudeRad;
+    private int latitudeIndex, longitudeIndex;
     private final FileInputStream stream;
     private ShortBuffer buffer;
+    static final int SAMPLES_PER_DEGREE_PLUS_ONE = 3601;
+    
+    /**
+     * Creates a HgtDiscreteElevationModel from the source file
+     * @param file the source file
+     * @throws FileNotFoundException if there are problems with the source file
+     * @throws IOException if there are problems with the source file
+     * @throws IllegalArgumentException if there are problems with the source file
+     */
     public HgtDiscreteElevationModel(File file) throws FileNotFoundException, IOException
     {
         try{
             Preconditions.checkArgument(this.checkName(file));
-        }
-        catch (Exception e)
-        {
-            throw new IllegalArgumentException();
-        }
-        long l = file.length();
-        try  {
+       
+            long l = file.length();
             stream = new FileInputStream(file);
-           buffer = stream.getChannel()
-            .map(MapMode.READ_ONLY, 0, l)
-            .asShortBuffer();}
+            buffer = stream.getChannel().map(MapMode.READ_ONLY, 0, l).asShortBuffer();
+            }
         catch(Exception e)
-        {
-            throw new IllegalArgumentException();//Po?, nqs po vej precondit.check
-        }
+            {
+                throw new IllegalArgumentException();
+            }
        
         
         
-        if(horizontal=='W') latitudeRad=-latitude*SAMPLES_PER_DEGREE;//ok konvertimi?
-        else latitudeRad=latitude*SAMPLES_PER_DEGREE;
+        if(horizontal=='W') latitudeIndex=-latitude*SAMPLES_PER_DEGREE;
+        else latitudeIndex=latitude*SAMPLES_PER_DEGREE;
        
-        if(vertical=='S') longitudeRad=-longitude*SAMPLES_PER_DEGREE;
-        else longitudeRad=longitude*SAMPLES_PER_DEGREE;
+        if(vertical=='S') longitudeIndex=-longitude*SAMPLES_PER_DEGREE;
+        else longitudeIndex=longitude*SAMPLES_PER_DEGREE;
        
        
-        ext=new Interval2D(new Interval1D(longitudeRad, longitudeRad+SAMPLES_PER_DEGREE+1), new Interval1D(latitudeRad, latitudeRad+SAMPLES_PER_DEGREE+1));
+        ext=new Interval2D(new Interval1D(longitudeIndex, longitudeIndex+SAMPLES_PER_DEGREE_PLUS_ONE), new Interval1D(latitudeIndex, latitudeIndex+SAMPLES_PER_DEGREE_PLUS_ONE));
         
         
         
@@ -63,13 +72,15 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel
     private boolean checkName(File file)
     {
         String name= file.getName();
+        if(name.length()!=11)return false;//check length
+        
         vertical=name.charAt(0);
-        if(!(vertical=='N'||vertical=='S'))return false;
-        if(name.length()!=11)return false;
+        if(!(vertical=='N'||vertical=='S'))return false;//check first letter
+       
         
         
         try{
-            latitude=Integer.parseInt(name.substring(1, 3));
+            latitude=Integer.parseInt(name.substring(1, 3));//check latitude
         }catch (NumberFormatException e) {
             return false;
         }
@@ -79,11 +90,11 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel
         if(!(latitude>=0&&latitude<=90))return false;
         
         horizontal=name.charAt(3);
-        if(!(horizontal=='W'||horizontal=='E'))return false;
+        if(!(horizontal=='W'||horizontal=='E'))return false;//check second letter
         
         
         try{
-            longitude=Integer.parseInt(name.substring(4, 7));
+            longitude=Integer.parseInt(name.substring(4, 7));//check longitude
         }catch (NumberFormatException e) {
             return false;
         }
@@ -114,11 +125,12 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel
 
     @Override
     public double elevationSample(int x, int y) {
-        if(this.extent().iX().contains(x)&&this.extent().iY().contains(y))//duhet?
+        if(this.extent().contains(x,y))
             {
-            int deltaX=x-longitudeRad;
-            int deltaY=y-latitudeRad;
-            int position=(3601*(3601-Math.abs(deltaY))-3601)+Math.abs(deltaX);//+1?
+            int deltaX=Math.abs(x-longitudeIndex);
+            int deltaY=Math.abs(y-latitudeIndex);
+            //int position=(3601*(3601-deltaY)-3601)+deltaX;
+            int position=(SAMPLES_PER_DEGREE_PLUS_ONE*(SAMPLES_PER_DEGREE-deltaY))+deltaX;
             return buffer.get(position);
             
             
