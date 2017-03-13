@@ -50,7 +50,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel
         else longitudeRad=longitude*SAMPLES_PER_DEGREE;
        
        
-        ext=new Interval2D(new Interval1D(longitudeRad, longitudeRad+SAMPLES_PER_DEGREE), new Interval1D(latitudeRad, latitudeRad+SAMPLES_PER_DEGREE));
+        ext=new Interval2D(new Interval1D(longitudeRad, longitudeRad+SAMPLES_PER_DEGREE+1), new Interval1D(latitudeRad, latitudeRad+SAMPLES_PER_DEGREE+1));
         
         
         
@@ -118,7 +118,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel
             {
             int deltaX=x-longitudeRad;
             int deltaY=y-latitudeRad;
-            int position=3601*(3601-Math.abs(deltaY))+Math.abs(deltaX);//+1?
+            int position=(3601*(3601-Math.abs(deltaY))-3601)+Math.abs(deltaX);//+1?
             return buffer.get(position);
             
             
