@@ -74,7 +74,7 @@ public final class ElevationProfile {
         double latitude= lerp(table[lowerBound].latitude(), table[upperBound].latitude(), x/STEP-lowerBound);
         
         GeoPoint p = new GeoPoint(longitude, latitude);
-       
+       System.out.println(p);
         return p;        
     }
     
