@@ -91,15 +91,22 @@ public final class ElevationProfile {
         isInBounds(x);
         int lowerBound=0;
         int upperBound=0;
-                
+        
         lowerBound = (int)Math.floor(x/4096);
         upperBound = lowerBound +1;
+        if(upperBound >= table.length){
+            System.out.println(lowerBound+", "+upperBound+", "+table.length);
+            return table[lowerBound];
+         }
         
         double longitude = lerp(table[lowerBound].longitude(), table[upperBound].longitude(), x/STEP-lowerBound);
         double latitude= lerp(table[lowerBound].latitude(), table[upperBound].latitude(), x/STEP-lowerBound);
         
+        System.out.println(lowerBound+", "+upperBound+", "+table.length);
+        
         GeoPoint p = new GeoPoint(longitude, latitude);
-        return p;    
+        return p;  
+            
     }
     
     /**
