@@ -14,28 +14,28 @@ public class HgtDiscreteElevationModelTest {
     public void testCornerSW()  {
         HgtDiscreteElevationModel h = new HgtDiscreteElevationModel(new File("N46E007.hgt"));
         //System.out.println(7.+" "+46.);
-        h.elevationSample((int)sampleIndex(toRadians(7)), (int)sampleIndex(toRadians(46)));     
+        h.elevationSample(7*3600, 46*3600);     
     }
     
     @Test
     public void testCornerNW() {
         HgtDiscreteElevationModel h = new HgtDiscreteElevationModel(new File("N46E007.hgt"));
         //System.out.println(7.+" "+47.);
-        h.elevationSample((int)sampleIndex(toRadians(7)), (int)sampleIndex(toRadians(47)));
+        h.elevationSample(7*3600, 47*3600);
     }
     
     @Test
     public void testCornerSE() {
         HgtDiscreteElevationModel h = new HgtDiscreteElevationModel(new File("N46E007.hgt"));
         //System.out.println(8.+" "+46.);
-        h.elevationSample((int)sampleIndex(toRadians(8)), (int)sampleIndex(toRadians(46)));
+        h.elevationSample(8*3600, 46*3600);
     }
 
     @Test
     public void testCornerNE() {
         HgtDiscreteElevationModel h = new HgtDiscreteElevationModel(new File("N46E007.hgt"));
       //  System.out.println(8.+" "+47.);
-        h.elevationSample((int)sampleIndex(toRadians(8)), (int)sampleIndex(toRadians(47))); 
+        h.elevationSample(8*3600, 47*3600); 
     }
     
 }
