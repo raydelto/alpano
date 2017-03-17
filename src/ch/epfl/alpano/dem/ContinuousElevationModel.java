@@ -84,12 +84,24 @@ public final class ContinuousElevationModel {
      * @return the elevation at index(x, y) if contained in the dem, 0 otherwise
      */
     private double checkSample(int x, int y){
-        try{
-            return dem.elevationSample(x, y);
-                        
-        }catch(IllegalArgumentException e){
+      
+      /*  
+       try{
+           return dem.elevationSample(x, y);
+                      
+        }catch(Exception e){
             return 0;
         }
+        */
+        if(dem.extent().contains(x, y)){
+            return dem.elevationSample(x, y);
+        }
+        else{
+            return 0;
+        }
+        
+        
+        
     }
 
 }
