@@ -36,7 +36,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel
      * @throws IOException if there are problems with the source file
      * @throws IllegalArgumentException if there are problems with the source file
      */
-    public HgtDiscreteElevationModel(File file) throws FileNotFoundException, IOException
+    public HgtDiscreteElevationModel(File file) 
     {
         try{
             Preconditions.checkArgument(this.checkName(file));
