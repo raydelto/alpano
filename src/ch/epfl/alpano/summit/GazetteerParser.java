@@ -44,8 +44,8 @@ public class GazetteerParser {
                 //System.out.println(elevation);
                 for(int i=0;i<3;i++)
                 token.nextToken();
-                name=token.nextToken("/n").trim();
-              //System.out.println(name);
+                name=token.nextToken("/n").trim();//pyt per rastin e funit
+              System.out.println(name);
                
                 // System.out.println("in---------------------in");
                 // System.out.println(extractDegrees(longitude)+","+ extractDegrees(latitude));
@@ -81,7 +81,7 @@ public class GazetteerParser {
         try
         {
             deg=Integer.parseInt(hms[0]);
-            System.out.println(deg);
+            //System.out.println(deg);
             if(direction.equals("long")&&!(deg>-180&&deg<180))throw exception;
             if(direction.equals("lat")&&!(deg>-90&&deg<90))throw exception;
            
