@@ -18,7 +18,7 @@ import ch.epfl.alpano.dem.DiscreteElevationModel;
 public class GazetteerParser {
     public GazetteerParser(){};//hiqe public!!!
     //public?
-     public List<Summit> readSummitsFrom(File file) throws IOException
+     public static List<Summit> readSummitsFrom(File file) throws IOException
     {
         ArrayList<Summit> tab=new ArrayList<Summit>();
         String name,longitude,latitude,elevation;
@@ -61,7 +61,7 @@ public class GazetteerParser {
         return Collections.unmodifiableList(tab);
         
     }
-    private double extractDegrees(String degree,String direction) throws IOException
+    private static double extractDegrees(String degree,String direction) throws IOException
     {
         //System.out.println("-------------------------");
         IOException exception=new IOException();
@@ -98,10 +98,11 @@ public class GazetteerParser {
            throw exception;
         }
         //System.out.println("out------------------out");
-        return indexToRadians(((deg*60)+min)*60+sec);
+        if(hms[0].charAt(0)=='-') return -indexToRadians (((Math.abs(deg)*60)+min)*60+sec);
+        return indexToRadians (((Math.abs(deg)*60)+min)*60+sec);
     }
     
-    private double indexToRadians(double index)
+    private static double indexToRadians(double index)
     {
         return index*(1/DiscreteElevationModel.SAMPLES_PER_RADIAN);
     }

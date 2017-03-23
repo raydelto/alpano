@@ -24,8 +24,8 @@ public final class Summit {
     }
     @Override
     public String toString() {
-        
-        return name.toUpperCase()+" ("+position.longitude()+","+position.latitude()+") "+elevation;
+        System.out.println(name.toUpperCase()+" ("+position.longitude()+","+position.latitude()+") "+elevation);
+        return name.toUpperCase()+" ("+Math.toDegrees(position.longitude())+","+Math.toDegrees(position.latitude())+") "+elevation;
     }
 
 }
