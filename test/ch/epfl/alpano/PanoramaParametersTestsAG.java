@@ -122,11 +122,11 @@ public class PanoramaParametersTestsAG {
     @Test
     public void isValidWorks(){
         PanoramaParameters p = new PanoramaParameters(new GeoPoint(PI, PI/2), 3600, PI, PI/3, 30000, 2500, 800);
-        assertTrue(p.isValid(2400, 50));
-        assertTrue(p.isValid(2499, 799));
-        assertTrue(p.isValid(0, 0));
-        assertFalse(p.isValid(2500, 40));
-        assertFalse(p.isValid(400, 800));
+        assertTrue(p.isValidSampleIndex(2400, 50));
+        assertTrue(p.isValidSampleIndex(2499, 799));
+        assertTrue(p.isValidSampleIndex(0, 0));
+        assertFalse(p.isValidSampleIndex(2500, 40));
+        assertFalse(p.isValidSampleIndex(400, 800));
     }
 
 }

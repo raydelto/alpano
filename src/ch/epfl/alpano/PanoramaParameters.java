@@ -18,10 +18,11 @@ public final class PanoramaParameters {
     
     public PanoramaParameters(GeoPoint observerPosition, int observerElevation, double centerAzimuth, double horizontalFieldOfView, int maxDistance, int width, int height){
         
+        OBSERVERPOSITION = requireNonNull(observerPosition);
         Preconditions.checkArgument(Azimuth.isCanonical(centerAzimuth));
         Preconditions.checkArgument(horizontalFieldOfView>0 && horizontalFieldOfView <= PI2);
         Preconditions.checkArgument(maxDistance>0 && width >0 && height >0);
-        OBSERVERPOSITION = requireNonNull(observerPosition);
+        
         OBSERVERELEVATION = observerElevation;
         CENTERAZIMUTH = centerAzimuth;
         HORIZONTALFIELDOFVIEW = horizontalFieldOfView;
@@ -66,11 +67,11 @@ public final class PanoramaParameters {
     }
     
     private double middleHeight(){
-        return (HEIGHT-1)/2;
+        return (HEIGHT-1)/2.0;
     }
     
     private double middleWidth(){
-        return (WIDTH-1)/2;
+        return (WIDTH-1)/2.0;
     }
     
     public double azimuthForX(double x){
@@ -96,32 +97,28 @@ public final class PanoramaParameters {
     public double altitudeForY(double y){
         Preconditions.checkArgument(y>=0 && y<=HEIGHT-1);
         if(y==middleHeight()){
-            return OBSERVERELEVATION;
+            return 0;
         }
-        else{
-            double beta = verticalFieldOfView()-DELTA*y;
-            double metersPerRad = 2*OBSERVERELEVATION/(verticalFieldOfView());
-            return beta*metersPerRad;
+        else{            
+            return verticalFieldOfView()/2.0-y*DELTA;
         }
        
     }
     
     public double yForAltitude(double a){
         
-        Preconditions.checkArgument(a>=OBSERVERELEVATION-DELTA*middleHeight() && a <= OBSERVERELEVATION+DELTA*middleHeight());
-        if(a == OBSERVERELEVATION){
+        Preconditions.checkArgument(a>=-verticalFieldOfView()/2 && a <= verticalFieldOfView()/2);
+        if(a == 0){
             return middleHeight();
         }
         else{
-            double radPerMeter = verticalFieldOfView()/2*OBSERVERELEVATION;
-            double beta = verticalFieldOfView()-radPerMeter*a;
+            return (verticalFieldOfView()/2.0 - a)/DELTA;
             
-            return beta/DELTA;
         }
 
     }
     
-    boolean isValid(int x, int y){
+    boolean isValidSampleIndex(int x, int y){
         if(x>=0 && x<=WIDTH-1 && y >=0 && y<=HEIGHT-1){
             return true;
         }
@@ -133,6 +130,6 @@ public final class PanoramaParameters {
     
     int linearSampleIndex(int x, int y){
         
-        return (x+1)*(y+1)-1;
+        return WIDTH*y + x;
     }
 }
