@@ -28,17 +28,17 @@ public class SummitTest {
 	
 	@Test
 	public void testNameAccessor() {
-		assertEquals("EIGER", eiger.getName());
+		assertEquals("EIGER", eiger.name());
 	}
 	
 	@Test
 	public void testElevationAccessor() {
-		assertEquals(3970, eiger.getElevation());
+		assertEquals(3970, eiger.elevation());
 	}
 	
 	@Test
 	public void testPositionAccessor() {
-		assertEquals(eigerPosition, eiger.getPosition());
+		assertEquals(eigerPosition, eiger.position());
 	}
 	
 	@Test

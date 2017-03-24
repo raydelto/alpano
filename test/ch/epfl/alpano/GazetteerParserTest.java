@@ -99,8 +99,8 @@ public class GazetteerParserTest {
 	}
 
 	private void compareTwoSummits(Summit s1, Summit s2) {
-		assertEquals(s1.getName(), s2.getName());
-		assertEquals(s1.getElevation(), s2.getElevation());
-		assertEquals(s1.getPosition().toString(), s2.getPosition().toString());
+		assertEquals(s1.name(), s2.name());
+		assertEquals(s1.elevation(), s2.elevation());
+		assertEquals(s1.position().toString(), s2.position().toString());
 	}
 }

@@ -101,7 +101,7 @@ public class GazetteerTest {
      a.readSummitsFrom(new File("testAlps14.txt"));
 
     }
-    @Test(expected = IOException.class)
+    @Test()
     public void noLineBreak() throws IOException {
      GazetteerParser a=new GazetteerParser();
      a.readSummitsFrom(new File("testAlps15.txt"));

@@ -4,7 +4,6 @@ package ch.epfl.alpano.summit;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -16,64 +15,74 @@ import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.dem.DiscreteElevationModel;
 
 public class GazetteerParser {
-    public GazetteerParser(){};//hiqe public!!!
-    //public?
+    private GazetteerParser(){};
+   
+    /**
+     * Extracts the information from a file to a list of Summits
+     * @param file the source file
+     * @return a list with all the information extracted from the file
+     * @throws IOException if there are problems with the file, or if it is not formatted the correct way
+     */
      public static List<Summit> readSummitsFrom(File file) throws IOException
     {
         ArrayList<Summit> tab=new ArrayList<Summit>();
         String name,longitude,latitude,elevation;
         BufferedReader br;
         try{
-           // br=new BufferedReader(new FileReader(file));
+           
             br=new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         }catch (Exception e) {
            throw new IOException();
         }
         if(file.length()==0)throw new IOException();
-        String line= br.readLine();//IOException automatically throwed
+        String line= br.readLine();
         while(line!=null)
         {
             StringTokenizer token =new StringTokenizer(line);
             
             try{
                 longitude=token.nextToken();
-                // System.out.println(longitude);
+                
                 latitude=token.nextToken();
-                //System.out.println(latitude);
+                
                  elevation=token.nextToken();
-                //System.out.println(elevation);
+               
                 for(int i=0;i<3;i++)
                 token.nextToken();
-                name=token.nextToken("/n").trim();//pyt per rastin e funit
-              System.out.println(name);
-               
-                // System.out.println("in---------------------in");
-                // System.out.println(extractDegrees(longitude)+","+ extractDegrees(latitude));
+                name=token.nextToken("/n").trim();
+             
                 tab.add(new Summit(name, new GeoPoint(extractDegrees(longitude,"long"), extractDegrees(latitude,"lat")), Integer.parseInt(elevation)));
             }
             catch (Exception e) {
-                //System.out.println(e.getClass());
+               
               throw new IOException();
             }   
-            //duhet trajtu rasti nqs ka akoma gjona mas name te .txt file?
+           
             line=br.readLine();
         }
         return Collections.unmodifiableList(tab);
         
     }
+     
+     /**
+      * extracts the information from a deg:min:sec format and returns the result in degrees
+      * @param degree the raw deg:min:sec format string
+      * @param direction 'long' for longitude and 'lat' for latitude
+      * @return the result in degrees
+      * @throws IOException if the string is not formatted the right way
+      */
     private static double extractDegrees(String degree,String direction) throws IOException
     {
-        //System.out.println("-------------------------");
+       
         IOException exception=new IOException();
       
-       // if (degree.length()!=8) throw exception;
-       // if(degree.charAt(2)!=':'||degree.charAt(5)!=':')throw exception;
+      
         int counter = 0;
         for( int i=0; i<degree.length(); i++ ) {
             if( degree.charAt(i) == ':' ) 
                 counter++;
             } 
-       // System.out.println(counter);
+     
         if(counter!=2)throw exception;
         
         String[] hms = degree.split(":");
@@ -81,27 +90,30 @@ public class GazetteerParser {
         try
         {
             deg=Integer.parseInt(hms[0]);
-            //System.out.println(deg);
+         
             if(direction.equals("long")&&!(deg>-180&&deg<180))throw exception;
             if(direction.equals("lat")&&!(deg>-90&&deg<90))throw exception;
            
             min=Integer.parseInt(hms[1]);
             if(!(min>=0&&min<=59))throw exception;
-            // System.out.println(min);
+         
             sec=Integer.parseInt(hms[2]);
             if(!(sec>=0&&sec<=59))throw exception;
-            
-            // System.out.println(sec);
+
             
         }
         catch (Exception e) {
            throw exception;
         }
-        //System.out.println("out------------------out");
+
         if(hms[0].charAt(0)=='-') return -indexToRadians (((Math.abs(deg)*60)+min)*60+sec);
         return indexToRadians (((Math.abs(deg)*60)+min)*60+sec);
     }
-    
+    /**
+     *  converts a index to radians
+     * @param index the index to be converted
+     * @return the converted index to radians
+     */
     private static double indexToRadians(double index)
     {
         return index*(1/DiscreteElevationModel.SAMPLES_PER_RADIAN);

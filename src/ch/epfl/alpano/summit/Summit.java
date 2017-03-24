@@ -13,19 +13,19 @@ public final class Summit {
         this.elevation=elevation;
         
     }
-    public int getElevation() {
+    public int elevation() {
         return elevation;
     }
-    public String getName() {
+    public String name() {
         return name;
     }
-    public GeoPoint getPosition() {
+    public GeoPoint position() {
         return position;
     }
     @Override
     public String toString() {
-        System.out.println(name.toUpperCase()+" ("+position.longitude()+","+position.latitude()+") "+elevation);
-        return name.toUpperCase()+" ("+Math.toDegrees(position.longitude())+","+Math.toDegrees(position.latitude())+") "+elevation;
+        System.out.println(name.toUpperCase()+" ("+Math.toDegrees(position.longitude())+","+Math.toDegrees(position.latitude())+") "+elevation);
+        return name.toUpperCase()+" "+position.toString()+" "+elevation;
     }
 
 }
