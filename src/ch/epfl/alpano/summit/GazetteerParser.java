@@ -28,8 +28,8 @@ public class GazetteerParser {
         ArrayList<Summit> tab=new ArrayList<Summit>();
         String name,longitude,latitude,elevation;
         BufferedReader br;
-        try{
-           
+        try
+        {
             br=new BufferedReader(new InputStreamReader(new FileInputStream(file)));
         }catch (Exception e) {
            throw new IOException();
@@ -44,7 +44,7 @@ public class GazetteerParser {
                 longitude=token.nextToken();
                 
                 latitude=token.nextToken();
-                
+                System.out.println(latitude);
                  elevation=token.nextToken();
                
                 for(int i=0;i<3;i++)
@@ -60,6 +60,7 @@ public class GazetteerParser {
            
             line=br.readLine();
         }
+        br.close();
         return Collections.unmodifiableList(tab);
         
     }
@@ -99,6 +100,12 @@ public class GazetteerParser {
          
             sec=Integer.parseInt(hms[2]);
             if(!(sec>=0&&sec<=59))throw exception;
+            
+            if(direction.equals("lat")){
+            System.out.println("g"+deg);
+            System.out.println("g"+min);
+            System.out.println("g"+sec);}
+            
 
             
         }
@@ -106,17 +113,9 @@ public class GazetteerParser {
            throw exception;
         }
 
-        if(hms[0].charAt(0)=='-') return -indexToRadians (((Math.abs(deg)*60)+min)*60+sec);
-        return indexToRadians (((Math.abs(deg)*60)+min)*60+sec);
+        if(hms[0].trim().charAt(0)=='-') return -(((deg*60)+min)*60+sec)/DiscreteElevationModel.SAMPLES_PER_RADIAN;
+        return  (((deg)*60+min)*60+sec)/DiscreteElevationModel.SAMPLES_PER_RADIAN;
     }
-    /**
-     *  converts a index to radians
-     * @param index the index to be converted
-     * @return the converted index to radians
-     */
-    private static double indexToRadians(double index)
-    {
-        return index*(1/DiscreteElevationModel.SAMPLES_PER_RADIAN);
-    }
+   
 
 }

@@ -84,6 +84,7 @@ public class GazetteerParserTestProf {
                     expected.position().longitude(),
                     actual.position().longitude(),
                     toRadians(1d / 3600d));
+           System.out.println( expected.name());
             assertEquals(
                     expected.position().latitude(),
                     actual.position().latitude(),
@@ -101,6 +102,9 @@ public class GazetteerParserTestProf {
     private static GeoPoint hmsPoint(
             int hLon, int mLon, int sLon,
             int hLat, int mLat, int sLat) {
+        System.out.println(hLat);
+        System.out.println(mLat);
+        System.out.println(sLat);
         return new GeoPoint(hmsToRad(hLon, mLon, sLon), hmsToRad(hLat, mLat, sLat));
     }
 
