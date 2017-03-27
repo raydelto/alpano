@@ -14,13 +14,11 @@ public final class PanoramaComputer {
     }
     public Panorama computePanorama(PanoramaParameters parameters)
     {
-        double tempx=0;
-        double heighttemp=parameters.height();
-        double raySlopeTemp=parameters.altitudeForY(parameters.height()-1);
-        DoubleUnaryOperator rayTemp = (xInMeters) -> {return parameters.observerElevation()+xInMeters*raySlopeTemp;};
-        heighttemp=rayTemp.applyAsDouble(tempx);
-        double disttoGround=rayToGroundDistance(ep, rayTemp, raySlopeTemp).applyAsDouble(tempx);
-        Math2.firstIntervalContainingRoot(rayToGroundDistance(ep, rayTemp, raySlopeTemp), 0, parameters.maxDistance(), 64);
+          
+        //kontrollo comment te firstUntervalContainingRoot
+        double lowerBound=Math2.firstIntervalContainingRoot(rayToGroundDistance(ep, parameters.observerElevation(), parameters.altitudeForY(parameters.height()-1)), 0, parameters.maxDistance(), 64);
+        if(lowerBound==Double.POSITIVE_INFINITY);//what should we do?;
+       double intersectionWithGroundx= Math2.improveRoot(rayToGroundDistance(ep, parameters.observerElevation(), parameters.altitudeForY(parameters.height()-1)), lowerBound, lowerBound+64, 4);
         return new Panorama.Builder(parameters).build();
     }
     public static DoubleUnaryOperator rayToGroundDistance(ElevationProfile profile, double ray0, double raySlope)

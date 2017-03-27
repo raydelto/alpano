@@ -28,9 +28,9 @@ public class GazetteerParser {
         ArrayList<Summit> tab=new ArrayList<Summit>();
         String name,longitude,latitude,elevation;
         BufferedReader br;
-        try
+        try()
         {
-            br=new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+            br=new BufferedReader(new InputStreamReader(new FileInputStream(file)));//change it to try with resource
         }catch (Exception e) {
            throw new IOException();
         }
