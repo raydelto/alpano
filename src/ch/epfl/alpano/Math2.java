@@ -81,40 +81,16 @@ public interface Math2 {
     * @param dX the distance used in each step of calculation
     * @return the lower bound once the distance between the two bounds is reduced to less than dx, and Positive infinity if there no root is found
     */
-  /* static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){
-       
-       if(isSameSign(f.applyAsDouble(minX), f.applyAsDouble(maxX))){
+ static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){         double low=minX;
+           double up=low+dX;
+           do{
+           if(Math.signum(f.applyAsDouble(low))+Math.signum(f.applyAsDouble(up))==0||Math.signum(f.applyAsDouble(low))*Math.signum(f.applyAsDouble(up))==0)return low;
+           low+=dX;
+           up+=dX;
+           }while(up<=maxX);
            return Double.POSITIVE_INFINITY;
-       }
        
-       else{
-           double currentMin = minX;
-           double currentMax = minX+dX;
-           
-           while(isSameSign(f.applyAsDouble(currentMin), f.applyAsDouble(currentMax))){
-               currentMin = currentMax;
-               currentMax = currentMax+dX;
-               
-           }
-           
-           return currentMin;
-       }
-         
-     }*/
-   
-       static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){
-       
-       double x1=minX;
-       double x2=minX+dX;
-       do{
-           if(f.applyAsDouble(x1)*f.applyAsDouble(x2)<0){
-               return x1; 
-           }
-           x1+=dX;
-           x2+=dX;
-       }while(x2<=maxX);
-       
-       return Double.POSITIVE_INFINITY;
+        
    }
    
      /**
