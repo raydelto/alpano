@@ -81,7 +81,7 @@ public interface Math2 {
     * @param dX the distance used in each step of calculation
     * @return the lower bound once the distance between the two bounds is reduced to less than dx, and Positive infinity if there no root is found
     */
-   static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){
+  /* static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){
        
        if(isSameSign(f.applyAsDouble(minX), f.applyAsDouble(maxX))){
            return Double.POSITIVE_INFINITY;
@@ -100,7 +100,22 @@ public interface Math2 {
            return currentMin;
        }
          
-     }
+     }*/
+   
+       static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){
+       
+       double x1=minX;
+       double x2=minX+dX;
+       do{
+           if(f.applyAsDouble(x1)*f.applyAsDouble(x2)<0){
+               return x1; 
+           }
+           x1+=dX;
+           x2+=dX;
+       }while(x2<=maxX);
+       
+       return Double.POSITIVE_INFINITY;
+   }
    
      /**
       * Check if two double have the same sign
@@ -126,51 +141,47 @@ public interface Math2 {
     * @param epsilon maximal distance desired between the two bounds
     * @return the lower bound once the distance between the two bounds is reduced to less than epsilon
     */
-   static double improveRoot(DoubleUnaryOperator f, double x1, double x2, double epsilon){
-
-       //if the function applied in any of the initial bounds is already zero, then that bound is returned (the first one if they both are) 
-       if(f.applyAsDouble(x1)==0){
-           return x1;
-       }
-       if(f.applyAsDouble(x2)==0){
-           return x2;
-       }
-       
-     //checks if the function in the two points has opposite signs
-       Preconditions.checkArgument(!isSameSign(f.applyAsDouble(x1),(f.applyAsDouble(x2))));
-       
-       //the lower bound is assigned to a1, the other to a2
-       double a1,a2;
-       if(x1<=x2){
-         a1=x1;
-         a2=x2;
+    static double improveRoot(DoubleUnaryOperator f, double x1, double x2, double epsilon){
+        
+        Preconditions.checkArgument(!isSameSign(f.applyAsDouble(x1), f.applyAsDouble(x2)));  
+        
+        if((Math.abs(x1 - x2)<= epsilon )|| (x1 == x2)){
+            
+            return x1;
         }
-       else{
-         a1=x2;
-         a2=x1;
+        
+        else{
+            
+            double currentMin = x1;
+            double currentMax = x2;
+            double xM;
+            
+            do{
+                
+                xM = (currentMin + currentMax)/2;
+                if(f.applyAsDouble(xM)==0){
+                    return xM;
+                   
+                }
+                
+                else if(!isSameSign(f.applyAsDouble(xM), f.applyAsDouble(currentMax))){
+                    
+                    currentMin = xM;
+                    
+                }
+                    
+                else{
+                    
+                    currentMax = xM;
+                }                
+                
+            }while(Math.abs(currentMax-currentMin)> epsilon);
+            
+            return currentMin;
+            
         }
-
-       while (true)
-       {
-           if((a2-a1)<=epsilon){
-             //if the distance between the two bounds becomes less than epsilon, then the temporary lower bopund is returned
-               return a1;
-           }
-           
-           double xTemp=((a1+a2)/2);//in each loop a temporary bound between the actual bounds is created
-           double average=f.applyAsDouble(xTemp);
-           
-           //Check if the function between the two bounds has a different sign
-           //If so, assign it to the lower bound
-           if(!isSameSign(f.applyAsDouble(a1), f.applyAsDouble(average))){
-               a2=xTemp;
-           }
-              
-           else {
-               a1=xTemp;
-           }
-           
-       }
+        
+     
 
    }
 

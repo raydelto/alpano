@@ -23,12 +23,12 @@ public final class Panorama {
         return parameters;
     }
 
-    private float distanceAt(int x, int y) {
+    public float distanceAt(int x, int y) {
         checkIndex(x, y);
         return distance[parameters.linearSampleIndex(x, y)];
     }
 
-    private float distanceAt(int x, int y, int d) {
+    public float distanceAt(int x, int y, int d) {
         if (!(parameters.isValidSampleIndex(x, y))) {
             return d;
         } else {
@@ -36,22 +36,22 @@ public final class Panorama {
         }
     }
 
-    private float longitudeAt(int x, int y) {
+    public float longitudeAt(int x, int y) {
         checkIndex(x, y);
         return longitude[parameters.linearSampleIndex(x, y)];
     }
 
-    private float latitudeAt(int x, int y) {
+    public float latitudeAt(int x, int y) {
         checkIndex(x, y);
         return latitude[parameters.linearSampleIndex(x, y)];
     }
 
-    private float elevationAt(int x, int y) {
+    public float elevationAt(int x, int y) {
         checkIndex(x, y);
         return elevation[parameters.linearSampleIndex(x, y)];
     }
 
-    private float slopeAt(int x, int y) {
+    public float slopeAt(int x, int y) {
         checkIndex(x, y);
         return slope[parameters.linearSampleIndex(x, y)];
     }
@@ -69,6 +69,12 @@ public final class Panorama {
 
         public Builder(PanoramaParameters parameters) {
             this.parameters = Objects.requireNonNull(parameters);
+            int size = parameters.height()*parameters.width();
+            distance = new float[size];
+            longitude = new float[size];
+            latitude = new float[size];
+            elevation = new float[size];
+            slope = new float[size];
             Arrays.fill(distance, Float.POSITIVE_INFINITY);
         }
 

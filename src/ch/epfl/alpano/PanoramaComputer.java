@@ -32,24 +32,42 @@ public final class PanoramaComputer {
           currentAzimuth = parameters.azimuthForX(posX);
           ElevationProfile ep = new ElevationProfile(dem, parameters.observerPosition(), currentAzimuth, parameters.maxDistance());
           double intersectionWithGroundx =0;
-          int posY =0; 
-          while(intersectionWithGroundx <=parameters.maxDistance()){
+          double intersectionWithGroundTemp=0;
+          int posY =parameters.height()-1; 
+          
+          while(posY >=0){
               
+              DoubleUnaryOperator op = rayToGroundDistance(ep, parameters.observerElevation(), Math.tan(parameters.altitudeForY(posY)));
+              double lowerBound=Math2.firstIntervalContainingRoot(op, intersectionWithGroundTemp, parameters.maxDistance(), 64);
               
-              double lowerBound=Math2.firstIntervalContainingRoot(rayToGroundDistance(ep, parameters.observerElevation(), parameters.altitudeForY(parameters.height()-1)), 0, parameters.maxDistance(), 64);
               
               if(lowerBound==Double.POSITIVE_INFINITY){
-                  intersectionWithGroundx = lowerBound;
+                 break;
               }
               
               else{
-                  intersectionWithGroundx= Math2.improveRoot(rayToGroundDistance(ep, parameters.observerElevation(), parameters.altitudeForY(parameters.height()-1)), lowerBound, lowerBound+64, 4);
-                  builder.setDistanceAt(posX, posY, (float)intersectionWithGroundx);
+                  intersectionWithGroundx= Math2.improveRoot(op, lowerBound, lowerBound+64, 4);
+                 
+                  intersectionWithGroundTemp=intersectionWithGroundx;
+                
+                  double distance = Math.sqrt((sq(intersectionWithGroundx)+sq((parameters.observerElevation()-ep.elevationAt(intersectionWithGroundx)))));
+                  
+                  
+                  builder.setDistanceAt(posX, posY, (float)(distance));
+                  //System.out.println("posX : "+posX+", posY : "+posY+", distance : "+(float)(Math.cos(parameters.altitudeForY(posY))*intersectionWithGroundx));
                   builder.setLongitudeAt(posX, posY, (float)ep.positionAt(intersectionWithGroundx).longitude());
+                  //System.out.println(" Longitude : "+(float)ep.positionAt(intersectionWithGroundx).longitude());
                   builder.setLatitudeAt(posX, posY, (float)ep.positionAt(intersectionWithGroundx).latitude());
-                  builder.setElevationAt(posX, posY, (float)(ep.elevationAt(intersectionWithGroundx) - d(intersectionWithGroundx)));
+                  //System.out.println(" Latitude : "+(float)ep.positionAt(intersectionWithGroundx).latitude());
+                  builder.setElevationAt(posX, posY, (float)(ep.elevationAt(intersectionWithGroundx)));
+                  //System.out.println(" Elevation : "+(float)(ep.elevationAt(intersectionWithGroundx)));
                   builder.setSlopeAt(posX, posY, (float)ep.slopeAt(intersectionWithGroundx));
+                  //System.out.println(" Slope : " +(float)ep.slopeAt(intersectionWithGroundx));
               }
+              
+             
+              --posY;          
+              
           }
    
           
@@ -67,7 +85,7 @@ public final class PanoramaComputer {
     }
     
     private static double d(double x){
-        return ((1-K)/2*EARTH_RADIUS)*sq(x);
+        return ((1-K)/(2*EARTH_RADIUS))*sq(x);
     }
 
 }
