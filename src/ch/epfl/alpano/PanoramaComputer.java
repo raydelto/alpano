@@ -50,7 +50,7 @@ public final class PanoramaComputer {
                  
                   intersectionWithGroundTemp=intersectionWithGroundx;
                 
-                  double distance = Math.sqrt((sq(intersectionWithGroundx)+sq((parameters.observerElevation()-ep.elevationAt(intersectionWithGroundx)))));
+                  double distance = intersectionWithGroundx/Math.cos(parameters.altitudeForY(posY));
                   
                   
                   builder.setDistanceAt(posX, posY, (float)(distance));
