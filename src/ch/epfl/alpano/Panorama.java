@@ -28,7 +28,7 @@ public final class Panorama {
         return distance[parameters.linearSampleIndex(x, y)];
     }
 
-    public float distanceAt(int x, int y, int d) {
+    public float distanceAt(int x, int y, float d) {
         if (!(parameters.isValidSampleIndex(x, y))) {
             return d;
         } else {

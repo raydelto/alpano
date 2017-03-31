@@ -19,11 +19,11 @@ import ch.epfl.alpano.Preconditions;
 
 public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
     
+    static final int SAMPLES_PER_DEGREE_PLUS_ONE = 3601;
+    
     private final Interval2D ext;
     private final int latitudeIndex, longitudeIndex;
-    private final FileInputStream stream;
     private ShortBuffer buffer;
-    static final int SAMPLES_PER_DEGREE_PLUS_ONE = 3601;
 
     /**
      * Creates a HgtDiscreteElevationModel from the source file
@@ -38,14 +38,13 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
      *             if there are problems with the source file
      */
     public HgtDiscreteElevationModel(File file) {
-        try {
+        try (FileInputStream stream = new FileInputStream(file)) {
             Preconditions.checkArgument(this.checkName(file));
 
             long l = file.length();
-            stream = new FileInputStream(file);
             buffer = stream.getChannel().map(MapMode.READ_ONLY, 0, l).asShortBuffer();
-        } catch (Exception e) {
-            throw new IllegalArgumentException();
+        } catch (SecurityException | IOException e) {
+            throw new IllegalArgumentException("Invalid file provided.");
         }
         
          String name = file.getName();
@@ -119,9 +118,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 
     @Override
     public void close(){
-
         buffer = null;
-    
     }
 
     @Override
