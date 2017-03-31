@@ -1,3 +1,10 @@
+/**
+ * Panorama
+ * 
+ * @author Andrea Scalisi (259183)
+ * @author Gerald Sula (257396)
+ */
+
 package ch.epfl.alpano;
 
 import java.util.Arrays;
@@ -58,7 +65,7 @@ public final class Panorama {
 
     private void checkIndex(int x, int y) {
         if (!(parameters.isValidSampleIndex(x, y))) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("Invalid index");
         }
     }
 

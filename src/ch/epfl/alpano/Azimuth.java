@@ -45,7 +45,7 @@ public interface Azimuth {
      * @return the converted azimuth in mathematical orientation
      */
     public static double toMath(double azimuth) {
-        Preconditions.checkArgument(isCanonical(azimuth));
+        Preconditions.checkArgument(isCanonical(azimuth), "Azimuth must be canonical");
         if (azimuth == 0){
             return azimuth;
         }
@@ -66,9 +66,8 @@ public interface Azimuth {
      */
     public static double fromMath(double azimuth) {
 
-        Preconditions.checkArgument(isCanonical(azimuth));
+        Preconditions.checkArgument(isCanonical(azimuth), "Azimuth must be canonical");
         if (azimuth == 0){
-            
             return azimuth;
         }
         
@@ -89,7 +88,7 @@ public interface Azimuth {
      */
     public static String toOctantString(double azimuth, String n, String e, String s, String w) {
        
-        Preconditions.checkArgument(isCanonical(azimuth));
+        Preconditions.checkArgument(isCanonical(azimuth), "Azimuth must be canonical");
         String direction = "";
         if ((azimuth >= 0 && azimuth <= 3 * PI / 8) || azimuth >= (13 * PI / 8)) {
             direction += n;
