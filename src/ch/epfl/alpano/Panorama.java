@@ -80,24 +80,28 @@ public final class Panorama {
 
         // qe te gjitha kto dun check if included in bounds?
         public Builder setDistanceAt(int x, int y, float distance) {
+            checkIndex(x, y);
             if (called) throw new IllegalStateException();
             this.distance[parameters.linearSampleIndex(x, y)] = distance;
             return this;
         }
 
         public Builder setLongitudeAt(int x, int y, float longitude) {
+            checkIndex(x, y);
             if (called) throw new IllegalStateException();
             this.longitude[parameters.linearSampleIndex(x, y)] = longitude;
             return this;
         }
 
         public Builder setLatitudeAt(int x, int y, float latitude) {
+            checkIndex(x, y);
             if (called) throw new IllegalStateException();
             this.latitude[parameters.linearSampleIndex(x, y)] = latitude;
             return this;
         }
 
         public Builder setElevationAt(int x, int y, float elevation) {
+            checkIndex(x, y);
 
             if (called) throw new IllegalStateException();
             this.elevation[parameters.linearSampleIndex(x, y)] = elevation;
@@ -105,6 +109,7 @@ public final class Panorama {
         }
 
         public Builder setSlopeAt(int x, int y, float slope) {
+            checkIndex(x, y);
 
             if (called) throw new IllegalStateException();
             this.slope[parameters.linearSampleIndex(x, y)] = slope;

@@ -100,21 +100,18 @@ public class GazetteerParser {
          
             sec=Integer.parseInt(hms[2]);
             if(!(sec>=0&&sec<=59))throw exception;
-            
-            if(direction.equals("lat")){
-            System.out.println("g"+deg);
-            System.out.println("g"+min);
-            System.out.println("g"+sec);}
-            
-
-            
+             
         }
         catch (Exception e) {
            throw exception;
         }
 
-        if(hms[0].trim().charAt(0)=='-') return -(((deg*60)+min)*60+sec)/DiscreteElevationModel.SAMPLES_PER_RADIAN;
+        if(hms[0].trim().charAt(0)=='-') return -Math.toRadians((((deg*60)+min)*60+sec)/3600d);
+        return  Math.toRadians((((deg*60)+min)*60+sec)/3600d);
+        /**
+         *  if(hms[0].trim().charAt(0)=='-') return -(((deg*60)+min)*60+sec)/DiscreteElevationModel.SAMPLES_PER_RADIAN;
         return  (((deg)*60+min)*60+sec)/DiscreteElevationModel.SAMPLES_PER_RADIAN;
+         */
     }
    
 

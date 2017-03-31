@@ -81,16 +81,18 @@ public interface Math2 {
     * @param dX the distance used in each step of calculation
     * @return the lower bound once the distance between the two bounds is reduced to less than dx, and Positive infinity if there no root is found
     */
- static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){         double low=minX;
-           double up=low+dX;
-           do{
-           if(Math.signum(f.applyAsDouble(low))+Math.signum(f.applyAsDouble(up))==0||Math.signum(f.applyAsDouble(low))*Math.signum(f.applyAsDouble(up))==0)return low;
-           low+=dX;
-           up+=dX;
-           }while(up<=maxX);
-           return Double.POSITIVE_INFINITY;
-       
-        
+ static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){        
+        double low = minX;
+        double up = low + dX;
+        do {
+            if (Math.signum(f.applyAsDouble(low)) + Math.signum(f.applyAsDouble(up)) == 0
+                    || Math.signum(f.applyAsDouble(low)) * Math.signum(f.applyAsDouble(up)) == 0)
+                return low;
+            low += dX;
+            up += dX;
+        } while (up <= maxX);
+        return Double.POSITIVE_INFINITY;
+
    }
    
      /**
