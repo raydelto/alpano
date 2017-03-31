@@ -44,8 +44,7 @@ public class GazetteerParser {
                 longitude=token.nextToken();
                 
                 latitude=token.nextToken();
-                System.out.println(latitude);
-                 elevation=token.nextToken();
+                elevation=token.nextToken();
                
                 for(int i=0;i<3;i++)
                 token.nextToken();

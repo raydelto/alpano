@@ -19,7 +19,7 @@ public final class Panorama {
         this.slope = slope;
     }
 
-    private PanoramaParameters parameters() {
+    public PanoramaParameters parameters() {
         return parameters;
     }
 
