@@ -16,17 +16,15 @@ public final class Summit {
     private int elevation;
     /**
      *  Create a new Summit
-     * @param name the name of the summit (non null)
-     * @param position the position of the summit (non null)
-     * @param elevation the elevation in meters of the summit
+     * @param name, the name of the summit (non null)
+     * @param position, the position of the summit (non null)
+     * @param elevation, the elevation in meters of the summit
      * @throws NullPointerException if name or position are null
      */
-    public Summit(String name, GeoPoint position, int elevation)
-    {
-        this.name=Objects.requireNonNull(name);
-        this.position=Objects.requireNonNull(position);
+    public Summit(String name, GeoPoint position, int elevation){
+        this.name=Objects.requireNonNull(name, "Null name");
+        this.position=Objects.requireNonNull(position, "Null position");
         this.elevation=elevation;
-        
     }
     /**
      * 
@@ -51,6 +49,7 @@ public final class Summit {
     public GeoPoint position() {
         return position;
     }
+    
     @Override
     public String toString() {
         System.out.println(name.toUpperCase()+" ("+Math.toDegrees(position.longitude())+","+Math.toDegrees(position.latitude())+") "+elevation);

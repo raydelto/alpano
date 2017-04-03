@@ -11,9 +11,8 @@ import static java.lang.Math.PI;
 public interface Azimuth {
 
     /**
-     * checks if azimuth is canonical
-     * 
-     * @param azimuth the angle in radians to be checked
+     * Checks if azimuth is canonical
+     * @param azimuth, the angle in radians to be checked
      * @return true if the angle is included between 0 and (excluding)2PI
      */
     public static boolean isCanonical(double azimuth) {
@@ -28,21 +27,18 @@ public interface Azimuth {
     }
 
     /**
-     * canonicalizes azimuth
-     * 
-     * @param azimuth the angle in radians to be canonicalized
-     * @return canonicalizes the angle between 0 and (excluding)2PI
+     * Canonicalizes azimuth
+     * @param azimuth, the angle in radians to be canonicalized
+     * @return canonicalizes the angle between 0 and (excluding) 2PI
      */
     public static double canonicalize(double azimuth) {
         return Math.abs(Math2.floorMod(azimuth, Math2.PI2));
     }
 
     /**
-     * changes the orientation of the azimuth
-     * 
-     * @param azimuth the angle in radians to be converted in mathematical
-     *            orientation
-     * @return the converted azimuth in mathematical orientation
+     * Changes the orientation of the azimuth
+     * @param azimuth, the angle in radians to be converted in mathematical orientation
+     * @return the converted azimuth in mathematical orientation, in radians
      * @throws IllegalArgumentException if the azimuth is not canonical
      */
     public static double toMath(double azimuth) {
@@ -59,11 +55,9 @@ public interface Azimuth {
     }
 
     /**
-     * changes the orientation of the azimuth
-     * 
-     * @param angle the angle in mathematical orientation to be converted in
-     *            reverse orientation
-     * @return the converted azimuth in reverse mathematical orientation
+     * Changes the orientation of the azimuth
+     * @param azimuth, the angle in mathematical orientation to be converted in reverse orientation
+     * @return the converted azimuth in reverse mathematical orientation, in radians
      * @throws IllegalArgumentException if the azimuth is not canonical
      */
     public static double fromMath(double azimuth) {
@@ -80,12 +74,12 @@ public interface Azimuth {
     }
 
     /**
-     * 
-     * @param azimuth the angle
-     * @param n The String for the north direction
-     * @param e The String for the east direction
-     * @param s The String for the south direction
-     * @param w The String for the west direction
+     * Constructs a String that indicates the direction of the azimuth
+     * @param azimuth, the angle
+     * @param n, The String for the north direction
+     * @param e, The String for the east direction
+     * @param s, The String for the south direction
+     * @param w, The String for the west direction
      * @return a String that indicates the direction of the azimuth
      * @throws IllegalArgumentException if the azimuth is not canonical
      */
