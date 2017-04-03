@@ -29,7 +29,7 @@ public class GazetteerParser {
     /**
      * Extracts the information from a file to a list of Summits
      * 
-     * @param file the source file
+     * @param file, the source file
      * @return a list with all the information extracted from the file
      * @throws IOException if there are problems with the file, or if it is not formatted the correct way
      */
@@ -71,8 +71,8 @@ public class GazetteerParser {
     /**
      * extracts the information from a deg:min:sec format and returns the result in degrees
      * 
-     * @param degree the raw deg:min:sec format string
-     * @param direction 'long' for longitude and 'lat' for latitude
+     * @param degree, the raw deg:min:sec format string
+     * @param direction, 'long' for longitude and 'lat' for latitude
      * @return the result in degrees
      * @throws IOException if the string is not formatted the right way
      */
@@ -111,10 +111,9 @@ public class GazetteerParser {
             throw exception;
         }
 
-        if (hms[0].trim().charAt(0) == '-')
+        if (hms[0].trim().charAt(0) == '-'){
             return -Math.toRadians((((deg * 60) + min) * 60 + sec) / 3600d);
+        }
         return Math.toRadians((((deg * 60) + min) * 60 + sec) / 3600d);
-
     }
-
 }

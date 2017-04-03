@@ -30,8 +30,8 @@ public interface DiscreteElevationModel extends AutoCloseable{
     abstract Interval2D extent();
     /**
      *  Calculate the sample of the index
-     * @param x first coordinate of the index
-     * @param y second coordinate of the index
+     * @param x, first coordinate of the index
+     * @param y, second coordinate of the index
      * @return the elevation sample in meters
      * @throws IllegalArgumentException if the index is not included in the MNT
      */
@@ -39,13 +39,13 @@ public interface DiscreteElevationModel extends AutoCloseable{
     
     /**
      * Creates an MNT, that represents the union of two DiscreteElevationModels
-     * @param that the second DiscreteElevationModel used in the union
+     * @param that, the second DiscreteElevationModel used in the union
      * @return an MNT that represents the union of two DiscreteElevationModels
      * @throws IllegalArgumentException if the two extents are not unionable
      */
     default DiscreteElevationModel union(DiscreteElevationModel that){
         if(!(this.extent().isUnionableWith(that.extent()))){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("The two models are not unionable");
         }
         return new CompositeDiscreteElevationModel(this, that);
                

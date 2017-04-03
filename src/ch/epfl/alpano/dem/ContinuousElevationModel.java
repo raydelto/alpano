@@ -26,7 +26,7 @@ public final class ContinuousElevationModel {
     
     /**
      * Constructs a new continuous dem based on a discrete dem
-     * @param dem the dem
+     * @param dem, the dem
      */
     public ContinuousElevationModel(DiscreteElevationModel dem){
         
@@ -54,14 +54,12 @@ public final class ContinuousElevationModel {
      * @return the slope at the geopoint p, in radians
      */
     public double slopeAt(GeoPoint p){
-        
         double indexLongitude = DiscreteElevationModel.sampleIndex(p.longitude());
         double indexLatitude = DiscreteElevationModel.sampleIndex(p.latitude());
         int x = ((int)Math.floor(indexLongitude));
         int y = ((int)Math.floor(indexLatitude));
         
-        return bilerp(doTheta(x, y), doTheta(x+1, y), doTheta(x, y+1), doTheta(x+1, y+1), indexLongitude-x, indexLatitude-y);
-          
+        return bilerp(doTheta(x, y), doTheta(x+1, y), doTheta(x, y+1), doTheta(x+1, y+1), indexLongitude-x, indexLatitude-y); 
     }
     
     /**
@@ -84,16 +82,11 @@ public final class ContinuousElevationModel {
      * @return the elevation at index(x, y) if contained in the dem, 0 otherwise
      */
     private double checkSample(int x, int y){
-      
         if(dem.extent().contains(x, y)){
             return dem.elevationSample(x, y);
         }
         else{
             return 0;
-        }
-        
-        
-        
+        } 
     }
-
 }
