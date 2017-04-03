@@ -43,6 +43,7 @@ public interface Azimuth {
      * @param azimuth the angle in radians to be converted in mathematical
      *            orientation
      * @return the converted azimuth in mathematical orientation
+     * @throws IllegalArgumentException if the azimuth is not canonical
      */
     public static double toMath(double azimuth) {
         Preconditions.checkArgument(isCanonical(azimuth), "Azimuth must be canonical");
@@ -61,8 +62,9 @@ public interface Azimuth {
      * changes the orientation of the azimuth
      * 
      * @param angle the angle in mathematical orientation to be converted in
-     *            reverse oriantation
+     *            reverse orientation
      * @return the converted azimuth in reverse mathematical orientation
+     * @throws IllegalArgumentException if the azimuth is not canonical
      */
     public static double fromMath(double azimuth) {
 
@@ -84,24 +86,25 @@ public interface Azimuth {
      * @param e The String for the east direction
      * @param s The String for the south direction
      * @param w The String for the west direction
-     * @return
+     * @return a String that indicates the direction of the azimuth
+     * @throws IllegalArgumentException if the azimuth is not canonical
      */
     public static String toOctantString(double azimuth, String n, String e, String s, String w) {
        
         Preconditions.checkArgument(isCanonical(azimuth), "Azimuth must be canonical");
-        String direction = "";
+        StringBuilder direction = new StringBuilder();
         if ((azimuth >= 0 && azimuth <= 3 * PI / 8) || azimuth >= (13 * PI / 8)) {
-            direction += n;
+            direction.append(n);
         } else if (azimuth >= (5 * PI / 8) && azimuth <= 11 * PI / 8) {
-            direction += s;
+            direction.append(s);
         }
         if (azimuth >= PI / 8 && azimuth <= 7 * PI / 8) {
-            direction += e;
+            direction.append(e);
         } else if (azimuth >= (9 * PI / 8) && azimuth <= (15 * PI / 8)) {
-            direction += w;
+            direction.append(w);
         }
 
-        return direction;
+        return direction.toString();
 
     }
 
