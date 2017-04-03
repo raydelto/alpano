@@ -65,8 +65,8 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
     /**
      * Checks if the file complies with the prerequisites
      * 
-     * @param file the file to be checked
-     * @return true only if the file complies with all prerequisites
+     * @param file, the file to be checked
+     * @return true, only if the file complies with all prerequisites
      */
     private boolean checkName(File file) {
         String name = file.getName();
@@ -125,7 +125,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 
     @Override
     public double elevationSample(int x, int y) {
-        Preconditions.checkArgument((this.extent().contains(x, y)));
+        Preconditions.checkArgument((this.extent().contains(x, y)),"The extent doesn't contain the sample");
 
         int deltaX = Math.abs(x - longitudeIndex);
         int deltaY = Math.abs(y - latitudeIndex);
