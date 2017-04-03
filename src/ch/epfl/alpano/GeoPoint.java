@@ -25,6 +25,8 @@ public final class GeoPoint {
      * Creates a GeoPoint
      * @param longitude, the longitude of the point in radians
      * @param latitude, the latitude of the point in radians
+     * @throws IllegalArgumentException if the longitude is not between -PI and +PI 
+     *          or if the latitude is not between -PI/2 and +PI/2
      */
     public GeoPoint(double longitude, double latitude){
            

@@ -7,6 +7,9 @@
 package ch.epfl.alpano;
 
 import static java.lang.Math.PI;
+import static java.lang.Math.sin;
+import static java.lang.Math.floor;
+import static java.lang.Math.signum;
 
 import java.util.function.DoubleUnaryOperator;
 
@@ -27,7 +30,7 @@ public interface Math2 {
      * @return the floor of the division
      */
     static double floorMod(double x, double y){
-        return x-y*Math.floor(x/y);
+        return x-y*floor(x/y);
     }
     /**
      * A method that calculate the haversin of the point x
@@ -35,16 +38,16 @@ public interface Math2 {
      * @return the haversin function applied at the point x
      */
    static double haversin(double x){
-       return sq(Math.sin(x/2));
+       return sq(sin(x/2));
    }
    /**
-    * A method that calculate the angular distance between two angles
-    * @param a1 angle 1
-    * @param a2 angle 2
-    * @return the angular distance between a1 and a2
+    * A method that calculate the angular distance between two angles in radians
+    * @param a1 angle 1 in radians
+    * @param a2 angle 2 in radians
+    * @return the angular distance between a1 and a2 in radians
     */
    static double angularDistance(double a1, double a2){
-       return floorMod(a2-a1+Math.PI,PI2)-Math.PI;
+       return floorMod(a2-a1+PI,PI2)-PI;
    }
    
    /**
@@ -81,12 +84,11 @@ public interface Math2 {
     * @param dX the distance used in each step of calculation
     * @return the lower bound once the distance between the two bounds is reduced to less than dx, and Positive infinity if there no root is found
     */
- static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){        
+   static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){        
         double low = minX;
         double up = low + dX;
         do {
-            if (Math.signum(f.applyAsDouble(low)) + Math.signum(f.applyAsDouble(up)) == 0
-                    || Math.signum(f.applyAsDouble(low)) * Math.signum(f.applyAsDouble(up)) == 0)
+            if (signum(f.applyAsDouble(low)) + signum(f.applyAsDouble(up)) == 0 || signum(f.applyAsDouble(low)) * signum(f.applyAsDouble(up)) == 0)
                 return low;
             low += dX;
             up += dX;
@@ -96,7 +98,7 @@ public interface Math2 {
    }
    
      /**
-      * Check if two double have the same sign
+      * Checks if two double have the same sign
       * @param x1 variable 1
       * @param x2 variable 2
       * @return true if x1 and x2 have the same sign, false otherwise
@@ -118,13 +120,13 @@ public interface Math2 {
     * @param x2 One of the two bounds
     * @param epsilon maximal distance desired between the two bounds
     * @return the lower bound once the distance between the two bounds is reduced to less than epsilon
+    * @throws IllegalArgumentException if f(x1) and f(x2) don't have the same sign
     */
     static double improveRoot(DoubleUnaryOperator f, double x1, double x2, double epsilon){
         
-        Preconditions.checkArgument(!isSameSign(f.applyAsDouble(x1), f.applyAsDouble(x2)), "x1 and x2 must have the same sign");  
+        Preconditions.checkArgument(!isSameSign(f.applyAsDouble(x1), f.applyAsDouble(x2)), "f(x1) and f(x2) don't have the same sign");  
         
         if((Math.abs(x1 - x2)<= epsilon )|| (x1 == x2)){
-            
             return x1;
         }
         
@@ -139,22 +141,14 @@ public interface Math2 {
                 if(f.applyAsDouble(xM)==0){
                     return xM;
                 }
-                
-                else if(!isSameSign(f.applyAsDouble(xM), f.applyAsDouble(currentMax))){
-                    
-                    currentMin = xM;
-                    
-                }
-                    
+                else if(!isSameSign(f.applyAsDouble(xM), f.applyAsDouble(currentMax))){  
+                    currentMin = xM;  
+                }   
                 else{
-                    
                     currentMax = xM;
-                }                
-                
-            }while(Math.abs(currentMax-currentMin)> epsilon);
-            
+                }                 
+            }while(Math.abs(currentMax-currentMin)> epsilon);  
             return currentMin;   
         }
    }
-
 }
