@@ -12,14 +12,14 @@ import static ch.epfl.alpano.Math2.PI2;
 
 public final class PanoramaParameters {
     
-    private final GeoPoint OBSERVERPOSITION;
-    private final int OBSERVERELEVATION;
+    private final GeoPoint observerPosition;
+    private final int observerElevation;
     private final double centerAzimuth;
-    private final double HORIZONTALFIELDOFVIEW;
-    private final int MAXDISTANCE;
-    private final int WIDTH;
-    private final int HEIGHT;
-    private final double DELTA;
+    private final double horizontalFieldOfView;
+    private final int maxDistance;
+    private final int width;
+    private final int height;
+    private final double delta;
  
     /**
      * Constructs a new PanoramaParameters
@@ -33,40 +33,40 @@ public final class PanoramaParameters {
      */
     public PanoramaParameters(GeoPoint observerPosition, int observerElevation, double centerAzimuth, double horizontalFieldOfView, int maxDistance, int width, int height){
         
-        OBSERVERPOSITION = requireNonNull(observerPosition);
+        this.observerPosition = requireNonNull(observerPosition, "Null observerPosition");
         Preconditions.checkArgument(Azimuth.isCanonical(centerAzimuth), "Azimuth must be canonical");
         Preconditions.checkArgument(horizontalFieldOfView>0 && horizontalFieldOfView <= PI2, "horizintalFieldOfView must be between 0 (excluded) and PI/2 (included)");
-        Preconditions.checkArgument(maxDistance>0 && width >0 && height >0, "maxDistance, heigt and width must be positive");
+        Preconditions.checkArgument(maxDistance>0 && width >0 && height >0, "maxDistance, height and width must be positive");
         
-        OBSERVERELEVATION = observerElevation;
+        this.observerElevation = observerElevation;
         this.centerAzimuth = centerAzimuth;
-        HORIZONTALFIELDOFVIEW = horizontalFieldOfView;
-        MAXDISTANCE = maxDistance;
-        WIDTH = width;
-        HEIGHT = height;
-        DELTA = HORIZONTALFIELDOFVIEW/(WIDTH-1);
+        this.horizontalFieldOfView = horizontalFieldOfView;
+        this.maxDistance = maxDistance;
+        this.width = width;
+        this.height = height;
+        this.delta = horizontalFieldOfView/(width-1);
     
     }
     
     /**
      * 
-     * @return
+     * @return the position of the observer of the Panorama
      */
     public GeoPoint observerPosition(){
-        return OBSERVERPOSITION;
+        return observerPosition;
     }
     
     /**
      * 
-     * @return
+     * @return the elevation of the observer of the Panorama, in meters
      */
     public int observerElevation(){
-        return OBSERVERELEVATION;
+        return observerElevation;
     }
     
     /**
      * 
-     * @return
+     * @return the center azimuth of the Panorama, in radians
      */
     public double centerAzimuth(){
         return centerAzimuth;
@@ -74,73 +74,74 @@ public final class PanoramaParameters {
     
     /**
      * 
-     * @return
+     * @return the horizontal field of view of the Panorama, in radians
      */
     public double horizontalFieldOfView(){
-        return HORIZONTALFIELDOFVIEW;
+        return horizontalFieldOfView;
     }
     
     /**
      * 
-     * @return
+     * @return the maximal sight distance of the Panorama, in meters
      */
     public int maxDistance(){
-        return MAXDISTANCE;
+        return maxDistance;
     }
     
     /**
      * 
-     * @return
+     * @return the width of the Panorama, a sample
      */
     public int width(){
-        return WIDTH;
+        return width;
     }
     
     /**
      * 
-     * @return
+     * @return the height of the Panorama, a sample
      */
     public int height(){
-        return HEIGHT;
+        return height;
     }
     
     /**
      * 
-     * @return
+     * @return the vertical field of view of the Panorama, in radians
      */
     public double verticalFieldOfView(){
       
-        return DELTA*(HEIGHT-1);
+        return delta*(height-1);
     }
     
     /**
      * 
-     * @return
+     * @return the middle height of the Panorama, a sample
      */
     private double middleHeight(){
-        return (HEIGHT-1)/2.0;
+        return (height-1)/2.0;
     }
     
     /**
      * 
-     * @return
+     * @return the middle width of the Panorama, a sample
      */
     private double middleWidth(){
-        return (WIDTH-1)/2.0;
+        return (width-1)/2.0;
     }
     
     /**
      * Calculates the azimuth for a given sample x
      * @param x, the sample
-     * @return the azimuth corresponding to the sample x
+     * @return the azimuth corresponding to the sample x, in radians
+     * @throws IllegalArgumentException if the given sample is invalid for this Panorama
      */
     public double azimuthForX(double x){
-        Preconditions.checkArgument(x>=0 && x<=WIDTH-1, "Invalid x for this panorama");
+        Preconditions.checkArgument(x>=0 && x<=width-1, "Invalid sample for this Panorama");
         if(x==middleWidth()){
             return centerAzimuth;
         }
         else{
-            return canonicalize((x-middleWidth())*DELTA+centerAzimuth);
+            return canonicalize((x-middleWidth())*delta+centerAzimuth);
         }
     }
     
@@ -148,27 +149,29 @@ public final class PanoramaParameters {
      * Calculates the sample x for a given azimuth
      * @param a, the azimuth in radians
      * @return the sample corresponding to the azimuth
+     * @throws IllegalArgumentException if the given azimuth is invalid for this Panorama
      */
     public double xForAzimuth(double a){
         double deltaAzimuth = Math2.angularDistance(centerAzimuth, a);
-        Preconditions.checkArgument(Math.abs(deltaAzimuth)<=horizontalFieldOfView()/2.0, "Invalid azimuth for this panorama");
+        Preconditions.checkArgument(Math.abs(deltaAzimuth)<=horizontalFieldOfView()/2.0, "Invalid azimuth for this Panorama");
         
-         return (deltaAzimuth)/DELTA + middleWidth();
+         return (deltaAzimuth)/delta + middleWidth();
         
     }
     
     /**
      * Calculates the altitude for a given sample y
      * @param y, the sample
-     * @return the altitude corresponding to the sample y
+     * @return the altitude corresponding to the sample y, in radians
+     * @throws IllegalArgumentException if the given sample is invalid for this Panorama
      */
     public double altitudeForY(double y){
-        Preconditions.checkArgument(y>=0 && y<=HEIGHT-1, "Invalid y for this panorama");
+        Preconditions.checkArgument(y>=0 && y<=height-1, "Invalid sample for this panorama");
         if(y==middleHeight()){
             return 0;
         }
         else{            
-            return verticalFieldOfView()/2.0-y*DELTA;
+            return verticalFieldOfView()/2.0-y*delta;
         }
        
     }
@@ -177,15 +180,16 @@ public final class PanoramaParameters {
      * Calculates the sample y for a given altitude
      * @param a, the altitude in radians
      * @return the sample corresponding to the altitude y
+     * @throws IllegalArgumentException if the given altitude is invalid for this Panorama
      */
     public double yForAltitude(double a){
         
-        Preconditions.checkArgument(a>=-verticalFieldOfView()/2 && a <= verticalFieldOfView()/2, "Invalid altitude for this panoramas");
+        Preconditions.checkArgument(a>=-verticalFieldOfView()/2 && a <= verticalFieldOfView()/2, "Invalid altitude for this Panorama");
         if(a == 0){
             return middleHeight();
         }
         else{
-            return (verticalFieldOfView()/2.0 - a)/DELTA;
+            return (verticalFieldOfView()/2.0 - a)/delta;
             
         }
 
@@ -198,7 +202,7 @@ public final class PanoramaParameters {
      * @return true if the sample index is valid, false otherwise
      */
     boolean isValidSampleIndex(int x, int y){
-        if(x>=0 && x<=WIDTH-1 && y >=0 && y<=HEIGHT-1){
+        if(x>=0 && x<=width-1 && y >=0 && y<=height-1){
             return true;
         }
         else{
@@ -208,13 +212,13 @@ public final class PanoramaParameters {
     }
     
     /**
-     * Calculates the linearSampleIndex of 2 points from the panorama
+     * Calculates the linearSampleIndex of 2 points from the Panorama
      * @param x, sample
      * @param y, sample
      * @return an int that corresponds to the linearSampleIndex
      */
     int linearSampleIndex(int x, int y){
         
-        return WIDTH*y + x;
+        return width*y + x;
     }
 }
