@@ -30,7 +30,7 @@ public final class ContinuousElevationModel {
      */
     public ContinuousElevationModel(DiscreteElevationModel dem){
         
-        this.dem = requireNonNull(dem);        
+        this.dem = requireNonNull(dem,"null DiscreteElevationModel");        
     }
     
     /**
@@ -85,14 +85,6 @@ public final class ContinuousElevationModel {
      */
     private double checkSample(int x, int y){
       
-      /*  
-       try{
-           return dem.elevationSample(x, y);
-                      
-        }catch(Exception e){
-            return 0;
-        }
-        */
         if(dem.extent().contains(x, y)){
             return dem.elevationSample(x, y);
         }

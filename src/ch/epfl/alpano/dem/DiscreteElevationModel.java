@@ -41,13 +41,13 @@ public interface DiscreteElevationModel extends AutoCloseable{
      * Creates an MNT, that represents the union of two DiscreteElevationModels
      * @param that the second DiscreteElevationModel used in the union
      * @return an MNT that represents the union of two DiscreteElevationModels
+     * @throws IllegalArgumentException if the two extents are not unionable
      */
     default DiscreteElevationModel union(DiscreteElevationModel that){
         if(!(this.extent().isUnionableWith(that.extent()))){
             throw new IllegalArgumentException();
         }
         return new CompositeDiscreteElevationModel(this, that);
-        //Preconditions
-        
+               
     }
 }

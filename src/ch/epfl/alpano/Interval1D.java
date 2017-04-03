@@ -17,9 +17,10 @@ public final class Interval1D {
      * Creates a uni-dimensional interval, throws IllegalArgumentException is includeTo is strictly smaller than Includedfrom
      * @param includedFrom lower bound of the interval
      * @param includedTo upper bound of the interval
+     * @throws IllegalArgumentException if includedFrom is bigger than includedTo
      */
     public Interval1D(int includedFrom, int includedTo){ 
-        Preconditions.checkArgument(!(includedTo<includedFrom));
+        Preconditions.checkArgument(!(includedTo<includedFrom),"Problem with the bounds");
         this.includedFrom=includedFrom;
         this.includedTo=includedTo;
     }
@@ -96,7 +97,7 @@ public final class Interval1D {
      * @throws throws IllegalArgumentException if the intervals are not unionable
      */
     public Interval1D union(Interval1D that){
-        Preconditions.checkArgument(this.isUnionableWith(that));
+        Preconditions.checkArgument(this.isUnionableWith(that),"The intervals are not unionable");
         int iArr[] = {this.includedTo(),that.includedFrom(),that.includedTo(),this.includedFrom()};
         Arrays.sort(iArr);
         return new Interval1D(iArr[0], iArr[3]);
