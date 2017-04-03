@@ -121,7 +121,7 @@ public interface Math2 {
     */
     static double improveRoot(DoubleUnaryOperator f, double x1, double x2, double epsilon){
         
-        Preconditions.checkArgument(!isSameSign(f.applyAsDouble(x1), f.applyAsDouble(x2)));  
+        Preconditions.checkArgument(!isSameSign(f.applyAsDouble(x1), f.applyAsDouble(x2)), "x1 and x2 must have the same sign");  
         
         if((Math.abs(x1 - x2)<= epsilon )|| (x1 == x2)){
             
@@ -135,11 +135,9 @@ public interface Math2 {
             double xM;
             
             do{
-                
                 xM = (currentMin + currentMax)/2;
                 if(f.applyAsDouble(xM)==0){
                     return xM;
-                   
                 }
                 
                 else if(!isSameSign(f.applyAsDouble(xM), f.applyAsDouble(currentMax))){
@@ -155,12 +153,8 @@ public interface Math2 {
                 
             }while(Math.abs(currentMax-currentMin)> epsilon);
             
-            return currentMin;
-            
+            return currentMin;   
         }
-        
-     
-
    }
 
 }

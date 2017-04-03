@@ -1,3 +1,10 @@
+/**
+ * Panorama
+ * 
+ * @author Andrea Scalisi (259183)
+ * @author Gerald Sula (257396)
+ */
+
 package ch.epfl.alpano;
 
 import java.util.Arrays;
@@ -19,7 +26,7 @@ public final class Panorama {
         this.slope = slope;
     }
 
-    private PanoramaParameters parameters() {
+    public PanoramaParameters parameters() {
         return parameters;
     }
 
@@ -28,7 +35,7 @@ public final class Panorama {
         return distance[parameters.linearSampleIndex(x, y)];
     }
 
-    public float distanceAt(int x, int y, int d) {
+    public float distanceAt(int x, int y, float d) {
         if (!(parameters.isValidSampleIndex(x, y))) {
             return d;
         } else {
@@ -58,7 +65,7 @@ public final class Panorama {
 
     private void checkIndex(int x, int y) {
         if (!(parameters.isValidSampleIndex(x, y))) {
-            throw new IndexOutOfBoundsException();
+            throw new IndexOutOfBoundsException("Invalid index");
         }
     }
 

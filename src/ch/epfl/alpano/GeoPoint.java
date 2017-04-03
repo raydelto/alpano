@@ -29,7 +29,7 @@ public final class GeoPoint {
     public GeoPoint(double longitude, double latitude){
            
         if(!(longitude >= -PI && longitude <= PI && latitude >= -PI/2 && latitude <=PI/2)){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Longitude has to be from -PI to +PI (included) and latitude form -PI/2 to +PI/2 (included)");
         }
         
         this.longitude = longitude;
