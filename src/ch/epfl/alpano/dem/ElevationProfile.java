@@ -22,6 +22,7 @@ import static ch.epfl.alpano.Math2.PI2;
 import static ch.epfl.alpano.Math2.lerp;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public final class ElevationProfile {
     
@@ -39,18 +40,16 @@ public final class ElevationProfile {
      * @param origin a GeoPoint that indicates the begining of the profile
      * @param azimuth a double that give the direction
      * @param length a double that represents the length of the profile
+     * @throws IllegalArgumentException if azimuth is non canonical,or length is smaller or equal than 0
+     * @throws NullPointerException if elevationModel or origin are null
      */
     public ElevationProfile(ContinuousElevationModel elevationModel, GeoPoint origin, double azimuth, double length){
         Preconditions.checkArgument(isCanonical(azimuth));
-        if(length<=0){
-            throw new IllegalArgumentException();
-        }
-        if(elevationModel == null || origin == null){
-            throw new NullPointerException();
-        }
+        Preconditions.checkArgument(length>0);
+       
         
-        this.elevationModel = elevationModel;
-        this.origin = origin;
+        this.elevationModel = Objects.requireNonNull(elevationModel,"null elevationModel");
+        this.origin = Objects.requireNonNull(origin,"null origin");
         this.azimuth = azimuth;
         this.length = length;
         
@@ -86,6 +85,7 @@ public final class ElevationProfile {
      * Calculates the coordinates (latitude and longitude) of the given point in the profile
      * @param x a double where we want to know the coordinates
      * @return a GeopPoint that indicates the coordinates of the point x in the profile
+     * @throws IllegalArgumentException if the parameter x is not between 0 and the length of the profile
      */
     public GeoPoint positionAt(double x){
         isInBounds(x);
@@ -95,7 +95,6 @@ public final class ElevationProfile {
         lowerBound = (int)Math.floor(x/4096);
         upperBound = lowerBound +1;
         if(upperBound >= table.length){
-            System.out.println(lowerBound+", "+upperBound+", "+table.length);
             return table[lowerBound];
          }
         
@@ -111,6 +110,7 @@ public final class ElevationProfile {
      * Calculate the slope at a given point of the profile
      * @param x the point where we want to know the slope
      * @return a double that corresponds to the slope at the position x of the profile
+     * @throws IllegalArgumentException if the parameter x is not between 0 and the length of the profile
      */
     public double slopeAt(double x){
         isInBounds(x);
@@ -121,10 +121,11 @@ public final class ElevationProfile {
      * Private method that checks if the parameter x is between 0 and the length of the profile
      * Throws an IllegalArgumentException if it is not the case
      * @param x a double
+     * @throws IllegalArgumentException if the parameter x is not between 0 and the length of the profile
      */
     private void isInBounds(double x){
         if(!(x>=0 && x<= length)){
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Parameter x is not between 0 and the length of the profile");
         }
     }
 

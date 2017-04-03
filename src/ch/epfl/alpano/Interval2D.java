@@ -19,9 +19,9 @@ public final class Interval2D
      * @throws throws NullPointerException id either iX or iY are null
      */
     public Interval2D(Interval1D iX, Interval1D iY){
-        if(iX==null||iY==null)throw new NullPointerException();
-        this.iX=iX;
-        this.iY=iY;        
+        
+        this.iX=Objects.requireNonNull(iX,"null x coordinate");
+        this.iY=Objects.requireNonNull(iY,"null y coordinate");     
     }
     
     /**
@@ -35,7 +35,6 @@ public final class Interval2D
     /**
      Returns the second uni-dimensional interval
      * @return the second interval
-
      */
     public Interval1D iY(){
         return iY;
@@ -59,7 +58,7 @@ public final class Interval2D
     }
     
     /**
-     *  Checks if two bi-dimenional intervals are unionable
+     * Checks if two bi-dimenional intervals are unionable
      * @param that the second bi-dimensional interval
      * @return true if the two bi-dimenional intervals are unionable
      */

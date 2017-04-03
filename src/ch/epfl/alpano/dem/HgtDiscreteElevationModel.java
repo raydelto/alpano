@@ -28,18 +28,14 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
     /**
      * Creates a HgtDiscreteElevationModel from the source file
      * 
-     * @param file
-     *            the source file
-     * @throws FileNotFoundException
-     *             if there are problems with the source file
-     * @throws IOException
-     *             if there are problems with the source file
-     * @throws IllegalArgumentException
-     *             if there are problems with the source file
+     * @param file, the source file
+     * @throws FileNotFoundException, if there are problems with the source file
+     * @throws IOException, if there are problems with the source file
+     * @throws IllegalArgumentException, if there are problems with the source file
      */
     public HgtDiscreteElevationModel(File file) {
         try (FileInputStream stream = new FileInputStream(file)) {
-            Preconditions.checkArgument(this.checkName(file));
+            Preconditions.checkArgument(this.checkName(file),"Problems with file name");
 
             long l = file.length();
             buffer = stream.getChannel().map(MapMode.READ_ONLY, 0, l).asShortBuffer();
@@ -106,10 +102,10 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
         }
         if (!(longitudeTemp >= 0 && longitudeTemp <= 180))
             return false;
-        if (!name.substring(7, 11).equals(".hgt"))
+        if (!name.substring(7, 11).equals(".hgt"))//check postfix
             return false;
 
-        if (file.length() != 25934402)
+        if (file.length() != 25934402)//check file length
             return false;
 
         return true;

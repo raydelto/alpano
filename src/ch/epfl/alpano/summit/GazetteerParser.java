@@ -1,4 +1,9 @@
-package ch.epfl.alpano.summit;
+/**
+ * GazetteerParser
+ * 
+ * @author Andrea Scalisi (259183)
+ * @author Gerald Sula (257396)
+ */package ch.epfl.alpano.summit;
 
 
 import java.io.BufferedReader;
