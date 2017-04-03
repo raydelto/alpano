@@ -106,12 +106,11 @@ public class GazetteerParser {
            throw exception;
         }
 
-        if(hms[0].trim().charAt(0)=='-') return -Math.toRadians((((deg*60)+min)*60+sec)/3600d);
-        return  Math.toRadians((((deg*60)+min)*60+sec)/3600d);
-        /**
-         *  if(hms[0].trim().charAt(0)=='-') return -(((deg*60)+min)*60+sec)/DiscreteElevationModel.SAMPLES_PER_RADIAN;
+       // if(hms[0].trim().charAt(0)=='-') return -Math.toRadians((((deg*60)+min)*60+sec)/3600d);
+        //return  Math.toRadians((((deg*60)+min)*60+sec)/3600d);
+         if(hms[0].trim().charAt(0)=='-') return -(((deg*60)+min)*60+sec)/DiscreteElevationModel.SAMPLES_PER_RADIAN;
         return  (((deg)*60+min)*60+sec)/DiscreteElevationModel.SAMPLES_PER_RADIAN;
-         */
+         
     }
    
 
