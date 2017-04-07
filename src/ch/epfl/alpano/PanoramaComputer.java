@@ -25,7 +25,7 @@ public final class PanoramaComputer {
 
     /**
      * Creates a PanoramaComputer
-     * @param dem, the ContinuousElevationModel used to build the PanoramaComputer (non null)
+     * @param dem the ContinuousElevationModel used to build the PanoramaComputer (non null)
      * @throws NullPointerException if dem is null
      */
     public PanoramaComputer(ContinuousElevationModel dem) {
@@ -35,7 +35,7 @@ public final class PanoramaComputer {
 
     /**
      * Computes the panorama from the given parameters
-     * @param parameters, the parameters used in the calculation of the panorama
+     * @param parameters the parameters used in the calculation of the panorama
      * @return the computed panorama
      */
     public Panorama computePanorama(PanoramaParameters parameters) {
@@ -85,9 +85,9 @@ public final class PanoramaComputer {
 
     /**
      * Represents the function of the distance from ground of an elevation profile 
-     * @param profile, the ElevationProfile used in the calculation
-     * @param ray0, the initial ray launched for the function
-     * @param raySlope, the slope of the ray
+     * @param profile the ElevationProfile used in the calculation
+     * @param ray0 the initial ray launched for the function
+     * @param raySlope the slope of the ray
      * @return return the DoubleUnaryOperator that represents the function of the distance from ground of an elevation profile 
      */
     public static DoubleUnaryOperator rayToGroundDistance(ElevationProfile profile, double ray0, double raySlope) {
@@ -97,7 +97,7 @@ public final class PanoramaComputer {
 
     /**
      * Calculates the "real life" distance 
-     * @param x, the horizontal distance 
+     * @param x the horizontal distance 
      * @return the distance calculated using the formula of "real life" distance 
      */
     private static double d(double x) {

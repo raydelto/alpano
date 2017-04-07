@@ -27,8 +27,8 @@ public class GazetteerParser {
 
     /**
      * Extracts the information from a file to a list of Summits
-     * @param file, the source file
-     * @return a list with all the information extracted from the file
+     * @param file the source file
+     * @return list with all the information extracted from the file
      * @throws IOException if there are problems with the file, or if it is not formatted the correct way
      */
     public static List<Summit> readSummitsFrom(File file) throws IOException {
@@ -59,7 +59,7 @@ public class GazetteerParser {
             }
         } catch (IOException e) {
             throw e;
-        } catch (Exception e) {
+        } catch (Exception e) {//in case the file is corrupted, or other unexpected errors
             throw new IOException("Problems with the source file");
         }
 
@@ -70,8 +70,8 @@ public class GazetteerParser {
     /**
      * extracts the information from a deg:min:sec format and returns the result in degrees
      * 
-     * @param degree, the raw deg:min:sec format string
-     * @param direction, 'long' for longitude and 'lat' for latitude
+     * @param degree the raw deg:min:sec format string
+     * @param direction 'long' for longitude and 'lat' for latitude
      * @return the result in degrees
      * @throws IOException if the string is not formatted the right way
      */

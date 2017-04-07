@@ -9,7 +9,7 @@ package ch.epfl.alpano;
 public interface Preconditions {
     /**
      * if b is false an Illegal Argument Exception is thrown
-     * @param b, a boolean
+     * @param b a boolean
      * @throws IllegalArgumentException is b is false
      */
     public static void checkArgument(boolean b){
@@ -18,8 +18,8 @@ public interface Preconditions {
     }
     /**
      * if b is false an Illegal Argument Exception is thrown
-     * @param b, a boolean 
-     * @param msg, the message associated to the exception
+     * @param b a boolean 
+     * @param msg the message associated to the exception
      * @throws IllegalArgumentException is b is false
      */
     public static void checkArgument(boolean b, String msg){
