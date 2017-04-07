@@ -29,6 +29,7 @@ public final class PanoramaComputer {
      * @throws NullPointerException if dem is null
      */
     public PanoramaComputer(ContinuousElevationModel dem) {
+        
         this.dem = requireNonNull(dem,"null ContinuousElevationModel");
     }
 
@@ -38,7 +39,7 @@ public final class PanoramaComputer {
      * @return the computed panorama
      */
     public Panorama computePanorama(PanoramaParameters parameters) {
-
+        
         double currentAzimuth = parameters.azimuthForX(0);
         Builder builder = new Builder(parameters);
 
@@ -46,8 +47,7 @@ public final class PanoramaComputer {
 
         while (posX <= (parameters.width() - 1)) {
             currentAzimuth = parameters.azimuthForX(posX);
-            ElevationProfile ep = new ElevationProfile(dem, parameters.observerPosition(), currentAzimuth,
-                    parameters.maxDistance());
+            ElevationProfile ep = new ElevationProfile(dem, parameters.observerPosition(), currentAzimuth, parameters.maxDistance());
             double intersectionWithGroundx = 0;
             double intersectionWithGroundTemp = 0;
             int posY = parameters.height() - 1;
@@ -63,9 +63,7 @@ public final class PanoramaComputer {
 
                 else {
                     intersectionWithGroundx = Math2.improveRoot(op, lowerBound, lowerBound + 64, 4);
-
                     intersectionWithGroundTemp = intersectionWithGroundx;
-
                     double distance = intersectionWithGroundx / Math.cos(parameters.altitudeForY(posY));
 
                     builder.setDistanceAt(posX, posY, (float) (distance));
@@ -77,11 +75,9 @@ public final class PanoramaComputer {
                 }
 
                 --posY;
-
             }
 
             posX++;
-
         }
 
         return builder.build();
@@ -105,6 +101,7 @@ public final class PanoramaComputer {
      * @return the distance calculated using the formula of "real life" distance 
      */
     private static double d(double x) {
+        
         return ((1 - K) / (2 * EARTH_RADIUS)) * sq(x);
     }
 

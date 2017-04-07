@@ -25,6 +25,7 @@ public final class Panorama {
      * @param slope, an array of float where the slope of the Panorama are stored
      */
     private Panorama(PanoramaParameters parameters, float[] distance, float[] longitude, float[] latitude, float[] elevation, float[] slope) {
+        
         this.parameters = parameters;
         this.distance = distance;
         this.longitude = longitude;
@@ -38,6 +39,7 @@ public final class Panorama {
      * @return return the PanoramaParameters used to construct this Panorama
      */
     public PanoramaParameters parameters() {
+        
         return parameters;
     }
 
@@ -50,6 +52,7 @@ public final class Panorama {
      * 
      */
     public float distanceAt(int x, int y) {
+        
         checkIndex(x, y);
         return distance[parameters.linearSampleIndex(x, y)];
     }
@@ -64,6 +67,7 @@ public final class Panorama {
      * 
      */
     public float distanceAt(int x, int y, float d) {
+        
         if (!(parameters.isValidSampleIndex(x, y))) {
             return d;
         } else {
@@ -80,7 +84,9 @@ public final class Panorama {
      * 
      */
     public float longitudeAt(int x, int y) {
+        
         checkIndex(x, y);
+        
         return longitude[parameters.linearSampleIndex(x, y)];
     }
 
@@ -93,7 +99,9 @@ public final class Panorama {
      * 
      */
     public float latitudeAt(int x, int y) {
+        
         checkIndex(x, y);
+        
         return latitude[parameters.linearSampleIndex(x, y)];
     }
 
@@ -106,7 +114,9 @@ public final class Panorama {
      * 
      */
     public float elevationAt(int x, int y) {
+        
         checkIndex(x, y);
+        
         return elevation[parameters.linearSampleIndex(x, y)];
     }
 
@@ -119,7 +129,9 @@ public final class Panorama {
      * 
      */
     public float slopeAt(int x, int y) {
+        
         checkIndex(x, y);
+        
         return slope[parameters.linearSampleIndex(x, y)];
     }
 
@@ -130,12 +142,14 @@ public final class Panorama {
      * @throws IndexOutOfBoundsException if the sample is not valid
      */
     private void checkIndex(int x, int y) {
+        
         if (!(parameters.isValidSampleIndex(x, y))) {
             throw new IndexOutOfBoundsException("Invalid index");
         }
     }
 
     public static final class Builder {
+        
         private final PanoramaParameters parameters;
         private float[] distance, longitude, latitude, elevation, slope;
         private boolean called = false;
@@ -146,6 +160,7 @@ public final class Panorama {
          * @throws NullPointerException if parameters is null
          */
         public Builder(PanoramaParameters parameters) {
+            
             this.parameters = Objects.requireNonNull(parameters, "Null PanoramaParameters");
             int size = parameters.height()*parameters.width();
             distance = new float[size];
@@ -167,11 +182,15 @@ public final class Panorama {
          * 
          */
         public Builder setDistanceAt(int x, int y, float distance) {
+            
             checkIndex(x, y);
+            
             if (called) {
                 throw new IllegalStateException("This builder has already been built and cannot be modified");
             }
+            
             this.distance[parameters.linearSampleIndex(x, y)] = distance;
+            
             return this;
         }
 
@@ -186,11 +205,15 @@ public final class Panorama {
          * 
          */
         public Builder setLongitudeAt(int x, int y, float longitude) {
+            
             checkIndex(x, y);
+            
             if (called){
                 throw new IllegalStateException("This builder has already been built and cannot be modified");
             }
+            
             this.longitude[parameters.linearSampleIndex(x, y)] = longitude;
+            
             return this;
         }
 
@@ -205,11 +228,15 @@ public final class Panorama {
          * 
          */
         public Builder setLatitudeAt(int x, int y, float latitude) {
+            
             checkIndex(x, y);
+            
             if (called) {
                 throw new IllegalStateException("This builder has already been built and cannot be modified");
             }
+            
             this.latitude[parameters.linearSampleIndex(x, y)] = latitude;
+            
             return this;
         }
 
@@ -224,11 +251,15 @@ public final class Panorama {
          * 
          */
         public Builder setElevationAt(int x, int y, float elevation) {
+            
             checkIndex(x, y);
+            
             if (called){
                 throw new IllegalStateException("This builder has already been built and cannot be modified");
             }
+            
             this.elevation[parameters.linearSampleIndex(x, y)] = elevation;
+            
             return this;
         }
 
@@ -243,11 +274,15 @@ public final class Panorama {
          * 
          */
         public Builder setSlopeAt(int x, int y, float slope) {
+            
             checkIndex(x, y);
+            
             if (called){
                 throw new IllegalStateException("This builder has already been built and cannot be modified");
             }
+            
             this.slope[parameters.linearSampleIndex(x, y)] = slope;
+            
             return this;
         }
 
@@ -258,6 +293,7 @@ public final class Panorama {
          * @throws IndexOutOfBoundsException if the sample is not valid
          */
         private void checkIndex(int x, int y) {
+            
             if (!(parameters.isValidSampleIndex(x, y))) {
                 throw new IndexOutOfBoundsException("This builder has already been built and cannot be modified");
             }
@@ -269,10 +305,13 @@ public final class Panorama {
          * @throws IllegalStateException if the build method has already been called on the current PanoramaBuider
          */
         public Panorama build() {
+            
             if (called){
                 throw new IllegalStateException("The method build() has already been called for this builder");
             }
+            
             called = true;
+            
             return new Panorama(parameters, distance, longitude, latitude, elevation, slope);
         }
     }

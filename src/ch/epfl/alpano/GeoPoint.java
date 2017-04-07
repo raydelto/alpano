@@ -28,15 +28,14 @@ public final class GeoPoint {
      * @throws IllegalArgumentException if the longitude is not between -PI and +PI 
      *          or if the latitude is not between -PI/2 and +PI/2
      */
-    public GeoPoint(double longitude, double latitude){
-           
+    public GeoPoint(double longitude, double latitude){  
+        
         if(!(longitude >= -PI && longitude <= PI && latitude >= -PI/2 && latitude <=PI/2)){
             throw new IllegalArgumentException("Longitude has to be from -PI to +PI (included) and latitude form -PI/2 to +PI/2 (included)");
         }
         
         this.longitude = longitude;
-        this.latitude = latitude;
-        
+        this.latitude = latitude;  
     }
     
     /**
@@ -44,6 +43,7 @@ public final class GeoPoint {
      * @return the longitude of the point in radians
      */
     public double longitude(){
+        
         return longitude;
     }
     
@@ -52,6 +52,7 @@ public final class GeoPoint {
      * @return the latitude of the point in radians
      */
     public double latitude(){
+        
         return latitude;
     }
     
@@ -61,6 +62,7 @@ public final class GeoPoint {
      * @return the distance between the two geopoints, in meters
      */
     public double distanceTo(GeoPoint that){
+        
         double angle = 2*(asin(sqrt(haversin(this.latitude()-that.latitude())+cos(this.latitude())*cos(that.latitude())*haversin(this.longitude()-that.longitude()))));
         return Distance.toMeters(angle);
     }
@@ -82,10 +84,9 @@ public final class GeoPoint {
      */
     @Override
     public String toString(){
+        
         Locale l = null;
         String s = String.format(l, "(%.4f,%.4f)", toDegrees(this.longitude()), toDegrees(this.latitude()));
         return s;
     }
-    
-   
 }

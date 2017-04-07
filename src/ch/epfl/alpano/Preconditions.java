@@ -13,6 +13,7 @@ public interface Preconditions {
      * @throws IllegalArgumentException is b is false
      */
     public static void checkArgument(boolean b){
+        
         if(!b) throw new IllegalArgumentException();
     }
     /**
@@ -22,7 +23,7 @@ public interface Preconditions {
      * @throws IllegalArgumentException is b is false
      */
     public static void checkArgument(boolean b, String msg){
+        
         if(!b) throw new IllegalArgumentException(msg);
     }
-
 }

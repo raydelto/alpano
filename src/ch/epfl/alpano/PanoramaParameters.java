@@ -30,6 +30,10 @@ public final class PanoramaParameters {
      * @param maxDistance, the maximum field of view from the observer, in meters
      * @param width, a sample that indicates the width of the panorama (a double)
      * @param height a sample that indicates the height of the panorama (a double)
+     * @throws NullPointerException if the observerPosition is null
+     * @throws IllegalArgumentException if the azimuth is not canonical
+     * @throws IllegalArgumentException if the horizontalFieldOfView is not between 0 and PI/2
+     * @throws IllegalArgumentException if either maxDistance, width or height are negatives
      */
     public PanoramaParameters(GeoPoint observerPosition, int observerElevation, double centerAzimuth, double horizontalFieldOfView, int maxDistance, int width, int height){
         
@@ -45,7 +49,6 @@ public final class PanoramaParameters {
         this.width = width;
         this.height = height;
         this.delta = horizontalFieldOfView/(width-1);
-    
     }
     
     /**
@@ -53,6 +56,7 @@ public final class PanoramaParameters {
      * @return the position of the observer of the Panorama
      */
     public GeoPoint observerPosition(){
+        
         return observerPosition;
     }
     
@@ -61,6 +65,7 @@ public final class PanoramaParameters {
      * @return the elevation of the observer of the Panorama, in meters
      */
     public int observerElevation(){
+        
         return observerElevation;
     }
     
@@ -69,6 +74,7 @@ public final class PanoramaParameters {
      * @return the center azimuth of the Panorama, in radians
      */
     public double centerAzimuth(){
+        
         return centerAzimuth;
     }
     
@@ -77,6 +83,7 @@ public final class PanoramaParameters {
      * @return the horizontal field of view of the Panorama, in radians
      */
     public double horizontalFieldOfView(){
+        
         return horizontalFieldOfView;
     }
     
@@ -85,6 +92,7 @@ public final class PanoramaParameters {
      * @return the maximal sight distance of the Panorama, in meters
      */
     public int maxDistance(){
+        
         return maxDistance;
     }
     
@@ -93,6 +101,7 @@ public final class PanoramaParameters {
      * @return the width of the Panorama, a sample
      */
     public int width(){
+        
         return width;
     }
     
@@ -101,6 +110,7 @@ public final class PanoramaParameters {
      * @return the height of the Panorama, a sample
      */
     public int height(){
+        
         return height;
     }
     
@@ -109,7 +119,7 @@ public final class PanoramaParameters {
      * @return the vertical field of view of the Panorama, in radians
      */
     public double verticalFieldOfView(){
-      
+        
         return delta*(height-1);
     }
     
@@ -118,6 +128,7 @@ public final class PanoramaParameters {
      * @return the middle height of the Panorama, a sample
      */
     private double middleHeight(){
+        
         return (height-1)/2.0;
     }
     
@@ -126,6 +137,7 @@ public final class PanoramaParameters {
      * @return the middle width of the Panorama, a sample
      */
     private double middleWidth(){
+        
         return (width-1)/2.0;
     }
     
@@ -136,7 +148,9 @@ public final class PanoramaParameters {
      * @throws IllegalArgumentException if the given sample is invalid for this Panorama
      */
     public double azimuthForX(double x){
+        
         Preconditions.checkArgument(x>=0 && x<=width-1, "Invalid sample for this Panorama");
+        
         if(x==middleWidth()){
             return centerAzimuth;
         }
@@ -152,11 +166,11 @@ public final class PanoramaParameters {
      * @throws IllegalArgumentException if the given azimuth is invalid for this Panorama
      */
     public double xForAzimuth(double a){
+        
         double deltaAzimuth = Math2.angularDistance(centerAzimuth, a);
         Preconditions.checkArgument(Math.abs(deltaAzimuth)<=horizontalFieldOfView()/2.0, "Invalid azimuth for this Panorama");
         
          return (deltaAzimuth)/delta + middleWidth();
-        
     }
     
     /**
@@ -166,14 +180,15 @@ public final class PanoramaParameters {
      * @throws IllegalArgumentException if the given sample is invalid for this Panorama
      */
     public double altitudeForY(double y){
+        
         Preconditions.checkArgument(y>=0 && y<=height-1, "Invalid sample for this panorama");
+        
         if(y==middleHeight()){
             return 0;
         }
         else{            
             return verticalFieldOfView()/2.0-y*delta;
         }
-       
     }
     
     /**
@@ -185,14 +200,13 @@ public final class PanoramaParameters {
     public double yForAltitude(double a){
         
         Preconditions.checkArgument(a>=-verticalFieldOfView()/2 && a <= verticalFieldOfView()/2, "Invalid altitude for this Panorama");
+        
         if(a == 0){
             return middleHeight();
         }
         else{
             return (verticalFieldOfView()/2.0 - a)/delta;
-            
         }
-
     }
     
     /**
@@ -202,20 +216,20 @@ public final class PanoramaParameters {
      * @return true if the sample index is valid, false otherwise
      */
     boolean isValidSampleIndex(int x, int y){
+        
         if(x>=0 && x<=width-1 && y >=0 && y<=height-1){
             return true;
         }
         else{
             return false;
         }
-        
     }
     
     /**
      * Calculates the linearSampleIndex of 2 points from the Panorama
      * @param x, sample
      * @param y, sample
-     * @return an int that corresponds to the linearSampleIndex
+     * @return an integer that corresponds to the linearSampleIndex
      */
     int linearSampleIndex(int x, int y){
         

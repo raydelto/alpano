@@ -20,7 +20,9 @@ public final class Interval1D {
      * @throws IllegalArgumentException if includedFrom is bigger than includedTo
      */
     public Interval1D(int includedFrom, int includedTo){ 
+        
         Preconditions.checkArgument(!(includedTo<includedFrom),"Problem with the bounds");
+        
         this.includedFrom=includedFrom;
         this.includedTo=includedTo;
     }
@@ -30,6 +32,7 @@ public final class Interval1D {
      * @return the lower bound of the interval
      */
     public int includedFrom(){
+        
         return includedFrom;
     }
     
@@ -38,6 +41,7 @@ public final class Interval1D {
      * @return returns the upper bound of the interval
      */
     public int includedTo(){
+        
         return includedTo;
     }
     
@@ -46,6 +50,7 @@ public final class Interval1D {
      * @return the size of the interval
      */
     public int size(){
+        
         return includedTo-includedFrom+1;
     }
     
@@ -55,6 +60,7 @@ public final class Interval1D {
      * @return true if the element is contained in the interval
      */
     public boolean contains(int v){
+        
         return (v>=includedFrom()&&v<=includedTo());
     }
     
@@ -64,12 +70,16 @@ public final class Interval1D {
      * @return the size of the intersection
      */
     public int sizeOfIntersectionWith(Interval1D that){
-        if(!this.isContinuous(that)) return 0;
+        
+        if(!this.isContinuous(that)){
+            return 0;
+        }
+        
         int iArr[] = {this.includedTo(),that.includedFrom(),that.includedTo(),this.includedFrom()};
         Arrays.sort(iArr);
+        
         return iArr[2]-iArr[1]+1; //to calculate the size if the intersection, after making sure that the intersections are unionable,
                                 //substract the 2° biggest bound to the 3° biggest bound to calculate the size
-        
     }
     
     /**
@@ -78,6 +88,7 @@ public final class Interval1D {
      * @return
      */
     public boolean isUnionableWith(Interval1D that){
+        
         return((this.size()+that.size()-this.sizeOfIntersectionWith(that))==this.boundingUnion(that).size());
     }
     
@@ -87,6 +98,7 @@ public final class Interval1D {
      * @return
      */
     private boolean isContinuous(Interval1D that){
+        
         return(this.includedFrom()<=that.includedTo()&&this.includedTo()>=that.includedFrom());
     }
     
@@ -97,9 +109,12 @@ public final class Interval1D {
      * @throws throws IllegalArgumentException if the intervals are not unionable
      */
     public Interval1D union(Interval1D that){
+        
         Preconditions.checkArgument(this.isUnionableWith(that),"The intervals are not unionable");
+        
         int iArr[] = {this.includedTo(),that.includedFrom(),that.includedTo(),this.includedFrom()};
         Arrays.sort(iArr);
+        
         return new Interval1D(iArr[0], iArr[3]);
         
     }
@@ -110,16 +125,20 @@ public final class Interval1D {
      * @return a new interval that unites two intervals into one
      */
     public Interval1D boundingUnion(Interval1D that){
+        
         int low, up;
+        
         if(this.includedFrom()<=that.includedFrom()){
           //assign the smallest of the 4 total bounds to 'low', and the biggest to 'up'
             low=this.includedFrom();
         }
+        
         else low=that.includedFrom();
         
         if(this.includedTo()>=that.includedTo()){
         up=this.includedTo();
         }
+        
         else up=that.includedTo();
         
         return new Interval1D(low,up);//create an interval using the two minimal/maximal bounds
@@ -128,9 +147,16 @@ public final class Interval1D {
    
     @Override
     public boolean equals(Object thatO){
-        if(thatO==null)return false;
-        if(thatO.getClass()!=this.getClass())return false;
+        
+        if(thatO==null){
+            return false;
+        }
+        
+        if(thatO.getClass()!=this.getClass()){
+            return false;
+        }
         Interval1D that= (Interval1D)thatO;
+        
         return(this.includedTo()==that.includedTo()&&this.includedFrom()==that.includedFrom());
     }
     /**
@@ -139,13 +165,13 @@ public final class Interval1D {
      */
     @Override
     public String toString(){
+        
         return "["+this.includedFrom+".."+this.includedTo+"]";
     }
     
     @Override
     public int hashCode() {
+        
       return Objects.hash(includedFrom(), includedTo());
     }
-    
-
 }

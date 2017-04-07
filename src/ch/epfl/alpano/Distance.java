@@ -15,6 +15,7 @@ public interface Distance {
      * @return the distance converted in radians
      */
     public static double toRadians(double distanceInMeters){
+        
         return distanceInMeters/EARTH_RADIUS;
     }
     /**
@@ -23,7 +24,7 @@ public interface Distance {
      * @return the distance in radians converted in meters
      */
     public static double toMeters(double distanceInRadians){
+        
         return distanceInRadians*EARTH_RADIUS;
     }
-
 }

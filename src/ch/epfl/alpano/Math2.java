@@ -21,6 +21,7 @@ public interface Math2 {
      * @return the square of x
      */
     static double sq(double x){
+        
         return x*x;
     }
     /**
@@ -30,6 +31,7 @@ public interface Math2 {
      * @return the floor of the division
      */
     static double floorMod(double x, double y){
+        
         return x-y*floor(x/y);
     }
     /**
@@ -38,6 +40,7 @@ public interface Math2 {
      * @return the haversin function applied at the point x
      */
    static double haversin(double x){
+       
        return sq(sin(x/2));
    }
    /**
@@ -47,6 +50,7 @@ public interface Math2 {
     * @return the angular distance between a1 and a2 in radians
     */
    static double angularDistance(double a1, double a2){
+       
        return floorMod(a2-a1+PI,PI2)-PI;
    }
    
@@ -58,6 +62,7 @@ public interface Math2 {
     * @return f(x)
     */
    static  double lerp(double y0, double y1, double x){
+       
        return (y1-y0)*x+y0;
    }
    
@@ -72,8 +77,10 @@ public interface Math2 {
     * @return f(x, y)
     */
    static double bilerp(double z00, double z10, double z01, double z11, double x, double y){
+       
        double z1 = lerp(z00, z10, x);
        double z2 = lerp(z01, z11, x);
+       
        return lerp(z1, z2, y);
    }
    /**
@@ -84,15 +91,18 @@ public interface Math2 {
     * @param dX, the distance used in each step of calculation
     * @return the lower bound once the distance between the two bounds is reduced to less than dx, and Positive infinity if there no root is found
     */
-   static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){        
+   static double firstIntervalContainingRoot(DoubleUnaryOperator f, double minX, double maxX, double dX){   
+       
         double low = minX;
         double up = low + dX;
+        
         do {
             if (signum(f.applyAsDouble(low)) + signum(f.applyAsDouble(up)) == 0 || signum(f.applyAsDouble(low)) * signum(f.applyAsDouble(up)) == 0)
                 return low;
             low += dX;
             up += dX;
         } while (up <= maxX);
+        
         return Double.POSITIVE_INFINITY;
 
    }
@@ -148,6 +158,7 @@ public interface Math2 {
                     currentMax = xM;
                 }                 
             }while(Math.abs(currentMax-currentMin)> epsilon);  
+            
             return currentMin;   
         }
    }

@@ -16,22 +16,23 @@ public interface Azimuth {
      * @return true if the angle is included between 0 and (excluding)2PI
      */
     public static boolean isCanonical(double azimuth) {
+        
         if (azimuth >= 0 && azimuth < Math2.PI2){
             return true;
         }
             
         else{
             return false;
-        }
-            
+        }    
     }
 
     /**
-     * Canonicalizes azimuth
+     * Canonicalizes the azimuth
      * @param azimuth, the angle in radians to be canonicalized
-     * @return canonicalizes the angle between 0 and (excluding) 2PI
+     * @return the angle canonicalized between 0 and (excluding) 2PI
      */
     public static double canonicalize(double azimuth) {
+        
         return Math.abs(Math2.floorMod(azimuth, Math2.PI2));
     }
 
@@ -42,16 +43,16 @@ public interface Azimuth {
      * @throws IllegalArgumentException if the azimuth is not canonical
      */
     public static double toMath(double azimuth) {
+        
         Preconditions.checkArgument(isCanonical(azimuth), "Azimuth must be canonical");
+        
         if (azimuth == 0){
             return azimuth;
         }
         
         else{
             return Math2.PI2 - azimuth;
-        }
-            
-        
+        }    
     }
 
     /**
@@ -63,29 +64,30 @@ public interface Azimuth {
     public static double fromMath(double azimuth) {
 
         Preconditions.checkArgument(isCanonical(azimuth), "Azimuth must be canonical");
+        
         if (azimuth == 0){
             return azimuth;
         }
         
         else{
             return Math2.PI2 - azimuth;
-        }
-         
+        } 
     }
 
     /**
      * Constructs a String that indicates the direction of the azimuth
      * @param azimuth, the angle
-     * @param n, The String for the north direction
-     * @param e, The String for the east direction
-     * @param s, The String for the south direction
-     * @param w, The String for the west direction
+     * @param n, the String for the north direction
+     * @param e, the String for the east direction
+     * @param s, the String for the south direction
+     * @param w, the String for the west direction
      * @return a String that indicates the direction of the azimuth
      * @throws IllegalArgumentException if the azimuth is not canonical
      */
     public static String toOctantString(double azimuth, String n, String e, String s, String w) {
        
         Preconditions.checkArgument(isCanonical(azimuth), "Azimuth must be canonical");
+        
         StringBuilder direction = new StringBuilder();
         if ((azimuth >= 0 && azimuth <= 3 * PI / 8) || azimuth >= (13 * PI / 8)) {
             direction.append(n);
@@ -99,7 +101,5 @@ public interface Azimuth {
         }
 
         return direction.toString();
-
     }
-
 }

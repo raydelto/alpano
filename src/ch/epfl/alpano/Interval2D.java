@@ -29,6 +29,7 @@ public final class Interval2D
      * @return the first uni-dimensional interval
      */
     public Interval1D iX(){
+        
         return iX;
     }
     
@@ -37,6 +38,7 @@ public final class Interval2D
      * @return the second uni-dimensional interval
      */
     public Interval1D iY(){
+        
         return iY;
     }
     
@@ -47,6 +49,7 @@ public final class Interval2D
      * @return true if the pair is contained in the bi-dimensional interval contains the pair (x,y)
      */
     public boolean contains(int x, int y){
+        
         return (iX().contains(x)&&iY().contains(y));
     }
     /**
@@ -54,6 +57,7 @@ public final class Interval2D
      * @return the size of the bi-dimensional interval
      */
     public int size(){
+        
         return iX().size()*iY().size();
     }
     
@@ -97,6 +101,7 @@ public final class Interval2D
      * @return the size of a intersection between two bi-dimensional intervals
      */
     public int sizeOfIntersectionWith(Interval2D that){
+        
         return this.iX().sizeOfIntersectionWith(that.iX())*this.iY().sizeOfIntersectionWith(that.iY());
     }
     
@@ -106,6 +111,7 @@ public final class Interval2D
      * @return a new bi-dimensional interval that unites two bi-dimensional intervals into one
      */
     public Interval2D boundingUnion(Interval2D that){
+        
         return new Interval2D(this.iX().boundingUnion(that.iX()), this.iY().boundingUnion(that.iY()));
     }
     
@@ -117,9 +123,11 @@ public final class Interval2D
      *         that compose the two bi-dimensional intervals are not unionable
      */
     public Interval2D union(Interval2D that){
+        
         if(!(this.isUnionableWith(that))){
             throw new IllegalArgumentException();
         }
+        
         return new Interval2D(this.iX().union(that.iX()), this.iY().union(that.iY()));
     }
     
@@ -129,9 +137,12 @@ public final class Interval2D
      */
     @Override
     public boolean equals(Object thatO){
-        if(thatO==null)return false;
-        if(thatO.getClass()!=this.getClass())return false;
+        
+        if((thatO==null) || (thatO.getClass()!=this.getClass())){
+            return false;
+        }
         Interval2D that= (Interval2D)thatO;  
+        
         return (this.iX().equals(that.iX())&&this.iY().equals(that.iY()));
     }
     
@@ -141,6 +152,7 @@ public final class Interval2D
      */
     @Override
     public String toString(){
+        
         return this.iX().toString()+"x"+this.iY().toString();
     }
     
@@ -150,7 +162,7 @@ public final class Interval2D
      */
     @Override
     public int hashCode() {
+        
       return Objects.hash(this.iX(), this.iY());
     }
-
 }
