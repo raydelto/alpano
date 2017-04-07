@@ -107,7 +107,6 @@ public interface Math2 {
         } while (up <= maxX);
         
         return POSITIVE_INFINITY;
-
    }
    
      /**
