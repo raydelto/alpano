@@ -10,6 +10,10 @@ import javax.imageio.ImageIO;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 import ch.epfl.alpano.GeoPoint;
+import ch.epfl.alpano.dem.ContinuousElevationModel;
+import ch.epfl.alpano.dem.DiscreteElevationModel;
+import ch.epfl.alpano.dem.ElevationProfile;
+import ch.epfl.alpano.dem.HgtDiscreteElevationModel;
 
 final class DrawElevationProfile {
     final static File HGT_FILE = new File("N46E006.hgt");

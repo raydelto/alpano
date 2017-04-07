@@ -15,9 +15,9 @@ import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.dem.DiscreteElevationModel;
 
 final class DrawHgtDEM {
-    final static File HGT_FILE = new File("N47E011.hgt");
-    final static double ORIGIN_LON = toRadians(11.25);
-    final static double ORIGIN_LAT = toRadians(47.25);
+    final static File HGT_FILE = new File("N46E006.hgt");
+    final static double ORIGIN_LON = toRadians(6.25);
+    final static double ORIGIN_LAT = toRadians(46.25);
     final static double WIDTH = toRadians(0.5);
     final static int IMAGE_SIZE = 300;
     final static double MIN_ELEVATION = 200;
@@ -46,8 +46,9 @@ final class DrawHgtDEM {
       }
       dDEM.close();
 
-      ImageIO.write(i, "png", new File("dem17.png"));
+      ImageIO.write(i, "png", new File("dem.png"));
     }
+  
     private static int gray(double v) {
         double clampedV = max(0, min(v, 1));
         int gray = (int) (255.9999 * clampedV);

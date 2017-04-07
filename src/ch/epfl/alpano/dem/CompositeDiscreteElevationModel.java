@@ -16,8 +16,8 @@ public final class CompositeDiscreteElevationModel implements DiscreteElevationM
 
     /**
      * Creates a new CompositeDiscreteElevationModel from the union of two DiscreteElevationModels
-     * @param dem1, the first DiscreteElevationModel, non null
-     * @param dem2, the second DiscreteElevationModel, non null
+     * @param dem1 the first DiscreteElevationModel, non null
+     * @param dem2 the second DiscreteElevationModel, non null
      */
     CompositeDiscreteElevationModel(DiscreteElevationModel dem1, DiscreteElevationModel dem2) {
         

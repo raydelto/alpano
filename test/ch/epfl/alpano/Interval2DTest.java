@@ -1,269 +1,209 @@
 package ch.epfl.alpano;
 
-import static org.junit.Assert.*;
+import static ch.epfl.test.ObjectTest.hashCodeIsCompatibleWithEquals;
+import static ch.epfl.test.TestRandomizer.RANDOM_ITERATIONS;
+import static ch.epfl.test.TestRandomizer.newRandom;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Random;
 
 import org.junit.Test;
 
-import ch.epfl.test.ObjectTest;
-
 public class Interval2DTest {
+    private static Interval2D newInterval2D(int x1, int x2, int y1, int y2) {
+        return new Interval2D(new Interval1D(x1, x2), new Interval1D(y1, y2));
+    }
+
+    private static Interval2D i_0_10_0_10() {
+        return newInterval2D(0, 10, 0, 10);
+    }
+
+    private static Interval2D i_0_9_0_11() {
+        return newInterval2D(0, 9, 0, 11);
+    }
+
+    private static Interval2D i_0_10_11_20() {
+        return newInterval2D(0, 10, 11, 20);
+    }
+
+    private static Interval2D i_0_10_0_20() {
+        return newInterval2D(0, 10, 0, 20);
+    }
+
+    private static Interval2D i_11_20_0_10() {
+        return newInterval2D(11, 20, 0, 10);
+    }
+
+    private static Interval2D i_0_20_0_10() {
+        return newInterval2D(0, 20, 0, 10);
+    }
+
+    private static Interval2D i_2_2_2_2() {
+        return newInterval2D(2, 2, 2, 2);
+    }
 
     @Test(expected = NullPointerException.class)
-    public void constructorThrowsExceptionForIx(){
-        Interval1D iy = new Interval1D(12, 16);
-        Interval2D i = new Interval2D(null, iy);
+    public void constructorFailsOnInvalidInterval() {
+        new Interval2D(null, null);
     }
-    
-    @Test(expected = NullPointerException.class)
-    public void constructorThrowsExceptionForIy(){
-        Interval1D ix = new Interval1D(-2, 4);
-        Interval2D i = new Interval2D(ix, null);
-    }
-    
-    @Test
-    public void iXWorks(){
-        Interval1D x = new Interval1D(-4, 6);
-        Interval1D y = new Interval1D(-2, 8);
-        Interval2D i = new Interval2D(x, y);
-        assertTrue(x.equals(i.iX()));
-        assertFalse(y.equals(i.iX()));
-    }
-    
-    @Test
-    public void iYWorks(){
-        Interval1D x = new Interval1D(-4, 6);
-        Interval1D y = new Interval1D(-2, 8);
-        Interval2D i = new Interval2D(x, y);
-        assertTrue(y.equals(i.iY()));
-        assertFalse(x.equals(i.iY()));   
-    }
-    
-    @Test
-    public void containsWorks(){
-        Interval1D x = new Interval1D(-7, -2);
-        Interval1D y = new Interval1D(4, 8);
-        Interval2D i = new Interval2D(x, y);
-        assertTrue(i.contains(-4, 5));
-        assertFalse(i.contains(-7, -2));
-        assertFalse(i.contains(-5, 0));
-        assertFalse(i.contains(4, 8));
-        assertFalse(i.contains(0, 4));
-    }
-    
-    @Test
-    public void sizeWorks(){
-        Interval1D x = new Interval1D(-7, -2);
-        Interval1D y = new Interval1D(4, 8);
-        Interval1D x1 = new Interval1D(-6, 4);
-        Interval1D y1 = new Interval1D(-4, 8);
-        Interval2D i = new Interval2D(x, y);
-        Interval2D i2 = new Interval2D(x1, y1);
-        
-        assertEquals(30, i.size(), 0);
-        assertEquals(143, i2.size(), 0);
-        
-    }
-    
-  
-    @Test
-    public void sizeOfIntersectioWithWorks(){
-        Interval1D x = new Interval1D(-7, -2);
-        Interval1D y = new Interval1D(4, 8);
-        Interval1D x1 = new Interval1D(-6, 4);
-        Interval1D y1 = new Interval1D(-4, 8);
-        Interval1D x2 = new Interval1D(8, 12);
-        Interval1D y2 = new Interval1D(-8, -5);
-        Interval2D i = new Interval2D(x, y);
-        Interval2D i2 = new Interval2D(x1, y1);
-        Interval2D i3 = new Interval2D(x2, y2);
-        
-        assertEquals(25, i.sizeOfIntersectionWith(i2));
-        assertEquals(0, i.sizeOfIntersectionWith(i3));
-    }
-    
-    @Test
-    public void boundingUnionWorks(){
-        Interval1D x = new Interval1D(-7, -2);
-        Interval1D y = new Interval1D(4, 8);
 
-        Interval1D x1 = new Interval1D(-6, 4);
-        Interval1D y1 = new Interval1D(-4, 8);
-        
-        Interval1D x2 = new Interval1D(4, 9);
-        Interval1D y2 = new Interval1D(-8, -6);
-        
-        Interval1D b1 = new Interval1D(-7, 4);
-        Interval1D b2 = new Interval1D(-4, 8);
-        
-        Interval1D b3 = new Interval1D(-7, 9);
-        Interval1D b4 = new Interval1D(-8, 8);
-        
-        Interval2D i = new Interval2D(x, y);
-        Interval2D i2 = new Interval2D(x1, y1);
-        Interval2D i3 = new Interval2D(x2, y2);
-        Interval2D bu = new Interval2D(b1, b2);
-        Interval2D bu2 = new Interval2D(b3, b4);
-       
-        assertEquals(bu, i.boundingUnion(i2));
-        assertEquals(bu2, i.boundingUnion(i3));
-              
-    }
-    
     @Test
-    public void inUnionableWithWorks(){
-        
-        Interval1D x = new Interval1D(-7, -2);
-        Interval1D y = new Interval1D(4, 8);
-
-        Interval1D x1 = new Interval1D(-6, 4);
-        Interval1D y1 = new Interval1D(-4, 8);
-        
-        Interval1D x2 = new Interval1D(4, 9);
-        Interval1D y2 = new Interval1D(-8, -6);
-        
-        Interval1D x3 = new Interval1D(-1, 2);
-        Interval1D y3 = new Interval1D(0, 3);
-        
-        Interval1D x4 = new Interval1D(0, 2);
-        Interval1D y4 = new Interval1D(0, 5);
-        
-        Interval1D x5 = new Interval1D(-7, -2);
-        Interval1D y5 = new Interval1D(-4, 5);
-        
-        Interval1D x6 = new Interval1D(-4, -3);
-        Interval1D y6 = new Interval1D(5, 6);
-        
-        Interval1D x7 = new Interval1D(-7, -2);
-        Interval1D y7 = new Interval1D(4, 8);
-       
-        
-        
-        Interval2D i = new Interval2D(x, y);
-        Interval2D i1 = new Interval2D(x1, y1);
-        Interval2D i2 = new Interval2D(x2, y2);
-        Interval2D i3 = new Interval2D(x3, y3);
-        Interval2D i4 = new Interval2D(x4, y4);
-        Interval2D i5 = new Interval2D(x5, y5);
-        Interval2D i6 = new Interval2D(x6, y6);
-        Interval2D i7 = new Interval2D(x7, y7);
-        
-        assertFalse(i.isUnionableWith(i1));
-        assertFalse(i.isUnionableWith(i2));
-        assertFalse(i.isUnionableWith(i3));
-        assertFalse(i.isUnionableWith(i4));
-        assertTrue(i.isUnionableWith(i5));
-        assertTrue(i.isUnionableWith(i6));
-        assertTrue(i.isUnionableWith(i7));
-                
+    public void containsWorksOnKnownIntervals() {
+        Interval2D i = i_2_2_2_2();
+        for (int x = 1; x <= 3; ++x) {
+            for (int y = 1; y <= 3; ++y) {
+                assertEquals(x == 2 && y == 2, i.contains(x, y));
+            }
+        }
     }
-    
+
+    @Test
+    public void sizeWorksOnKnownIntervals() {
+        assertEquals(1, i_2_2_2_2().size());
+        assertEquals(21 * 11, i_0_20_0_10().size());
+        assertEquals(10 * 11, i_11_20_0_10().size());
+    }
+
+    @Test
+    public void sizeOfIntersectionWorksOnNonIntersectingIntervals() {
+        assertEquals(0, i_2_2_2_2().sizeOfIntersectionWith(i_11_20_0_10()));
+        assertEquals(0, i_11_20_0_10().sizeOfIntersectionWith(i_2_2_2_2()));
+    }
+
+    @Test
+    public void sizeOfIntersectionWorksOnIntersectingIntervals() {
+        assertEquals(1, i_2_2_2_2().sizeOfIntersectionWith(i_2_2_2_2()));
+        assertEquals(21 * 11, i_0_20_0_10().sizeOfIntersectionWith(i_0_20_0_10()));
+        assertEquals(1, i_2_2_2_2().sizeOfIntersectionWith(i_0_20_0_10()));
+        assertEquals(1, i_0_20_0_10().sizeOfIntersectionWith(i_2_2_2_2()));
+        assertEquals(10 * 11, i_0_10_0_10().sizeOfIntersectionWith(i_0_9_0_11()));
+    }
+
+    @Test
+    public void boudingUnionWorksOnKnownIntervals() {
+        assertEquals(i_2_2_2_2(), i_2_2_2_2().boundingUnion(i_2_2_2_2()));
+
+        Interval2D i1 = i_0_10_0_10().boundingUnion(i_0_9_0_11());
+        assertEquals(0, i1.iX().includedFrom());
+        assertEquals(10, i1.iX().includedTo());
+        assertEquals(0, i1.iY().includedFrom());
+        assertEquals(11, i1.iY().includedTo());
+
+        Interval2D i2 = i_2_2_2_2().boundingUnion(i_11_20_0_10());
+        assertEquals(2, i2.iX().includedFrom());
+        assertEquals(20, i2.iX().includedTo());
+        assertEquals(0, i2.iY().includedFrom());
+        assertEquals(10, i2.iY().includedTo());
+    }
+
+    @Test
+    public void isUnionableWorksOnKnownUnionableIntervals() {
+        assertTrue(i_0_10_0_10().isUnionableWith(i_0_10_0_10()));
+        assertTrue(i_0_10_0_10().isUnionableWith(i_0_10_11_20()));
+        assertTrue(i_0_10_11_20().isUnionableWith(i_0_10_0_10()));
+        assertTrue(i_0_10_0_10().isUnionableWith(i_11_20_0_10()));
+        assertTrue(i_11_20_0_10().isUnionableWith(i_0_10_0_10()));
+        assertTrue(i_0_10_0_10().isUnionableWith(i_2_2_2_2()));
+        assertTrue(i_2_2_2_2().isUnionableWith(i_0_10_0_10()));
+    }
+
+    @Test
+    public void isUnionableWorksOnKnownNonUnionableIntervals() {
+        assertFalse(i_2_2_2_2().isUnionableWith(i_11_20_0_10()));
+        assertFalse(i_11_20_0_10().isUnionableWith(i_2_2_2_2()));
+        assertFalse(i_0_9_0_11().isUnionableWith(i_0_10_0_10()));
+        assertFalse(i_0_10_0_10().isUnionableWith(i_0_9_0_11()));
+    }
+
+    @Test
+    public void isUnionableWithIsReflexive() {
+        Random rng = newRandom();
+        for (int i = 0; i < RANDOM_ITERATIONS; ++i) {
+            Interval2D interval = nextInterval(rng, 500, 1000);
+            assertTrue(interval.isUnionableWith(interval));
+        }
+    }
+
+    @Test
+    public void isUnionableWithIsSymmetric() {
+        Random rng = newRandom();
+        for (int i = 0; i < RANDOM_ITERATIONS; ++i) {
+            Interval2D i1 = nextInterval(rng, 5, 10);
+            Interval2D i2 = nextInterval(rng, 5, 10);
+            assertTrue(! i1.isUnionableWith(i2) || i2.isUnionableWith(i1));
+        }
+    }
+
     @Test(expected = IllegalArgumentException.class)
-    public void unionThrowsException(){
-        
-        Interval1D x = new Interval1D(-7, 2);
-        Interval1D y = new Interval1D(4, 8);
-
-        Interval1D x1 = new Interval1D(4, 12);
-        Interval1D y1 = new Interval1D(-4, 8);
-         
-        Interval2D i = new Interval2D(x, y);
-        Interval2D i1 = new Interval2D(x1, y1);
-       
-        i.union(i1);
+    public void unionFailsOnNonUnionableIntervals() {
+        i_2_2_2_2().union(i_11_20_0_10());
     }
-    
+
     @Test
-    public void unionWorks(){
-        
-        Interval1D x = new Interval1D(-7, -2);
-        Interval1D y = new Interval1D(4, 8);
-
-        Interval1D x1 = new Interval1D(-6, 4);
-        Interval1D y1 = new Interval1D(4, 8);
-        
-        Interval1D x2 = new Interval1D(-6, 4);
-        Interval1D y2 = new Interval1D(-8, 6);
-                      
-        Interval2D i = new Interval2D(x, y);
-        Interval2D i1 = new Interval2D(x1, y1);
-        Interval2D i2 = new Interval2D(x2, y2);
-        
-        Interval2D u = new Interval2D(new Interval1D(-7, 4), new Interval1D(4, 8));
-        Interval2D u1 = new Interval2D(new Interval1D(-6, 4), new Interval1D(-8, 8));
-        assertEquals(u, i.union(i1));
-        assertEquals(u1, i1.union(i2));
-        
+    public void unionWorksOnASingleInterval() {
+        assertEquals(i_0_10_0_10(), i_0_10_0_10().union(i_0_10_0_10().union(i_0_10_0_10())));
     }
-    
+
     @Test
-    public void equalsWorks(){
-        
-        Interval1D x = new Interval1D(-7, -2);
-        Interval1D y = new Interval1D(4, 8);
+    public void unionWorksOnKnownIntervals() {
+        assertEquals(i_0_10_0_10(), i_0_10_0_10().union(i_2_2_2_2()));
+        assertEquals(i_0_10_0_10(), i_2_2_2_2().union(i_0_10_0_10()));
 
-        Interval1D x1 = new Interval1D(-6, 4);
-        Interval1D y1 = new Interval1D(-4, 8);
-        
-        Interval1D x2 = new Interval1D(4, 9);
-        Interval1D y2 = new Interval1D(-8, -6);
-        
-        Interval1D x3 = new Interval1D(-3, 9);
-        Interval1D y3 = new Interval1D(-4, 6);
-        
-        Interval1D b1 = new Interval1D(-7, 4);
-        Interval1D b2 = new Interval1D(-4, 8);
-        
-        Interval1D b3 = new Interval1D(-7, 9);
-        Interval1D b4 = new Interval1D(-8, 8);
-        
-        Interval1D b5 = new Interval1D(-7, 8);
-        Interval1D b6 = new Interval1D(-4, 8);
-        
-        Interval2D i = new Interval2D(x, y);
-        Interval2D i2 = new Interval2D(x1, y1);
-        Interval2D i3 = new Interval2D(x2, y2);
-        Interval2D i4 = new Interval2D(x3, y3);
-        
-        Interval2D bu = new Interval2D(b1, b2);
-        Interval2D bu2 = new Interval2D(b3, b4);
-        Interval2D bu3 = new Interval2D(b5, b6);
-        
-       
-        assertTrue(bu.equals(i.boundingUnion(i2)));
-        assertTrue(bu2.equals(i.boundingUnion(i3)));
-       
+        assertEquals(i_0_10_0_20(), i_0_10_0_10().union(i_0_10_11_20()));
+        assertEquals(i_0_10_0_20(), i_0_10_11_20().union(i_0_10_0_10()));
+
+        assertEquals(i_0_20_0_10(), i_0_10_0_10().union(i_11_20_0_10()));
+        assertEquals(i_0_20_0_10(), i_11_20_0_10().union(i_0_10_0_10()));
     }
-    
+
     @Test
-    public void hashCodeTest(){
-        
-        Interval1D x = new Interval1D(-7, -2);
-        Interval1D y = new Interval1D(4, 8);
-
-        Interval1D x1 = new Interval1D(-6, 4);
-        Interval1D y1 = new Interval1D(-4, 8);
-               
-        Interval2D i = new Interval2D(x, y);
-        Interval2D i2 = new Interval2D(x1, y1);
-        
-        ObjectTest.hashCodeIsCompatibleWithEquals(i, i2);
-              
+    public void unionIsCommutative() {
+        Random rng = newRandom();
+        for (int i = 0; i < RANDOM_ITERATIONS; ++i) {
+            Interval2D i1 = nextInterval(rng, 5, 10);
+            Interval2D i2 = nextInterval(rng, 5, 10);
+            if (i1.isUnionableWith(i2))
+                assertEquals(i1.union(i2), i2.union(i1));
+        }
     }
-    
+
     @Test
-    public void toStringWorks(){
-        
-        Interval1D x = new Interval1D(-7, -2);
-        Interval1D y = new Interval1D(4, 8); 
-               
-        Interval2D i = new Interval2D(x, y);
-        String s = "[-7..-2]x[4..8]";
-        
-        assertTrue(s.equals(i.toString()));
-        
+    public void equalsIsStructural() {
+        Random rng = newRandom();
+        for (int i = 0; i < RANDOM_ITERATIONS; ++i) {
+            int x1 = rng.nextInt(1000) - 500;
+            int x2 = x1 + rng.nextInt(1000);
+            int y1 = rng.nextInt(1000) - 500;
+            int y2 = y1 + rng.nextInt(1000);
+            Interval2D int1 = newInterval2D(x1, x2, y1, y2);
+            Interval2D int2 = newInterval2D(x1, x2, y1, y2);
+            Interval2D int3 = newInterval2D(x1, x2, y1, y2 + 1);
+            assertTrue(int1.equals(int2));
+            assertTrue(int2.equals(int1));
+            assertFalse(int1.equals(int3));
+            assertFalse(int3.equals(int1));
+        }
     }
-    
-    
-    
 
+    @Test
+    public void hashCodeAndEqualsAreCompatible() {
+        Random rng = newRandom();
+        for (int i = 0; i < RANDOM_ITERATIONS; ++i) {
+            int a = rng.nextInt(1000) - 500, b = a + rng.nextInt(20);
+            int c = rng.nextInt(1000) - 500, d = c + rng.nextInt(20);
+            Interval2D i1 = newInterval2D(a, b, c, d);
+            Interval2D i1b = newInterval2D(a, b, c, d);
+            Interval2D i2 = newInterval2D(a, b, c, d + 1);
+            assertTrue(hashCodeIsCompatibleWithEquals(i1, i1b));
+            assertTrue(hashCodeIsCompatibleWithEquals(i1, i2));
+        }
+    }
+
+    private Interval2D nextInterval(Random rng, int maxOffset, int maxSize) {
+        int offsetX = rng.nextInt(maxOffset), offsetY = rng.nextInt(maxOffset);
+        int sizeX = rng.nextInt(maxSize), sizeY = rng.nextInt(maxSize);
+        return newInterval2D(-offsetX, sizeX - offsetX, -offsetY, sizeY - offsetY);
+    }
 }

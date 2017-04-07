@@ -26,7 +26,7 @@ public final class ContinuousElevationModel {
     
     /**
      * Constructs a new continuous dem based on a discrete dem
-     * @param dem, the dem
+     * @param dem the dem
      */
     public ContinuousElevationModel(DiscreteElevationModel dem){
         
@@ -35,7 +35,7 @@ public final class ContinuousElevationModel {
     
     /**
      * Calculates the elevation of a geopoint by doing a bilinear interpolation of the extent of the dem given to the constructor
-     * @param p, the geopoint 
+     * @param p the geopoint 
      * @return the elevation of the geopoint p, in meters
      */
     public double elevationAt(GeoPoint p){
@@ -51,7 +51,7 @@ public final class ContinuousElevationModel {
     
     /**
      * Calculate the slope at the given geopoint
-     * @param p, the geopoint
+     * @param p the geopoint
      * @return the slope at the geopoint p, in radians
      */
     public double slopeAt(GeoPoint p){
@@ -66,8 +66,8 @@ public final class ContinuousElevationModel {
     
     /**
      * Calculates the slope at index (x, y)
-     * @param x, index
-     * @param y, index
+     * @param x index
+     * @param y index
      * @return the slope in radians
      */
     private double doTheta(int x, int y){
@@ -80,8 +80,8 @@ public final class ContinuousElevationModel {
     
     /**
      * Checks that the index (x, y) is is contained in the dem given to the constructor
-     * @param x, index
-     * @param y, index
+     * @param x index
+     * @param y index
      * @return the elevation at index(x, y) if contained in the dem, 0 otherwise
      */
     private double checkSample(int x, int y){

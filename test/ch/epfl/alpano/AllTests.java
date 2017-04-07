@@ -4,13 +4,11 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import ch.epfl.alpano.dem.AllTestsDEM;
+import ch.epfl.alpano.summit.AllTestsSummit;
+
 @RunWith(Suite.class)
-@SuiteClasses({ AzimuthTest.class, AzimuthTestJM.class, DistanceTest.class,
-        DistanceTestJM.class, GeoPointTest.class, GeoPointTestBaPh.class,
-        GeoPointTestSuperficialJM.class, Interval1DTest.class,
-        Interval1DTestBaPh.class, Interval1DTestJM.class, Interval2DTest.class,
-        Interval2DTestBaPh.class, Interval2DTestJM.class, Math2Test.class,
-        PreconditionsTest.class, PreconditionsTestJM.class })
+@SuiteClasses({AllTestsPackage.class, AllTestsDEM.class, AllTestsSummit.class})
 public class AllTests {
 
 }

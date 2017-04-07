@@ -36,10 +36,10 @@ public final class ElevationProfile {
     /**
      * Constructs an ElevationProfile, constructs and stores in an array the latitude and the longitude of a point 
      * every 4096 meters until the length of the profile is reached
-     * @param elevationModel, a ContinousElevationModel given
-     * @param origin, a GeoPoint that indicates the beginning of the profile
-     * @param azimuth, a double that give the direction
-     * @param length, a double that represents the length of the profile
+     * @param elevationModel a ContinousElevationModel given
+     * @param origin a GeoPoint that indicates the beginning of the profile
+     * @param azimuth a double that give the direction
+     * @param length a double that represents the length of the profile
      * @throws IllegalArgumentException if azimuth is non canonical,or length is smaller or equal than 0
      * @throws NullPointerException if elevationModel or origin are null
      */
@@ -68,8 +68,8 @@ public final class ElevationProfile {
     
     /**
      * Calculates the elevation of the profile at a given point
-     * @param x, a double that indicate the position where we want to know the elevation
-     * @return a double that corresponds to the elevation of the profile at the position x
+     * @param x a double that indicate the position where we want to know the elevation
+     * @return double that corresponds to the elevation of the profile at the position x
      */
     public double elevationAt(double x){
         
@@ -80,8 +80,8 @@ public final class ElevationProfile {
     
     /**
      * Calculates the coordinates (latitude and longitude) of the given point in the profile
-     * @param x, a double where we want to know the coordinates
-     * @return a GeopPoint that indicates the coordinates of the point x in the profile
+     * @param x a double where we want to know the coordinates
+     * @return GeopPoint that indicates the coordinates of the point x in the profile
      * @throws IllegalArgumentException if the parameter x is not between 0 and the length of the profile
      */
     public GeoPoint positionAt(double x){
@@ -106,8 +106,8 @@ public final class ElevationProfile {
     
     /**
      * Calculate the slope at a given point of the profile
-     * @param x, the point where we want to know the slope
-     * @return a double that corresponds to the slope at the position x of the profile
+     * @param x the point where we want to know the slope
+     * @return double that corresponds to the slope at the position x of the profile
      * @throws IllegalArgumentException if the parameter x is not between 0 and the length of the profile
      */
     public double slopeAt(double x){
@@ -120,7 +120,7 @@ public final class ElevationProfile {
     /**
      * Private method that checks if the parameter x is between 0 and the length of the profile
      * Throws an IllegalArgumentException if it is not the case
-     * @param x, a double
+     * @param x a double
      * @throws IllegalArgumentException if the parameter x is not between 0 and the length of the profile
      */
     private void isInBounds(double x){
