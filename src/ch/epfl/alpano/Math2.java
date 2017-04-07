@@ -125,10 +125,10 @@ public interface Math2 {
      }
    /**
     * 
-    * @param f, the function to be used in this operation
-    * @param x1, One of the two bounds
-    * @param x2, One of the two bounds
-    * @param epsilon, maximal distance desired between the two bounds
+    * @param f the function to be used in this operation
+    * @param x1 One of the two bounds
+    * @param x2 One of the two bounds
+    * @param epsilon maximal distance desired between the two bounds
     * @return the lower bound once the distance between the two bounds is reduced to less than epsilon
     * @throws IllegalArgumentException if f(x1) and f(x2) don't have the same sign
     */
