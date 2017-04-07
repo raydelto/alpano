@@ -57,12 +57,12 @@ public class HgtTest {
         HgtDiscreteElevationModel a=new HgtDiscreteElevationModel(new File("N46E006.hgt"));
         a.elevationSample(99*3600, 6*3600  );
     }
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void outOfExtent3()  {
         HgtDiscreteElevationModel a=new HgtDiscreteElevationModel(new File("N46E006.hgt"));
         a.elevationSample( 6*3600, 46*3600 );
     }
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void outOfExtent4()  {
         HgtDiscreteElevationModel a=new HgtDiscreteElevationModel(new File("N46E006.hgt"));
         a.elevationSample( 7*3600, 46*3600 );
@@ -70,7 +70,7 @@ public class HgtTest {
     @Test(expected = IllegalArgumentException.class)
     public void outOfExtent5()  {
         HgtDiscreteElevationModel a=new HgtDiscreteElevationModel(new File("N46E006.hgt"));
-        a.elevationSample( 7*3600*1, 46*3600 );
+        a.elevationSample( 7*3600+1, 46*3600 );
     }
 
 }

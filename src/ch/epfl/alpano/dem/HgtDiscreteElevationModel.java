@@ -34,9 +34,9 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
      * @throws IllegalArgumentException, if there are problems with the source file
      */
     public HgtDiscreteElevationModel(File file) {
+        
         try (FileInputStream stream = new FileInputStream(file)) {
             Preconditions.checkArgument(this.checkName(file),"Problems with file name");
-
             long l = file.length();
             buffer = stream.getChannel().map(MapMode.READ_ONLY, 0, l).asShortBuffer();
         } catch (SecurityException | IOException e) {
@@ -59,53 +59,69 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 
         ext = new Interval2D(new Interval1D(longitudeIndex, longitudeIndex + SAMPLES_PER_DEGREE),
                 new Interval1D(latitudeIndex, latitudeIndex + SAMPLES_PER_DEGREE));
-
     }
 
     /**
      * Checks if the file complies with the prerequisites
-     * 
      * @param file, the file to be checked
      * @return true, only if the file complies with all prerequisites
      */
     private boolean checkName(File file) {
+        
         String name = file.getName();
-        if (name.length() != 11)
-            return false;// check length
+        if (name.length() != 11)// check length
+            
+            return false;
 
         char verticalTemp = name.charAt(0);
-        if (!(verticalTemp == 'N' || verticalTemp == 'S'))
-            return false;// check first letter
+        if (!(verticalTemp == 'N' || verticalTemp == 'S'))// check first letter
+            
+            return false;
 
         int latitudeTemp;
         try {
             latitudeTemp = Integer.parseInt(name.substring(1, 3));// check latitude
         } catch (NumberFormatException e) {
+            
             return false;
         } catch (Exception e) {
+            
             return false;
         }
-        if (!(latitudeTemp >= 0 && latitudeTemp <= 90))
+        if (verticalTemp == 'N'&&!(latitudeTemp >= 0 && latitudeTemp <= 89))//if we include 90 that means that the latitude will include until 91°, and we consider this wrong
+            
+            return false;
+        if (verticalTemp == 'S'&&!(latitudeTemp >= 0 && latitudeTemp <= 90))
+           
             return false;
 
        char horizontalTemp = name.charAt(3);
         if (!(horizontalTemp == 'W' || horizontalTemp == 'E'))
+            
             return false;// check second letter
 
         int longitudeTemp;
         try {
             longitudeTemp = Integer.parseInt(name.substring(4, 7));// check longitude
         } catch (NumberFormatException e) {
+           
             return false;
         } catch (Exception e) {
+            
             return false;
         }
-        if (!(longitudeTemp >= 0 && longitudeTemp <= 180))
+        if (horizontalTemp == 'W'&&!(longitudeTemp >= 0 && longitudeTemp <= 180))
+            
+            return false;
+        if (horizontalTemp == 'E'&&!(longitudeTemp >= 0 && longitudeTemp <= 179))//if we include 180 that means that the longitude will include until 181°, and we consider this wrong
+            
             return false;
         if (!name.substring(7, 11).equals(".hgt"))//check postfix
+            
             return false;
 
         if (file.length() != 25934402)//check file length
+            
             return false;
 
         return true;
@@ -114,22 +130,26 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 
     @Override
     public void close(){
+        
         buffer = null;
     }
 
     @Override
     public Interval2D extent() {
+        
         return ext;
 
     }
 
     @Override
     public double elevationSample(int x, int y) {
+        
         Preconditions.checkArgument((this.extent().contains(x, y)),"The extent doesn't contain the sample");
 
         int deltaX = Math.abs(x - longitudeIndex);
         int deltaY = Math.abs(y - latitudeIndex);
         int position = (SAMPLES_PER_DEGREE_PLUS_ONE * (SAMPLES_PER_DEGREE - deltaY)) + deltaX;
+        
         return buffer.get(position);
 
     }

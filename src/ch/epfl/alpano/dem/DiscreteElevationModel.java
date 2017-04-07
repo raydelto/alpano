@@ -20,6 +20,7 @@ public interface DiscreteElevationModel extends AutoCloseable{
      * @return the index of the given angle 
      */
     static double sampleIndex(double angle){
+        
         return angle*SAMPLES_PER_RADIAN;
     }
 
@@ -47,6 +48,7 @@ public interface DiscreteElevationModel extends AutoCloseable{
         if(!(this.extent().isUnionableWith(that.extent()))){
             throw new IllegalArgumentException("The two models are not unionable");
         }
+        
         return new CompositeDiscreteElevationModel(this, that);
                
     }

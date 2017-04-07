@@ -23,24 +23,23 @@ public class GazetteerParser {
     /**
      * private constructor of GazetteerParser
      */
-    private GazetteerParser() {
-    };
+    private GazetteerParser() {};
 
     /**
      * Extracts the information from a file to a list of Summits
-     * 
      * @param file, the source file
      * @return a list with all the information extracted from the file
      * @throws IOException if there are problems with the file, or if it is not formatted the correct way
      */
     public static List<Summit> readSummitsFrom(File file) throws IOException {
+        
         ArrayList<Summit> tab = new ArrayList<Summit>();
         String name, longitude, latitude, elevation;
 
         if (file.length() == 0)
             throw new IOException("length is 0");
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
 
             String line = br.readLine();
             while (line != null) {
@@ -107,13 +106,15 @@ public class GazetteerParser {
             if (!(sec >= 0 && sec <= 59))
                 throw exception;
 
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             throw exception;
         }
 
         if (hms[0].trim().charAt(0) == '-'){
+            
             return -Math.toRadians((((deg * 60) + min) * 60 + sec) / 3600d);
         }
+        
         return Math.toRadians((((deg * 60) + min) * 60 + sec) / 3600d);
     }
 }
