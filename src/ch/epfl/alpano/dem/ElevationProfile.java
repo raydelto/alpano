@@ -6,23 +6,20 @@
  */
 package ch.epfl.alpano.dem;
 
-import ch.epfl.alpano.Azimuth;
 import ch.epfl.alpano.GeoPoint;
-import ch.epfl.alpano.Preconditions;
 import static ch.epfl.alpano.Azimuth.isCanonical;
 import static ch.epfl.alpano.Azimuth.toMath;
 import static ch.epfl.alpano.Distance.toRadians;
-import static ch.epfl.alpano.Distance.toMeters;
 import static java.lang.Math.asin;
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
+import static java.lang.Math.floor;
 import static java.lang.Math.PI;
 import static ch.epfl.alpano.Math2.floorMod;
 import static ch.epfl.alpano.Math2.PI2;
 import static ch.epfl.alpano.Math2.lerp;
-
-import java.util.ArrayList;
-import java.util.Objects;
+import static ch.epfl.alpano.Preconditions.checkArgument;
+import static java.util.Objects.requireNonNull;
 
 public final class ElevationProfile {
     
@@ -45,11 +42,11 @@ public final class ElevationProfile {
      */
     public ElevationProfile(ContinuousElevationModel elevationModel, GeoPoint origin, double azimuth, double length){
         
-        Preconditions.checkArgument(isCanonical(azimuth));
-        Preconditions.checkArgument(length>0);
+        checkArgument(isCanonical(azimuth));
+        checkArgument(length>0);
         
-        this.elevationModel = Objects.requireNonNull(elevationModel,"null elevationModel");
-        this.origin = Objects.requireNonNull(origin,"null origin");
+        this.elevationModel = requireNonNull(elevationModel,"null elevationModel");
+        this.origin = requireNonNull(origin,"null origin");
         this.azimuth = azimuth;
         this.length = length;
         
@@ -90,7 +87,7 @@ public final class ElevationProfile {
         
         int lowerBound=0;
         int upperBound=0;
-        lowerBound = (int)Math.floor(x/step);
+        lowerBound = (int)floor(x/step);
         upperBound = lowerBound +1;
         
         if(upperBound >= table.length){

@@ -6,16 +6,17 @@
  */
 package ch.epfl.alpano.dem;
 
+import static ch.epfl.alpano.Preconditions.checkArgument;
+import static java.lang.Integer.parseInt;
+import static java.lang.Math.abs;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ShortBuffer;
 import java.nio.channels.FileChannel.MapMode;
-
 import ch.epfl.alpano.Interval1D;
 import ch.epfl.alpano.Interval2D;
-import ch.epfl.alpano.Preconditions;
 
 public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
     
@@ -36,7 +37,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
     public HgtDiscreteElevationModel(File file) {
         
         try (FileInputStream stream = new FileInputStream(file)) {
-            Preconditions.checkArgument(this.checkName(file),"Problems with file name");
+            checkArgument(this.checkName(file),"Problems with file name");
             long l = file.length();
             buffer = stream.getChannel().map(MapMode.READ_ONLY, 0, l).asShortBuffer();
         } catch (SecurityException | IOException e) {
@@ -44,7 +45,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
         }
         
          String name = file.getName();
-         int latitude= Integer.parseInt(name.substring(1, 3)), longitude = Integer.parseInt(name.substring(4, 7));
+         int latitude= parseInt(name.substring(1, 3)), longitude = parseInt(name.substring(4, 7));
          char horizontal= name.charAt(3), vertical= name.charAt(0);
 
         if (horizontal == 'W'){
@@ -85,7 +86,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
             
         int latitudeTemp;
         try {
-            latitudeTemp = Integer.parseInt(name.substring(1, 3));// check latitude
+            latitudeTemp = parseInt(name.substring(1, 3));// check latitude
         } catch (NumberFormatException e) {
             
             return false;
@@ -98,10 +99,10 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
             return false;
         }
         
-        if (verticalTemp == 'S'&&!(latitudeTemp >= 0 && latitudeTemp <= 90))
-           
+        if (verticalTemp == 'S'&&!(latitudeTemp >= 0 && latitudeTemp <= 90)){
             return false;
-
+        }
+           
         char horizontalTemp = name.charAt(3);
         
         if (!(horizontalTemp == 'W' || horizontalTemp == 'E')){// check second letter
@@ -111,7 +112,7 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
         int longitudeTemp;
         
         try {
-            longitudeTemp = Integer.parseInt(name.substring(4, 7));// check longitude
+            longitudeTemp = parseInt(name.substring(4, 7));// check longitude
         } catch (NumberFormatException e) {
            
             return false;
@@ -154,10 +155,10 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
     @Override
     public double elevationSample(int x, int y) {
         
-        Preconditions.checkArgument((this.extent().contains(x, y)),"The extent doesn't contain the sample");
+        checkArgument((this.extent().contains(x, y)),"The extent doesn't contain the sample");
 
-        int deltaX = Math.abs(x - longitudeIndex);
-        int deltaY = Math.abs(y - latitudeIndex);
+        int deltaX = abs(x - longitudeIndex);
+        int deltaY = abs(y - latitudeIndex);
         int position = (SAMPLES_PER_DEGREE_PLUS_ONE * (SAMPLES_PER_DEGREE - deltaY)) + deltaX;
         
         return buffer.get(position);

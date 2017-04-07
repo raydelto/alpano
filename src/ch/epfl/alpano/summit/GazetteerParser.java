@@ -6,6 +6,8 @@
  */
 package ch.epfl.alpano.summit;
 
+import static java.lang.Integer.parseInt;
+import static java.lang.Math.toRadians;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +19,6 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import ch.epfl.alpano.GeoPoint;
-import ch.epfl.alpano.dem.DiscreteElevationModel;
 
 public class GazetteerParser {
     /**
@@ -47,12 +48,13 @@ public class GazetteerParser {
                 StringTokenizer token = new StringTokenizer(line);
 
                 longitude = token.nextToken();
-
                 latitude = token.nextToken();
                 elevation = token.nextToken();
 
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 3; i++){
                     token.nextToken();
+                }
+                    
                 name = token.nextToken("/n").trim();
 
                 tab.add(new Summit(name,new GeoPoint(extractDegrees(longitude, "long"), extractDegrees(latitude, "lat")),Integer.parseInt(elevation)));
@@ -65,7 +67,6 @@ public class GazetteerParser {
         }
 
         return Collections.unmodifiableList(tab);
-
     }
 
     /**
@@ -94,7 +95,7 @@ public class GazetteerParser {
         String[] hms = degree.split(":");
         int deg, min, sec;
         try {
-            deg = Integer.parseInt(hms[0]);
+            deg = parseInt(hms[0]);
 
             if (direction.equals("long") && !(deg > -180 && deg < 180)){
                 throw exception;
@@ -104,16 +105,15 @@ public class GazetteerParser {
                 throw exception;
             }
                 
-            min = Integer.parseInt(hms[1]);
+            min = parseInt(hms[1]);
             if (!(min >= 0 && min <= 59)){
                  throw exception;
             }
               
-            sec = Integer.parseInt(hms[2]);
+            sec = parseInt(hms[2]);
             if (!(sec >= 0 && sec <= 59)){
                 throw exception;
             }
-                
 
         } catch (NumberFormatException e) {
             throw exception;
@@ -121,9 +121,9 @@ public class GazetteerParser {
 
         if (hms[0].trim().charAt(0) == '-'){
             
-            return -Math.toRadians((((deg * 60) + min) * 60 + sec) / 3600d);
+            return -toRadians((((deg * 60) + min) * 60 + sec) / 3600d);
         }
         
-        return Math.toRadians((((deg * 60) + min) * 60 + sec) / 3600d);
+        return toRadians((((deg * 60) + min) * 60 + sec) / 3600d);
     }
 }
