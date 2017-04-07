@@ -7,7 +7,10 @@
 package ch.epfl.alpano;
 
 
-import java.util.Arrays;
+import static ch.epfl.alpano.Preconditions.checkArgument;
+import static java.util.Arrays.sort;
+import static java.util.Objects.hash;
+
 import java.util.Objects;
 
 public final class Interval1D {
@@ -21,7 +24,7 @@ public final class Interval1D {
      */
     public Interval1D(int includedFrom, int includedTo){ 
         
-        Preconditions.checkArgument(!(includedTo<includedFrom),"Problem with the bounds");
+        checkArgument(!(includedTo<includedFrom),"Problem with the bounds");
         
         this.includedFrom=includedFrom;
         this.includedTo=includedTo;
@@ -76,7 +79,7 @@ public final class Interval1D {
         }
         
         int iArr[] = {this.includedTo(),that.includedFrom(),that.includedTo(),this.includedFrom()};
-        Arrays.sort(iArr);
+        sort(iArr);
         
         return iArr[2]-iArr[1]+1; //to calculate the size if the intersection, after making sure that the intersections are unionable,
                                 //substract the 2° biggest bound to the 3° biggest bound to calculate the size
@@ -110,10 +113,10 @@ public final class Interval1D {
      */
     public Interval1D union(Interval1D that){
         
-        Preconditions.checkArgument(this.isUnionableWith(that),"The intervals are not unionable");
+        checkArgument(this.isUnionableWith(that),"The intervals are not unionable");
         
         int iArr[] = {this.includedTo(),that.includedFrom(),that.includedTo(),this.includedFrom()};
-        Arrays.sort(iArr);
+        sort(iArr);
         
         return new Interval1D(iArr[0], iArr[3]);
         
@@ -172,6 +175,6 @@ public final class Interval1D {
     @Override
     public int hashCode() {
         
-      return Objects.hash(includedFrom(), includedTo());
+      return hash(includedFrom(), includedTo());
     }
 }

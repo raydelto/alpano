@@ -11,8 +11,13 @@ import static java.lang.Math.asin;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.atan2;
 import static java.lang.Math.PI;
+import static ch.epfl.alpano.Azimuth.canonicalize;
+import static ch.epfl.alpano.Azimuth.fromMath;
+import static ch.epfl.alpano.Distance.toMeters;
 import static ch.epfl.alpano.Math2.haversin;
+
 import java.util.Locale;
+
 import static java.lang.Math.toDegrees;
 
 
@@ -64,7 +69,7 @@ public final class GeoPoint {
     public double distanceTo(GeoPoint that){
         
         double angle = 2*(asin(sqrt(haversin(this.latitude()-that.latitude())+cos(this.latitude())*cos(that.latitude())*haversin(this.longitude()-that.longitude()))));
-        return Distance.toMeters(angle);
+        return toMeters(angle);
     }
     
     /**
@@ -75,7 +80,7 @@ public final class GeoPoint {
     public double azimuthTo(GeoPoint that){
         
         double angle = atan2((sin(this.longitude()-that.longitude())*cos(that.latitude())),(cos(this.latitude())*sin(that.latitude()))-sin(this.latitude())*cos(that.latitude())*cos(this.longitude()-that.longitude()));
-        return Azimuth.fromMath(Azimuth.canonicalize(angle));
+        return fromMath(canonicalize(angle));
     }
     
     /**

@@ -6,6 +6,9 @@
  */
 package ch.epfl.alpano;
 
+import static java.util.Objects.hash;
+import static java.util.Objects.requireNonNull;
+
 import java.util.Objects;
 
 public final class Interval2D 
@@ -20,8 +23,8 @@ public final class Interval2D
      */
     public Interval2D(Interval1D iX, Interval1D iY){
         
-        this.iX=Objects.requireNonNull(iX,"Null x coordinate");
-        this.iY=Objects.requireNonNull(iY,"Null y coordinate");     
+        this.iX=requireNonNull(iX,"Null x coordinate");
+        this.iY=requireNonNull(iY,"Null y coordinate");     
     }
     
     /**
@@ -163,6 +166,6 @@ public final class Interval2D
     @Override
     public int hashCode() {
         
-      return Objects.hash(this.iX(), this.iY());
+      return hash(this.iX(), this.iY());
     }
 }
