@@ -23,12 +23,12 @@ public final class PanoramaParameters {
  
     /**
      * Constructs a new PanoramaParameters
-     * @param observerPosition, a geopoint corresponding to the position of the observer 
-     * @param observerElevation, the observer elevation in meters
-     * @param centerAzimuth, the center azimuth in radians
-     * @param horizontalFieldOfView, the horizontal field of view from the observer in radians
-     * @param maxDistance, the maximum field of view from the observer, in meters
-     * @param width, a sample that indicates the width of the panorama (a double)
+     * @param observerPosition a geopoint corresponding to the position of the observer 
+     * @param observerElevation the observer elevation in meters
+     * @param centerAzimuth the center azimuth in radians
+     * @param horizontalFieldOfView the horizontal field of view from the observer in radians
+     * @param maxDistance the maximum field of view from the observer, in meters
+     * @param width a sample that indicates the width of the panorama (a double)
      * @param height a sample that indicates the height of the panorama (a double)
      * @throws NullPointerException if the observerPosition is null
      * @throws IllegalArgumentException if the azimuth is not canonical
@@ -143,7 +143,7 @@ public final class PanoramaParameters {
     
     /**
      * Calculates the azimuth for a given sample x
-     * @param x, the sample
+     * @param x the sample
      * @return the azimuth corresponding to the sample x, in radians
      * @throws IllegalArgumentException if the given sample is invalid for this Panorama
      */
@@ -161,7 +161,7 @@ public final class PanoramaParameters {
     
     /**
      * Calculates the sample x for a given azimuth
-     * @param a, the azimuth in radians
+     * @param a the azimuth in radians
      * @return the sample corresponding to the azimuth
      * @throws IllegalArgumentException if the given azimuth is invalid for this Panorama
      */
@@ -175,7 +175,7 @@ public final class PanoramaParameters {
     
     /**
      * Calculates the altitude for a given sample y
-     * @param y, the sample
+     * @param y the sample
      * @return the altitude corresponding to the sample y, in radians
      * @throws IllegalArgumentException if the given sample is invalid for this Panorama
      */
@@ -193,7 +193,7 @@ public final class PanoramaParameters {
     
     /**
      * Calculates the sample y for a given altitude
-     * @param a, the altitude in radians
+     * @param a the altitude in radians
      * @return the sample corresponding to the altitude y
      * @throws IllegalArgumentException if the given altitude is invalid for this Panorama
      */
@@ -211,8 +211,8 @@ public final class PanoramaParameters {
     
     /**
      * Checks if a sample index is valid
-     * @param x, sample
-     * @param y, sample
+     * @param x sample
+     * @param y sample
      * @return true if the sample index is valid, false otherwise
      */
     boolean isValidSampleIndex(int x, int y){
@@ -227,8 +227,8 @@ public final class PanoramaParameters {
     
     /**
      * Calculates the linearSampleIndex of 2 points from the Panorama
-     * @param x, sample
-     * @param y, sample
+     * @param x sample
+     * @param y sample
      * @return an integer that corresponds to the linearSampleIndex
      */
     int linearSampleIndex(int x, int y){

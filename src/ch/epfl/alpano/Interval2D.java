@@ -14,8 +14,8 @@ public final class Interval2D
     
     /**
      * Creates the cartesian product of two uni-dimensional intervals
-     * @param iX, the first interval
-     * @param iY, the second interval
+     * @param iX the first interval
+     * @param iY the second interval
      * @throws throws NullPointerException id either iX or iY are null
      */
     public Interval2D(Interval1D iX, Interval1D iY){
@@ -44,8 +44,8 @@ public final class Interval2D
     
     /**
      * Checks if the bi-dimensional interval contains the pair (x,y)
-     * @param x, the first element to be checked
-     * @param y, the second element to be checked
+     * @param x the first element to be checked
+     * @param y the second element to be checked
      * @return true if the pair is contained in the bi-dimensional interval contains the pair (x,y)
      */
     public boolean contains(int x, int y){
@@ -63,7 +63,7 @@ public final class Interval2D
     
     /**
      * Checks if two bi-dimenional intervals are unionable
-     * @param that, the second bi-dimensional interval
+     * @param that the second bi-dimensional interval
      * @return true if the two bi-dimenional intervals are unionable
      */
     public boolean isUnionableWith(Interval2D that){
@@ -97,7 +97,7 @@ public final class Interval2D
     
     /**
      * Calculates the size of a intersection between two bi-dimensional intervals
-     * @param that, the second  bi-dimensional interval
+     * @param that the second  bi-dimensional interval
      * @return the size of a intersection between two bi-dimensional intervals
      */
     public int sizeOfIntersectionWith(Interval2D that){
@@ -107,7 +107,7 @@ public final class Interval2D
     
     /**
      * Unites inclusively (englobante) two bi-dimensional intervals into one
-     * @param that, that the second bi-dimensional interval
+     * @param that that the second bi-dimensional interval
      * @return a new bi-dimensional interval that unites two bi-dimensional intervals into one
      */
     public Interval2D boundingUnion(Interval2D that){
@@ -117,7 +117,7 @@ public final class Interval2D
     
     /**
      * Unites two bi-dimensional intervals into one
-     * @param that, the second bi-dimensional interval
+     * @param that the second bi-dimensional interval
      * @return a new bi-dimensional interval that unites two bi-dimensional intervals into one
      * @throws throws IllegalArgumentException if either of the two pairs of uni-dimensional intervals 
      *         that compose the two bi-dimensional intervals are not unionable

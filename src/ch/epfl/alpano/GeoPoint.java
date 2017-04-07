@@ -23,8 +23,8 @@ public final class GeoPoint {
     
     /**
      * Creates a GeoPoint
-     * @param longitude, the longitude of the point in radians
-     * @param latitude, the latitude of the point in radians
+     * @param longitude the longitude of the point in radians
+     * @param latitude the latitude of the point in radians
      * @throws IllegalArgumentException if the longitude is not between -PI and +PI 
      *          or if the latitude is not between -PI/2 and +PI/2
      */
@@ -58,7 +58,7 @@ public final class GeoPoint {
     
     /**
      * This method calculates a distance between two geopoints
-     * @param that, a geopoint
+     * @param that a geopoint
      * @return the distance between the two geopoints, in meters
      */
     public double distanceTo(GeoPoint that){
@@ -69,7 +69,7 @@ public final class GeoPoint {
     
     /**
      * Calculate the azimuth between two geopoints
-     * @param that, a geopoint
+     * @param that a geopoint
      * @return the azimuth between the two geopoints, in radians
      */
     public double azimuthTo(GeoPoint that){

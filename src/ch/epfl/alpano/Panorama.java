@@ -17,12 +17,12 @@ public final class Panorama {
 
     /**
      * Creates anew Panorama
-     * @param parameters, an array of float where the parameters of the Panorama are stored
-     * @param distance, an array of float where the distance of the Panorama are stored
-     * @param longitude, an array of float where the longitude of the Panorama are stored
-     * @param latitude, an array of float where the latitude of the Panorama are stored
-     * @param elevation, an array of float where  the elevation of the Panorama are stored
-     * @param slope, an array of float where the slope of the Panorama are stored
+     * @param parameters an array of float where the parameters of the Panorama are stored
+     * @param distance an array of float where the distance of the Panorama are stored
+     * @param longitude an array of float where the longitude of the Panorama are stored
+     * @param latitude an array of float where the latitude of the Panorama are stored
+     * @param elevation an array of float where  the elevation of the Panorama are stored
+     * @param slope an array of float where the slope of the Panorama are stored
      */
     private Panorama(PanoramaParameters parameters, float[] distance, float[] longitude, float[] latitude, float[] elevation, float[] slope) {
         
@@ -45,8 +45,8 @@ public final class Panorama {
 
     /**
      * 
-     * @param x, x coordinate of the sample
-     * @param y, y coordinate of the sample
+     * @param x x coordinate of the sample
+     * @param y y coordinate of the sample
      * @return the horizontal distance from the ObserverPosition to the index x, y, in meters
      * @throws IndexOutOfBoundsException if the sample is not valid
      * 
@@ -59,9 +59,9 @@ public final class Panorama {
 
     /**
      * 
-     * @param x, x coordinate of the sample
-     * @param y, y coordinate of the sample
-     * @param d, default distance in meters
+     * @param x x coordinate of the sample
+     * @param y y coordinate of the sample
+     * @param d default distance in meters
      * @return the horizontal distance from the ObserverPosition to the index x, y 
      *            or the default distance d if the sample is not valid, in meters
      * 
@@ -77,8 +77,8 @@ public final class Panorama {
 
     /**
      * 
-     * @param x, x coordinate of the sample
-     * @param y, y coordinate of the sample
+     * @param x x coordinate of the sample
+     * @param y y coordinate of the sample
      * @return the longitude of the Panorama at the index x, y, in radians
      * @throws IndexOutOfBoundsException if the sample is not valid
      * 
@@ -92,8 +92,8 @@ public final class Panorama {
 
     /**
      * 
-     * @param x, x coordinate of the sample
-     * @param y, y coordinate of the sample
+     * @param x x coordinate of the sample
+     * @param y y coordinate of the sample
      * @return the latitude of the Panorama at the index x, y, in radians
      * @throws IndexOutOfBoundsException if the sample is not valid
      * 
@@ -107,8 +107,8 @@ public final class Panorama {
 
     /**
      * 
-     * @param x, x coordinate of the sample
-     * @param y, y coordinate of the sample
+     * @param x x coordinate of the sample
+     * @param y y coordinate of the sample
      * @return the elevation of the Panorama at the index x, y, in meters
      * @throws IndexOutOfBoundsException if the sample is not valid
      * 
@@ -122,8 +122,8 @@ public final class Panorama {
 
     /**
      * 
-     * @param x, x coordinate of the sample
-     * @param y, y coordinate of the sample
+     * @param x x coordinate of the sample
+     * @param y y coordinate of the sample
      * @return the slope of the Panorama at the index x, y, in radians
      * @throws IndexOutOfBoundsException if the sample is not valid
      * 
@@ -137,8 +137,8 @@ public final class Panorama {
 
     /**
      * Checks the index of a sample
-     * @param x, x coordinate of the sample
-     * @param y, y coordinate of the sample
+     * @param x x coordinate of the sample
+     * @param y y coordinate of the sample
      * @throws IndexOutOfBoundsException if the sample is not valid
      */
     private void checkIndex(int x, int y) {
@@ -156,7 +156,7 @@ public final class Panorama {
 
         /**
          * Creates a Panorama Builder
-         * @param parameters, the parameters of the Panorama (non null)
+         * @param parameters the parameters of the Panorama (non null)
          * @throws NullPointerException if parameters is null
          */
         public Builder(PanoramaParameters parameters) {
@@ -173,9 +173,9 @@ public final class Panorama {
 
         /**
          * 
-         * @param x, x coordinate of the sample
-         * @param y, y coordinate of the sample
-         * @param distance, the distance to be set at the sample in meters
+         * @param x x coordinate of the sample
+         * @param y y coordinate of the sample
+         * @param distance the distance to be set at the sample in meters
          * @return the current builder
          * @throws IllegalStateException if the build() method has already been called for this Builder
          * @throws IndexOutOfBoundsException if the sample is not valid
@@ -196,9 +196,9 @@ public final class Panorama {
 
         /**
          * 
-         * @param x, x coordinate of the sample
-         * @param y, y coordinate of the sample
-         * @param longitude, the longitude to be set at the sample in radians
+         * @param x x coordinate of the sample
+         * @param y y coordinate of the sample
+         * @param longitude the longitude to be set at the sample in radians
          * @return the current builder
          * @throws IllegalStateException if the build() method has already been called for this Builder
          * @throws IndexOutOfBoundsException if the sample is not valid
@@ -219,9 +219,9 @@ public final class Panorama {
 
         /**
          * 
-         * @param x, x coordinate of the sample
-         * @param y, y coordinate of the sample
-         * @param latitude, the latitude to be set at the sample in radians
+         * @param x x coordinate of the sample
+         * @param y y coordinate of the sample
+         * @param latitude the latitude to be set at the sample in radians
          * @return the current builder
          * @throws IllegalStateException if the build() method has already been called for this Builder
          * @throws IndexOutOfBoundsException if the sample is not valid
@@ -242,9 +242,9 @@ public final class Panorama {
 
         /**
          * 
-         * @param x, x coordinate of the sample
-         * @param y, y coordinate of the sample
-         * @param elevation, the elevation to be set at the sample in meters
+         * @param x x coordinate of the sample
+         * @param y y coordinate of the sample
+         * @param elevation the elevation to be set at the sample in meters
          * @return the current builder
          * @throws IllegalStateException if the build() method has already been called for this Builder
          * @throws IndexOutOfBoundsException if the sample is not valid
@@ -265,9 +265,9 @@ public final class Panorama {
 
         /**
          * 
-         * @param x, x coordinate of the sample
-         * @param y, y coordinate of the sample
-         * @param slope, the slope to be set at the sample in radians
+         * @param x x coordinate of the sample
+         * @param y y coordinate of the sample
+         * @param slope the slope to be set at the sample in radians
          * @return the current builder
          * @throws IllegalStateException if the build() method has already been called for this Builder
          * @throws IndexOutOfBoundsException if the sample is not valid
@@ -288,8 +288,8 @@ public final class Panorama {
 
         /**
          * checks the index of a sample
-         * @param x, x coordinate of the sample
-         * @param y, y coordinate of the sample
+         * @param x x coordinate of the sample
+         * @param y y coordinate of the sample
          * @throws IndexOutOfBoundsException if the sample is not valid
          */
         private void checkIndex(int x, int y) {

@@ -12,7 +12,7 @@ public interface Azimuth {
 
     /**
      * Checks if azimuth is canonical
-     * @param azimuth, the angle in radians to be checked
+     * @param azimuth the angle in radians to be checked
      * @return true if the angle is included between 0 and (excluding)2PI
      */
     public static boolean isCanonical(double azimuth) {
@@ -28,7 +28,7 @@ public interface Azimuth {
 
     /**
      * Canonicalizes the azimuth
-     * @param azimuth, the angle in radians to be canonicalized
+     * @param azimuth the angle in radians to be canonicalized
      * @return the angle canonicalized between 0 and (excluding) 2PI
      */
     public static double canonicalize(double azimuth) {
@@ -38,7 +38,7 @@ public interface Azimuth {
 
     /**
      * Changes the orientation of the azimuth
-     * @param azimuth, the angle in radians to be converted in mathematical orientation
+     * @param azimuth the angle in radians to be converted in mathematical orientation
      * @return the converted azimuth in mathematical orientation, in radians
      * @throws IllegalArgumentException if the azimuth is not canonical
      */
@@ -57,7 +57,7 @@ public interface Azimuth {
 
     /**
      * Changes the orientation of the azimuth
-     * @param azimuth, the angle in mathematical orientation to be converted in reverse orientation
+     * @param azimuth the angle in mathematical orientation to be converted in reverse orientation
      * @return the converted azimuth in reverse mathematical orientation, in radians
      * @throws IllegalArgumentException if the azimuth is not canonical
      */
@@ -76,11 +76,11 @@ public interface Azimuth {
 
     /**
      * Constructs a String that indicates the direction of the azimuth
-     * @param azimuth, the angle
-     * @param n, the String for the north direction
-     * @param e, the String for the east direction
-     * @param s, the String for the south direction
-     * @param w, the String for the west direction
+     * @param azimuth the angle
+     * @param n the String for the north direction
+     * @param e the String for the east direction
+     * @param s the String for the south direction
+     * @param w the String for the west direction
      * @return a String that indicates the direction of the azimuth
      * @throws IllegalArgumentException if the azimuth is not canonical
      */

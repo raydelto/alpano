@@ -15,8 +15,8 @@ public final class Interval1D {
     
     /**
      * Creates a uni-dimensional interval, throws IllegalArgumentException is includeTo is strictly smaller than Includedfrom
-     * @param includedFrom, lower bound of the interval
-     * @param includedTo, upper bound of the interval
+     * @param includedFrom lower bound of the interval
+     * @param includedTo upper bound of the interval
      * @throws IllegalArgumentException if includedFrom is bigger than includedTo
      */
     public Interval1D(int includedFrom, int includedTo){ 
@@ -56,7 +56,7 @@ public final class Interval1D {
     
     /**
      * Checks if the element v is contained in the interval
-     * @param v, the element to be checked
+     * @param v the element to be checked
      * @return true if the element is contained in the interval
      */
     public boolean contains(int v){
@@ -66,7 +66,7 @@ public final class Interval1D {
     
     /**
      * Calculates the size of a intersection between two intervals, return 0 if the two don't intersect
-     * @param that, the second interval
+     * @param that the second interval
      * @return the size of the intersection
      */
     public int sizeOfIntersectionWith(Interval1D that){
@@ -84,7 +84,7 @@ public final class Interval1D {
     
     /**
      * Checks if the union of two intervals is possible
-     * @param that, the second interval
+     * @param that the second interval
      * @return
      */
     public boolean isUnionableWith(Interval1D that){
@@ -94,7 +94,7 @@ public final class Interval1D {
     
     /**
      * Checks if two intervals are continuous (meaning that they have at least one point in common)
-     * @param that, the second interval
+     * @param that the second interval
      * @return
      */
     private boolean isContinuous(Interval1D that){
@@ -104,7 +104,7 @@ public final class Interval1D {
     
     /**
      * Unites two intervals into one
-     * @param that, the second interval
+     * @param that the second interval
      * @return a new interval that unites two intervals into one
      * @throws throws IllegalArgumentException if the intervals are not unionable
      */
@@ -121,7 +121,7 @@ public final class Interval1D {
     
     /**
      * Unites inclusively (englobante) two intervals into one
-     * @param that, the second interval
+     * @param that the second interval
      * @return a new interval that unites two intervals into one
      */
     public Interval1D boundingUnion(Interval1D that){
