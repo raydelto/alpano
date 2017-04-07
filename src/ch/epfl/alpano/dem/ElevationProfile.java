@@ -90,7 +90,7 @@ public final class ElevationProfile {
         
         int lowerBound=0;
         int upperBound=0;
-        lowerBound = (int)Math.floor(x/4096);
+        lowerBound = (int)Math.floor(x/step);
         upperBound = lowerBound +1;
         
         if(upperBound >= table.length){

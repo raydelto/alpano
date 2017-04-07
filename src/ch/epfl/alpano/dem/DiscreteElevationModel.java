@@ -49,7 +49,6 @@ public interface DiscreteElevationModel extends AutoCloseable{
             throw new IllegalArgumentException("The two models are not unionable");
         }
         
-        return new CompositeDiscreteElevationModel(this, that);
-               
+        return new CompositeDiscreteElevationModel(this, that);        
     }
 }

@@ -43,6 +43,7 @@ public final class CompositeDiscreteElevationModel implements DiscreteElevationM
     public double elevationSample(int x, int y) {
         
         checkArgument(ext.contains(x, y),"The extent does not sontain the sample");
+        
         if (dem1.extent().contains(x, y)){
             
             return dem1.elevationSample(x, y);
@@ -50,5 +51,4 @@ public final class CompositeDiscreteElevationModel implements DiscreteElevationM
         
         return dem2.elevationSample(x, y);
     }
-
 }
