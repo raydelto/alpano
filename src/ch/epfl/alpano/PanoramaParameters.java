@@ -170,7 +170,7 @@ public final class PanoramaParameters {
         double deltaAzimuth = Math2.angularDistance(centerAzimuth, a);
         Preconditions.checkArgument(Math.abs(deltaAzimuth)<=horizontalFieldOfView()/2.0, "Invalid azimuth for this Panorama");
         
-         return (deltaAzimuth)/delta + middleWidth();
+        return (deltaAzimuth)/delta + middleWidth();
     }
     
     /**

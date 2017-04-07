@@ -11,7 +11,9 @@ import ch.epfl.alpano.Panorama.Builder;
 import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.dem.ElevationProfile;
 import static ch.epfl.alpano.Math2.sq;
-import static ch.epfl.alpano.Azimuth.canonicalize;
+import static ch.epfl.alpano.Math2.firstIntervalContainingRoot;
+import static ch.epfl.alpano.Math2.improveRoot;
+
 
 import static java.util.Objects.requireNonNull;
 
@@ -55,14 +57,14 @@ public final class PanoramaComputer {
             while (posY >= 0) {
 
                 DoubleUnaryOperator op = rayToGroundDistance(ep, parameters.observerElevation(),Math.tan(parameters.altitudeForY(posY)));
-                double lowerBound = Math2.firstIntervalContainingRoot(op, intersectionWithGroundTemp,parameters.maxDistance(), 64);
+                double lowerBound = firstIntervalContainingRoot(op, intersectionWithGroundTemp,parameters.maxDistance(), 64);
 
                 if (lowerBound == Double.POSITIVE_INFINITY) {
                     break;
                 }
 
                 else {
-                    intersectionWithGroundx = Math2.improveRoot(op, lowerBound, lowerBound + 64, 4);
+                    intersectionWithGroundx = improveRoot(op, lowerBound, lowerBound + 64, 4);
                     intersectionWithGroundTemp = intersectionWithGroundx;
                     double distance = intersectionWithGroundx / Math.cos(parameters.altitudeForY(posY));
 
@@ -104,5 +106,4 @@ public final class PanoramaComputer {
         
         return ((1 - K) / (2 * EARTH_RADIUS)) * sq(x);
     }
-
 }
