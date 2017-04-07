@@ -36,8 +36,9 @@ public class GazetteerParser {
         ArrayList<Summit> tab = new ArrayList<Summit>();
         String name, longitude, latitude, elevation;
 
-        if (file.length() == 0)
+        if (file.length() == 0){
             throw new IOException("length is 0");
+        }
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
 
@@ -81,30 +82,38 @@ public class GazetteerParser {
 
         int counter = 0;
         for (int i = 0; i < degree.length(); i++) {
-            if (degree.charAt(i) == ':')
-                counter++;
+            if (degree.charAt(i) == ':'){
+                 counter++;
+            }
         }
 
-        if (counter != 2)
+        if (counter != 2){
             throw exception;
+        }
 
         String[] hms = degree.split(":");
         int deg, min, sec;
         try {
             deg = Integer.parseInt(hms[0]);
 
-            if (direction.equals("long") && !(deg > -180 && deg < 180))
+            if (direction.equals("long") && !(deg > -180 && deg < 180)){
                 throw exception;
-            if (direction.equals("lat") && !(deg > -90 && deg < 90))
-                throw exception;
+            }
 
+            if (direction.equals("lat") && !(deg > -90 && deg < 90)){
+                throw exception;
+            }
+                
             min = Integer.parseInt(hms[1]);
-            if (!(min >= 0 && min <= 59))
-                throw exception;
-
+            if (!(min >= 0 && min <= 59)){
+                 throw exception;
+            }
+              
             sec = Integer.parseInt(hms[2]);
-            if (!(sec >= 0 && sec <= 59))
+            if (!(sec >= 0 && sec <= 59)){
                 throw exception;
+            }
+                
 
         } catch (NumberFormatException e) {
             throw exception;

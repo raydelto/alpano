@@ -87,6 +87,7 @@ public final class GeoPoint {
         
         Locale l = null;
         String s = String.format(l, "(%.4f,%.4f)", toDegrees(this.longitude()), toDegrees(this.latitude()));
+        
         return s;
     }
 }
