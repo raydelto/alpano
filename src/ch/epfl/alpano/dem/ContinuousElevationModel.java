@@ -34,11 +34,12 @@ public final class ContinuousElevationModel {
     }
     
     /**
-     * Calculates the elevation of a geopoint by doing a blininear interpolation of the extent of the dem given to the constructor
+     * Calculates the elevation of a geopoint by doing a bilinear interpolation of the extent of the dem given to the constructor
      * @param p, the geopoint 
      * @return the elevation of the geopoint p, in meters
      */
     public double elevationAt(GeoPoint p){
+        
         double indexLongitude = DiscreteElevationModel.sampleIndex(p.longitude());
         double indexLatitude = DiscreteElevationModel.sampleIndex(p.latitude());
         int x = ((int)Math.floor(indexLongitude));
@@ -54,6 +55,7 @@ public final class ContinuousElevationModel {
      * @return the slope at the geopoint p, in radians
      */
     public double slopeAt(GeoPoint p){
+        
         double indexLongitude = DiscreteElevationModel.sampleIndex(p.longitude());
         double indexLatitude = DiscreteElevationModel.sampleIndex(p.latitude());
         int x = ((int)Math.floor(indexLongitude));
@@ -69,6 +71,7 @@ public final class ContinuousElevationModel {
      * @return the slope in radians
      */
     private double doTheta(int x, int y){
+        
         double za = checkSample(x+1, y)-checkSample(x, y);
         double zb = checkSample(x, y+1)-checkSample(x, y);
         
@@ -82,6 +85,7 @@ public final class ContinuousElevationModel {
      * @return the elevation at index(x, y) if contained in the dem, 0 otherwise
      */
     private double checkSample(int x, int y){
+        
         if(dem.extent().contains(x, y)){
             return dem.elevationSample(x, y);
         }

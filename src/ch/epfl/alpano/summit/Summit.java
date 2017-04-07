@@ -22,6 +22,7 @@ public final class Summit {
      * @throws NullPointerException if name or position are null
      */
     public Summit(String name, GeoPoint position, int elevation){
+        
         this.name=Objects.requireNonNull(name, "Null name");
         this.position=Objects.requireNonNull(position, "Null position");
         this.elevation=elevation;
@@ -31,6 +32,7 @@ public final class Summit {
      * @return the elevation of the summit
      */
     public int elevation() {
+        
         return elevation;
     }
     
@@ -39,6 +41,7 @@ public final class Summit {
      * @return the name of the summit
      */
     public String name() {
+        
         return name;
     }
     
@@ -47,12 +50,13 @@ public final class Summit {
      * @return the position of the summit
      */
     public GeoPoint position() {
+        
         return position;
     }
     
     @Override
     public String toString() {
-        System.out.println(name.toUpperCase()+" ("+Math.toDegrees(position.longitude())+","+Math.toDegrees(position.latitude())+") "+elevation);
+        
         return name.toUpperCase()+" "+position.toString()+" "+elevation;
     }
 
