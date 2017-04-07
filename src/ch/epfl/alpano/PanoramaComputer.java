@@ -15,6 +15,7 @@ import static ch.epfl.alpano.Math2.firstIntervalContainingRoot;
 import static ch.epfl.alpano.Math2.improveRoot;
 
 
+import static java.lang.Double.POSITIVE_INFINITY;
 import static java.util.Objects.requireNonNull;
 
 import java.util.function.DoubleUnaryOperator;
@@ -59,7 +60,7 @@ public final class PanoramaComputer {
                 DoubleUnaryOperator op = rayToGroundDistance(ep, parameters.observerElevation(),Math.tan(parameters.altitudeForY(posY)));
                 double lowerBound = firstIntervalContainingRoot(op, intersectionWithGroundTemp,parameters.maxDistance(), 64);
 
-                if (lowerBound == Double.POSITIVE_INFINITY) {
+                if (lowerBound == POSITIVE_INFINITY) {
                     break;
                 }
 

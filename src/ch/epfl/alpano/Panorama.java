@@ -7,6 +7,9 @@
 
 package ch.epfl.alpano;
 
+import static java.util.Arrays.fill;
+import static java.util.Objects.requireNonNull;
+
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -161,14 +164,14 @@ public final class Panorama {
          */
         public Builder(PanoramaParameters parameters) {
             
-            this.parameters = Objects.requireNonNull(parameters, "Null PanoramaParameters");
+            this.parameters = requireNonNull(parameters, "Null PanoramaParameters");
             int size = parameters.height()*parameters.width();
             distance = new float[size];
             longitude = new float[size];
             latitude = new float[size];
             elevation = new float[size];
             slope = new float[size];
-            Arrays.fill(distance, Float.POSITIVE_INFINITY);
+            fill(distance, Float.POSITIVE_INFINITY);
         }
 
         /**

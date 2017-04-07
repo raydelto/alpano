@@ -6,7 +6,10 @@
  */
 package ch.epfl.alpano;
 
+import static ch.epfl.alpano.Math2.floorMod;
+import static ch.epfl.alpano.Preconditions.checkArgument;
 import static java.lang.Math.PI;
+import static java.lang.Math.abs;
 
 public interface Azimuth {
 
@@ -33,7 +36,7 @@ public interface Azimuth {
      */
     public static double canonicalize(double azimuth) {
         
-        return Math.abs(Math2.floorMod(azimuth, Math2.PI2));
+        return abs(floorMod(azimuth, Math2.PI2));
     }
 
     /**
@@ -44,7 +47,7 @@ public interface Azimuth {
      */
     public static double toMath(double azimuth) {
         
-        Preconditions.checkArgument(isCanonical(azimuth), "Azimuth must be canonical");
+        checkArgument(isCanonical(azimuth), "Azimuth must be canonical");
         
         if (azimuth == 0){
             return azimuth;
@@ -63,7 +66,7 @@ public interface Azimuth {
      */
     public static double fromMath(double azimuth) {
 
-        Preconditions.checkArgument(isCanonical(azimuth), "Azimuth must be canonical");
+        checkArgument(isCanonical(azimuth), "Azimuth must be canonical");
         
         if (azimuth == 0){
             return azimuth;
@@ -86,7 +89,7 @@ public interface Azimuth {
      */
     public static String toOctantString(double azimuth, String n, String e, String s, String w) {
        
-        Preconditions.checkArgument(isCanonical(azimuth), "Azimuth must be canonical");
+        checkArgument(isCanonical(azimuth), "Azimuth must be canonical");
         
         StringBuilder direction = new StringBuilder();
         if ((azimuth >= 0 && azimuth <= 3 * PI / 8) || azimuth >= (13 * PI / 8)) {

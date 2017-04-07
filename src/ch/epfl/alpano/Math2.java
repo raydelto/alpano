@@ -6,7 +6,10 @@
  */
 package ch.epfl.alpano;
 
+import static ch.epfl.alpano.Preconditions.checkArgument;
+import static java.lang.Double.POSITIVE_INFINITY;
 import static java.lang.Math.PI;
+import static java.lang.Math.abs;
 import static java.lang.Math.sin;
 import static java.lang.Math.floor;
 import static java.lang.Math.signum;
@@ -103,7 +106,7 @@ public interface Math2 {
             up += dX;
         } while (up <= maxX);
         
-        return Double.POSITIVE_INFINITY;
+        return POSITIVE_INFINITY;
 
    }
    
@@ -134,7 +137,7 @@ public interface Math2 {
     */
     static double improveRoot(DoubleUnaryOperator f, double x1, double x2, double epsilon){
         
-        Preconditions.checkArgument(!isSameSign(f.applyAsDouble(x1), f.applyAsDouble(x2)), "f(x1) and f(x2) don't have the same sign");  
+        checkArgument(!isSameSign(f.applyAsDouble(x1), f.applyAsDouble(x2)), "f(x1) and f(x2) don't have the same sign");  
         
         if((Math.abs(x1 - x2)<= epsilon )|| (x1 == x2)){
             return x1;
@@ -157,7 +160,7 @@ public interface Math2 {
                 else{
                     currentMax = xM;
                 }                 
-            }while(Math.abs(currentMax-currentMin)> epsilon);  
+            }while(abs(currentMax-currentMin)> epsilon);  
             
             return currentMin;   
         }

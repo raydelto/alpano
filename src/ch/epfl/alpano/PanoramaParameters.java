@@ -8,7 +8,10 @@ package ch.epfl.alpano;
 
 import static java.util.Objects.requireNonNull;
 import static ch.epfl.alpano.Azimuth.canonicalize;
+import static ch.epfl.alpano.Azimuth.isCanonical;
 import static ch.epfl.alpano.Math2.PI2;
+import static ch.epfl.alpano.Math2.angularDistance;
+import static ch.epfl.alpano.Preconditions.checkArgument;
 
 public final class PanoramaParameters {
     
@@ -38,9 +41,9 @@ public final class PanoramaParameters {
     public PanoramaParameters(GeoPoint observerPosition, int observerElevation, double centerAzimuth, double horizontalFieldOfView, int maxDistance, int width, int height){
         
         this.observerPosition = requireNonNull(observerPosition, "Null observerPosition");
-        Preconditions.checkArgument(Azimuth.isCanonical(centerAzimuth), "Azimuth must be canonical");
-        Preconditions.checkArgument(horizontalFieldOfView>0 && horizontalFieldOfView <= PI2, "horizintalFieldOfView must be between 0 (excluded) and PI/2 (included)");
-        Preconditions.checkArgument(maxDistance>0 && width >0 && height >0, "maxDistance, height and width must be positive");
+        checkArgument(isCanonical(centerAzimuth), "Azimuth must be canonical");
+        checkArgument(horizontalFieldOfView>0 && horizontalFieldOfView <= PI2, "horizintalFieldOfView must be between 0 (excluded) and PI/2 (included)");
+        checkArgument(maxDistance>0 && width >0 && height >0, "maxDistance, height and width must be positive");
         
         this.observerElevation = observerElevation;
         this.centerAzimuth = centerAzimuth;
@@ -149,7 +152,7 @@ public final class PanoramaParameters {
      */
     public double azimuthForX(double x){
         
-        Preconditions.checkArgument(x>=0 && x<=width-1, "Invalid sample for this Panorama");
+        checkArgument(x>=0 && x<=width-1, "Invalid sample for this Panorama");
         
         if(x==middleWidth()){
             return centerAzimuth;
@@ -167,8 +170,8 @@ public final class PanoramaParameters {
      */
     public double xForAzimuth(double a){
         
-        double deltaAzimuth = Math2.angularDistance(centerAzimuth, a);
-        Preconditions.checkArgument(Math.abs(deltaAzimuth)<=horizontalFieldOfView()/2.0, "Invalid azimuth for this Panorama");
+        double deltaAzimuth = angularDistance(centerAzimuth, a);
+        checkArgument(Math.abs(deltaAzimuth)<=horizontalFieldOfView()/2.0, "Invalid azimuth for this Panorama");
         
         return (deltaAzimuth)/delta + middleWidth();
     }
@@ -181,7 +184,7 @@ public final class PanoramaParameters {
      */
     public double altitudeForY(double y){
         
-        Preconditions.checkArgument(y>=0 && y<=height-1, "Invalid sample for this panorama");
+        checkArgument(y>=0 && y<=height-1, "Invalid sample for this panorama");
         
         if(y==middleHeight()){
             return 0;
@@ -199,7 +202,7 @@ public final class PanoramaParameters {
      */
     public double yForAltitude(double a){
         
-        Preconditions.checkArgument(a>=-verticalFieldOfView()/2 && a <= verticalFieldOfView()/2, "Invalid altitude for this Panorama");
+        checkArgument(a>=-verticalFieldOfView()/2 && a <= verticalFieldOfView()/2, "Invalid altitude for this Panorama");
         
         if(a == 0){
             return middleHeight();
