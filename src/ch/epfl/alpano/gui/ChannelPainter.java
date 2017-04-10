@@ -2,6 +2,7 @@ package ch.epfl.alpano.gui;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static ch.epfl.alpano.Preconditions.checkArgument;
 
 import java.util.function.DoubleUnaryOperator;
 
@@ -30,6 +31,7 @@ public interface ChannelPainter {
     }
     
     public default ChannelPainter div(float c){
+        checkArgument((c!=0), "c cannot be 0");
         return (x, y) -> (valueAt(x, y)/c);
     }
     
