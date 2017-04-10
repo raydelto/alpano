@@ -13,6 +13,11 @@ import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Panorama;
 import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.PanoramaParameters;
+import ch.epfl.alpano.gui.ChannelPainter;
+import ch.epfl.alpano.gui.ImagePainter;
+import ch.epfl.alpano.gui.PanoramaRenderer;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 
 final class DrawPanorama {
     final static File HGT_FILE = new File("N46E007.hgt");
@@ -45,23 +50,79 @@ final class DrawPanorama {
         Panorama p = new PanoramaComputer(cDEM)
           .computePanorama(PARAMS);
 
-        BufferedImage i =
-          new BufferedImage(IMAGE_WIDTH,
-                            IMAGE_HEIGHT,
-                            TYPE_INT_RGB);
+//        BufferedImage i =
+//          new BufferedImage(IMAGE_WIDTH,
+//                            IMAGE_HEIGHT,
+//                            TYPE_INT_RGB);
+//
+//        for (int x = 0; x < IMAGE_WIDTH; ++x) {
+//          for (int y = 0; y < IMAGE_HEIGHT; ++y) {
+//            float d = p.distanceAt(x, y);
+//            int c = (d == Float.POSITIVE_INFINITY)
+//              ? 0x87_CE_EB
+//              : gray((d - 2_000) / 15_000);
+//            i.setRGB(x, y, c);
+//          }
+//        }
+//
+//        ImageIO.write(i, "png", new File("niesen.png"));
+        
+//        ChannelPainter gray = ChannelPainter.maxDistanceToNeighbors(p)
+//                .sub(500)
+//                .div(4500)
+//                .clamped()
+//                .inverted();
+//
+//              ChannelPainter distance = p::distanceAt;
+//              ChannelPainter opacity = distance.map(d -> d == Float.POSITIVE_INFINITY ? 0 : 1);
+//
+//              ImagePainter l = ImagePainter.gray(gray, opacity);
+//
+//              Image j = PanoramaRenderer.renderPanorama(p, l);
+//              ImageIO.write(SwingFXUtils.fromFXImage(j, null), "png", new File("niesen-profile.png"));
+        
+        ChannelPainter distance = p::distanceAt;
+        ChannelPainter slope = p::slopeAt;
+        
+        ChannelPainter h = distance
+                .div(100000)
+                .cycling()
+                .mul(360);
+        
+        ChannelPainter s = distance
+                .div(200000)
+                .clamped()
+                .inverted();
+        
+        ChannelPainter b = slope
+                .mul(2)
+                .div((float)Math.PI)
+                .inverted()
+                .mul(0.7f)
+                .add(0.3f);
+                
+        ChannelPainter o = distance.map(d -> d == Float.POSITIVE_INFINITY ? 0 : 1);
+         
+         ImagePainter l = ImagePainter.hsb(h, s, b, o);
+         Image j = PanoramaRenderer.renderPanorama(p, l);
+         ImageIO.write(SwingFXUtils.fromFXImage(j, null), "png", new File("niesen-profile-color.png"));
+         
+         
+         
+       ChannelPainter gray = ChannelPainter.maxDistanceToNeighbors(p)
+       .sub(500)
+       .div(4500)
+       .clamped()
+       .inverted();
 
-        for (int x = 0; x < IMAGE_WIDTH; ++x) {
-          for (int y = 0; y < IMAGE_HEIGHT; ++y) {
-            float d = p.distanceAt(x, y);
-            int c = (d == Float.POSITIVE_INFINITY)
-              ? 0x87_CE_EB
-              : gray((d - 2_000) / 15_000);
-            i.setRGB(x, y, c);
-          }
-        }
+       ImagePainter l2 = ImagePainter.gray(gray, o);
 
-        ImageIO.write(i, "png", new File("niesen.png"));
+       Image i = PanoramaRenderer.renderPanorama(p, l2);
+       ImageIO.write(SwingFXUtils.fromFXImage(i, null), "png", new File("niesen-profile.png"));
       }
+      
+
+      
     }
     private static int gray(double v) {
         double clampedV = max(0, min(v, 1));

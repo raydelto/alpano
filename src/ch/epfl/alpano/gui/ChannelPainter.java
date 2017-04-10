@@ -15,7 +15,7 @@ public interface ChannelPainter {
     
     
     public static ChannelPainter maxDistanceToNeighbors(Panorama p){
-        return  (x, y) ->  max(max(p.distanceAt(x-1, y), p.distanceAt(x, y-1)), max(p.distanceAt(x+1, y, 0), p.distanceAt(x, y+1, 0))) - p.distanceAt(x, y, 0);
+        return  (x, y) ->  max(max(p.distanceAt(x-1, y, 0), p.distanceAt(x, y-1, 0)), max(p.distanceAt(x+1, y, 0), p.distanceAt(x, y+1, 0))) - p.distanceAt(x, y, 0);
     }
 
     public default ChannelPainter add(float c){
