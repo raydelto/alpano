@@ -20,7 +20,6 @@ public final class PanoramaUserParameters {
         for (Map.Entry<UserParameter, Integer> e : parameters.entrySet()) {
             this.parameters.put(e.getKey(), e.getKey().sanitize(e.getValue()));
         }
-
     }
 
     public PanoramaUserParameters(int observerLongitude, int observerLatitude, int observerElevation, int centerAzimuth, int horizonrtalFieldOfView, int maxDistance, int width, int height, int samplingExponent) {
@@ -49,37 +48,39 @@ public final class PanoramaUserParameters {
     }
     public int observerLongitude()//pas de meilleure idee pour l'instant
     {
-        for (Map.Entry<UserParameter, Integer> e : parameters.entrySet()) {
-           if(e.getKey().name().equals("OBSERVER_LONGITUDE"))
-           {
-               return e.getValue();
-           }
-        }
-        throw new NullPointerException();
+//        for (Map.Entry<UserParameter, Integer> e : parameters.entrySet()) {
+//           if(e.getKey().name().equals("OBSERVER_LONGITUDE"))
+//           {
+//               return e.getValue();
+//           }
+//        }
+//        throw new NullPointerException();
+        
+        return get(UserParameter.OBSERVER_LONGITUDE);
     }
     public int observerLatitude(){
-        return 0;
+        return get(UserParameter.OBSERVER_LATITUDE);
     }
     public int observerElevation(){
-        return 0;
+        return get(UserParameter.OBSERVER_ELEVATION);
     }
     public int centerAzimuth(){
-        return 0;
+        return get(UserParameter.CENTER_AZIMUTH);
     }
     public int horizontalFieldOfView(){
-        return 0;
+        return get(UserParameter.HORIZONTAL_FIELD_OF_VIEW);
     }
     public int maxDistance(){
-        return 0;
+        return get(UserParameter.MAX_DISTANCE);
     }
     public int width(){
-        return 0;
+        return get(UserParameter.WIDTH);
     }
     public int height(){
-        return 0;
+        return get(UserParameter.HEIGHT);
     }
     public int superSamplingExponent(){
-        return 0;
+        return get(UserParameter.SUPER_SAMPLING_EXPONENT);
     }
     public PanoramaParameters panoramaParameters()
     {
@@ -93,6 +94,24 @@ public final class PanoramaUserParameters {
     {
         return (int)Math.pow(p, superSamplingExponent());
     }
-    //todo equals, hashcode
+
+    @Override
+    public boolean equals(Object o){
+        
+        if(o instanceof PanoramaUserParameters){
+            for(Map.Entry<UserParameter, Integer> e : parameters.entrySet()){
+               
+                if(!(((Integer)((PanoramaUserParameters) o).get(e.getKey())).equals(e.getValue()))){
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
     
+    @Override
+    public int hashCode(){
+        return parameters.hashCode();
+    }
 }
