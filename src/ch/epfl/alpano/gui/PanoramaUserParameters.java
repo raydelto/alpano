@@ -84,15 +84,15 @@ public final class PanoramaUserParameters {
     }
     public PanoramaParameters panoramaParameters()
     {
-        return new PanoramaParameters(new GeoPoint(Math.toRadians((double)observerLongitude()), Math.toRadians((double)observerLatitude())), observerElevation(), Math.toRadians((double)centerAzimuth()), Math.toRadians((double)horizontalFieldOfView()), maxDistance()/1000, applySuperSampling(width()), applySuperSampling(height()));
+        return new PanoramaParameters(new GeoPoint(Math.toRadians((double)observerLongitude()/10000), Math.toRadians((double)observerLatitude()/10000)), observerElevation(), Math.toRadians((double)centerAzimuth()), Math.toRadians((double)horizontalFieldOfView()), maxDistance()*1000, applySuperSampling(width()), applySuperSampling(height()));
     }
     public PanoramaParameters panoramaDisplayParameters()
     {
-        return new PanoramaParameters(new GeoPoint(Math.toRadians((double)observerLongitude()), Math.toRadians((double)observerLatitude())), observerElevation(), Math.toRadians((double)centerAzimuth()), Math.toRadians((double)horizontalFieldOfView()), maxDistance()/1000, width(), height());
+        return new PanoramaParameters(new GeoPoint(Math.toRadians((double)observerLongitude()/10000), Math.toRadians((double)observerLatitude()/10000)), observerElevation(), Math.toRadians((double)centerAzimuth()), Math.toRadians((double)horizontalFieldOfView()), maxDistance()*1000, width(), height());
     }
     private int applySuperSampling(int p)
     {
-        return (int)Math.pow(p, superSamplingExponent());
+        return (int)Math.pow(2, superSamplingExponent())*p;
     }
 
     @Override

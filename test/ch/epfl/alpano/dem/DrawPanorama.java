@@ -16,6 +16,7 @@ import ch.epfl.alpano.PanoramaParameters;
 import ch.epfl.alpano.gui.ChannelPainter;
 import ch.epfl.alpano.gui.ImagePainter;
 import ch.epfl.alpano.gui.PanoramaRenderer;
+import ch.epfl.alpano.gui.PredefinedPanoramas;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
@@ -47,8 +48,15 @@ final class DrawPanorama {
            new HgtDiscreteElevationModel(HGT_FILE)) {
         ContinuousElevationModel cDEM =
           new ContinuousElevationModel(dDEM);
+//        Panorama p = new PanoramaComputer(cDEM)
+//          .computePanorama(PARAMS);
+        
         Panorama p = new PanoramaComputer(cDEM)
-          .computePanorama(PARAMS);
+                .computePanorama(PredefinedPanoramas.NIESEN.panoramaParameters());
+        
+        
+        
+        
 
 //        BufferedImage i =
 //          new BufferedImage(IMAGE_WIDTH,
