@@ -16,9 +16,18 @@ public final class PanoramaUserParameters {
     private Map<UserParameter, Integer> parameters;
 
     public PanoramaUserParameters(Map<UserParameter, Integer> parameters) {
+                
         this.parameters = new EnumMap<>(UserParameter.class);
+        int maxH = Math.min(UserParameter.HEIGHT.sanitize(parameters.get(UserParameter.HEIGHT)), (170*((UserParameter.WIDTH.sanitize(parameters.get(UserParameter.WIDTH))-1)/UserParameter.HORIZONTAL_FIELD_OF_VIEW.sanitize(parameters.get(UserParameter.HORIZONTAL_FIELD_OF_VIEW)))+1));
+        
         for (Map.Entry<UserParameter, Integer> e : parameters.entrySet()) {
-            this.parameters.put(e.getKey(), e.getKey().sanitize(e.getValue()));
+            if(e.getKey().equals(UserParameter.HEIGHT)){
+                this.parameters.put(e.getKey(), e.getKey().sanitize(maxH));
+            }
+            
+            else{
+                this.parameters.put(e.getKey(), e.getKey().sanitize(e.getValue()));
+            }
         }
     }
 
