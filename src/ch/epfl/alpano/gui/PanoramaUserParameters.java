@@ -13,7 +13,7 @@ import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.PanoramaParameters;
 
 public final class PanoramaUserParameters {
-    private Map<UserParameter, Integer> parameters;
+    private final Map<UserParameter, Integer> parameters;
 
     public PanoramaUserParameters(Map<UserParameter, Integer> parameters) {
                 
