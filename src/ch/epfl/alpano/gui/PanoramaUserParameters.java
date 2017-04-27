@@ -108,15 +108,20 @@ public final class PanoramaUserParameters {
     public boolean equals(Object o){
         
         if(o instanceof PanoramaUserParameters){
-            for(Map.Entry<UserParameter, Integer> e : parameters.entrySet()){
-               
-                if(!(((Integer)((PanoramaUserParameters) o).get(e.getKey())).equals(e.getValue()))){
-                    return false;
-                }
-            }
-            return true;
+            return (((PanoramaUserParameters) o).parameters.equals(parameters));
         }
+        
         return false;
+//        if(o instanceof PanoramaUserParameters){
+//            for(Map.Entry<UserParameter, Integer> e : parameters.entrySet()){
+//               
+//                if(!(((Integer)((PanoramaUserParameters) o).get(e.getKey())).equals(e.getValue()))){
+//                    return false;
+//                }
+//            }
+//            return true;
+//        }
+//        return false;
     }
     
     @Override
