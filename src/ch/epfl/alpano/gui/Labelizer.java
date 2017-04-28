@@ -1,7 +1,11 @@
 package ch.epfl.alpano.gui;
 
+import java.util.LinkedList;
 import java.util.List;
 
+import org.w3c.dom.ls.LSInput;
+
+import ch.epfl.alpano.Azimuth;
 import ch.epfl.alpano.PanoramaParameters;
 import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.summit.Summit;
@@ -16,17 +20,42 @@ public final class Labelizer {
         this.cev=cev;
         this.summitList=summitList;
     }
-    public List<Node> labels(PanoramaParameters param)
+    public List<Node> labels(PanoramaParameters parameters)
     {
-        param.
+        List<Summit> visible=listOfVisibleSummit(parameters);
+        
+                
+      
     }
     private boolean isVisible(PanoramaParameters p, Summit s)
     {
-        double xDist=p.observerPosition().distanceTo(s.position());
-       if(xDist>=Math.sqrt(Math.pow(p.observerElevation()-s.elevation(), 2)+Math.pow(xDist,2)))
+        double distX= s.position().distanceTo(p.observerPosition());
+        //double arealDist=Math.sqrt(distX^distX+Math.pow(p.observerElevation()-s.elevation(), 2));
+        if(distX>p.maxDistance())return false;
+        
+        double dH= distX*Math.tan(p.verticalFieldOfView()/2);
+        if(dH+p.observerElevation()<s.elevation() || p.observerElevation()-dH>s.elevation()) return false;
+        
+        double dAzimuth=p.observerPosition().azimuthTo(s.position());
+        if(dAzimuth>Azimuth.canonicalize(p.centerAzimuth()+p.horizontalFieldOfView()/2)||dAzimuth<Azimuth.canonicalize(p.centerAzimuth()-p.horizontalFieldOfView()/2))
+                return false;
+        
+        
+        
+        
+        
+    }
+    private List<Summit> listOfVisibleSummit ( PanoramaParameters parameters)
+    {
+        List<Summit> visible=new LinkedList<>();
+       
+       for( Summit s: summitList ) 
        {
-           return false;
+           if(isVisible(parameters, s)){
+               visible.add(s);
+           }
        }
+       return visible;
     }
 
 }
