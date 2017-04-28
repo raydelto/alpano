@@ -3,21 +3,19 @@ package ch.epfl.alpano.gui;
 import static ch.epfl.alpano.Math2.angularDistance;
 import static ch.epfl.alpano.Math2.firstIntervalContainingRoot;
 
+import java.util.BitSet;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 
-import org.w3c.dom.ls.LSInput;
-
-import ch.epfl.alpano.Azimuth;
 import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.PanoramaParameters;
 import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.dem.ElevationProfile;
 import ch.epfl.alpano.summit.Summit;
 import javafx.scene.Node;
-import javafx.scene.shape.*;
-import javafx.scene.text.*;
+
 
 public final class Labelizer {
     private final ContinuousElevationModel cev;
@@ -28,12 +26,14 @@ public final class Labelizer {
     }
     public List<Node> labels(PanoramaParameters parameters)
     {
-        List<Summit> visible=listOfVisibleSummit(parameters);
+        List<visibleSummit> visible=listOfVisibleSummit(parameters);
+        Collections.sort(visible);
+        return this.positionLabels(visible, parameters);
         
     }
    
-    private List<Summit> listOfVisibleSummit(PanoramaParameters p){
-        List<Summit> visible=new LinkedList<>();
+    private List<visibleSummit> listOfVisibleSummit(PanoramaParameters p){
+        List<visibleSummit> visible=new LinkedList<>();
         
         for( Summit s: summitList ) 
         {
@@ -45,12 +45,17 @@ public final class Labelizer {
             double summitAngle = Math.atan2(distY, distX);
             
             if(distX<=p.maxDistance()){
-                if(summitAngle<=p.verticalFieldOfView()/2.0 && summitAngle>=p.verticalFieldOfView()/2.0){  
-                    if(Math.abs(deltaAzimuth)<=p.horizontalFieldOfView()/2.0){                        
+                
+                if(summitAngle<=p.verticalFieldOfView()/2.0 && summitAngle>=p.verticalFieldOfView()/2.0){
+                    
+                    if(Math.abs(deltaAzimuth)<=p.horizontalFieldOfView()/2.0){  
+                        
                         DoubleUnaryOperator op = PanoramaComputer.rayToGroundDistance(ep, p.observerElevation(), distY/distX);
                         double intersection = firstIntervalContainingRoot(op, 0, p.maxDistance(), 64);
                         if(intersection > distX-200){
-                            visible.add(s);
+                            
+                            visible.add(new visibleSummit(s, (int)Math.round(p.xForAzimuth(summitAngle)), (int)Math.round(p.yForAltitude(summitAngle))));//possible mistake in the arguments here
+                            //shif se te enonce e ka von AzimuthForX jo anasjelltas
                         }   
                         
                     }    
@@ -61,21 +66,46 @@ public final class Labelizer {
         return visible;
     }
     
-    private List<Node> positionLabels(List<Summit> summitList,PanoramaParameters parameters)
+    private List<Node> positionLabels(List<visibleSummit> summitList,PanoramaParameters parameters)
     {
-        for( Summit s: summitList ) 
+        int printingY=-1;
+        BitSet labelizable=new BitSet(parameters.width());
+        List<Node> nList=new LinkedList<>();
+        for( visibleSummit s: summitList ) 
         {
-            if(parameters.yForAltitude(Math.toRadians(Math.atan((s.elevation()-parameters.observerElevation())/s.position().distanceTo(parameters.observerPosition()))))>=170)
-                    {
-                
-                
-                    }
+            if(s.yPixel<170)continue;
+            if(s.xPixel<20||s.xPixel>parameters.width()-20)continue;
+            if(labelizable.nextSetBit(s.xPixel)<s.xPixel+20)continue;
+            if(printingY==-1)printingY=s.yPixel;
+            
+            labelizable.set(s.xPixel, s.xPixel+20);
+            //nList.add(new Node) for the moment empty, right?
+            
+            
         }
+        return nList;
     }
     
-    class visibleSummit
+    class visibleSummit implements Comparable<visibleSummit>//can't extend summit
     {
+        Summit summit;
+        int xPixel, yPixel;
+        public visibleSummit(Summit summit, int xPixel, int yPixel) 
+        {
+            this.summit=summit;
+            this.xPixel=xPixel;
+            this.yPixel=yPixel;
+                
+        }
+    
         
+        @Override
+        public int compareTo(visibleSummit other) {
+            if(this.yPixel>=other.yPixel) return 1;
+            else return -1;
+        }
+        
+
     }
 
 }
