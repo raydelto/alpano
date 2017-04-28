@@ -1,13 +1,19 @@
 package ch.epfl.alpano.gui;
 
+import static ch.epfl.alpano.Math2.angularDistance;
+import static ch.epfl.alpano.Math2.firstIntervalContainingRoot;
+
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.DoubleUnaryOperator;
 
 import org.w3c.dom.ls.LSInput;
 
 import ch.epfl.alpano.Azimuth;
+import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.PanoramaParameters;
 import ch.epfl.alpano.dem.ContinuousElevationModel;
+import ch.epfl.alpano.dem.ElevationProfile;
 import ch.epfl.alpano.summit.Summit;
 import javafx.scene.Node;
 import javafx.scene.shape.*;
@@ -24,45 +30,44 @@ public final class Labelizer {
     {
         List<Summit> visible=listOfVisibleSummit(parameters);
         
-                
-      
     }
-    private boolean isVisible(PanoramaParameters p, Summit s)
-    {
-        double distX= s.position().distanceTo(p.observerPosition());
-        //double arealDist=Math.sqrt(distX^distX+Math.pow(p.observerElevation()-s.elevation(), 2));
-        if(distX>p.maxDistance())return false;
-        
-        double dH= distX*Math.tan(p.verticalFieldOfView()/2);
-        if(dH+p.observerElevation()<s.elevation() || p.observerElevation()-dH>s.elevation()) return false;
-        
-        double dAzimuth=p.observerPosition().azimuthTo(s.position());
-        if(dAzimuth>Azimuth.canonicalize(p.centerAzimuth()+p.horizontalFieldOfView()/2)||dAzimuth<Azimuth.canonicalize(p.centerAzimuth()-p.horizontalFieldOfView()/2))
-        return false;
-        
-        
-        
-        
-        
-    }
-    private List<Summit> listOfVisibleSummit ( PanoramaParameters parameters)
-    {
+   
+    private List<Summit> listOfVisibleSummit(PanoramaParameters p){
         List<Summit> visible=new LinkedList<>();
-       
-       for( Summit s: summitList ) 
-       {
-           if(isVisible(parameters, s)){
-               visible.add(s);
-           }
-       }
-       return visible;
+        
+        for( Summit s: summitList ) 
+        {
+            double distX= s.position().distanceTo(p.observerPosition());
+            double summitAzimuth=p.observerPosition().azimuthTo(s.position());
+            double deltaAzimuth = angularDistance(p.centerAzimuth(), summitAzimuth);
+            ElevationProfile ep = new ElevationProfile(cev, p.observerPosition(), summitAzimuth, p.maxDistance());
+            double distY= (PanoramaComputer.rayToGroundDistance(ep, p.observerElevation(),  0)).applyAsDouble(distX);    // ??? distX ???     
+            double summitAngle = Math.atan2(distY, distX);
+            
+            if(distX<=p.maxDistance()){
+                if(summitAngle<=p.verticalFieldOfView()/2.0 && summitAngle>=p.verticalFieldOfView()/2.0){  
+                    if(Math.abs(deltaAzimuth)<=p.horizontalFieldOfView()/2.0){                        
+                        DoubleUnaryOperator op = PanoramaComputer.rayToGroundDistance(ep, p.observerElevation(), distY/distX);
+                        double intersection = firstIntervalContainingRoot(op, 0, p.maxDistance(), 64);
+                        if(intersection > distX-200){
+                            visible.add(s);
+                        }   
+                        
+                    }    
+                }
+            }               
+        }
+        
+        return visible;
     }
+    
     private List<Node> positionLabels(List<Summit> summitList,PanoramaParameters parameters)
     {
         for( Summit s: summitList ) 
         {
             if(parameters.yForAltitude(Math.toRadians(Math.atan((s.elevation()-parameters.observerElevation())/s.position().distanceTo(parameters.observerPosition()))))>=170)
                     {
+                
                 
                     }
         }
