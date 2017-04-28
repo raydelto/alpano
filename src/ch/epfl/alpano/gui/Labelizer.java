@@ -38,7 +38,7 @@ public final class Labelizer {
         
         double dAzimuth=p.observerPosition().azimuthTo(s.position());
         if(dAzimuth>Azimuth.canonicalize(p.centerAzimuth()+p.horizontalFieldOfView()/2)||dAzimuth<Azimuth.canonicalize(p.centerAzimuth()-p.horizontalFieldOfView()/2))
-                return false;
+        return false;
         
         
         
@@ -56,6 +56,21 @@ public final class Labelizer {
            }
        }
        return visible;
+    }
+    private List<Node> positionLabels(List<Summit> summitList,PanoramaParameters parameters)
+    {
+        for( Summit s: summitList ) 
+        {
+            if(parameters.yForAltitude(Math.toRadians(Math.atan((s.elevation()-parameters.observerElevation())/s.position().distanceTo(parameters.observerPosition()))))>=170)
+                    {
+                
+                    }
+        }
+    }
+    
+    class visibleSummit
+    {
+        
     }
 
 }
