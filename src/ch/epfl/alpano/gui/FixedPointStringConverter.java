@@ -1,3 +1,10 @@
+/**
+ * FixedPointStringConverter
+ * 
+ * @author Andrea Scalisi (259183)
+ * @author Gerald Sula (257396)
+ */
+
 package ch.epfl.alpano.gui;
 
 import java.math.BigDecimal;
@@ -9,6 +16,10 @@ public class FixedPointStringConverter extends StringConverter<Integer>  {
 
     private int decimal;
     
+    /**
+     * Creates a new FixedPointStringConverter
+     * @param decimal integer that indicates the number of decimal to be saved
+     */
     public FixedPointStringConverter(int decimal){
         this.decimal = decimal;
     }
@@ -28,13 +39,4 @@ public class FixedPointStringConverter extends StringConverter<Integer>  {
       
         return b.toPlainString();
     }
-    
-    public static void main(String[] args) {
-        FixedPointStringConverter f = new FixedPointStringConverter(4);
-        String s = "12.354364";
-        System.out.println("Voila : " +f.fromString(s));
-        
-        System.out.println("Retour : "+f.toString(f.fromString(s)));
-    }
-
 }

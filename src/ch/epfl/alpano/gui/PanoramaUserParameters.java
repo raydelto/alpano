@@ -15,6 +15,10 @@ import ch.epfl.alpano.PanoramaParameters;
 public final class PanoramaUserParameters {
     private final Map<UserParameter, Integer> parameters;
 
+    /**
+     * Creates a new PanoramaUserParameters from a map
+     * @param parameters a map composed of UserParameters and Integer to be stored
+     */
     public PanoramaUserParameters(Map<UserParameter, Integer> parameters) {
                 
         this.parameters = new EnumMap<>(UserParameter.class);
@@ -31,13 +35,37 @@ public final class PanoramaUserParameters {
         }
     }
 
+    /**
+     * Creates a new PanoramaUserParameters from integer values
+     * @param observerLongitude the longitude of the observer
+     * @param observerLatitude the latitude of the observer
+     * @param observerElevation the observer elevation
+     * @param centerAzimuth the azimuth in the center of the panorama
+     * @param horizonrtalFieldOfView the horizontal field of view
+     * @param maxDistance the maximum distance of sight
+     * @param width the width of the panorama
+     * @param height the height of the panorama
+     * @param samplingExponent the sampling exponent
+     */
     public PanoramaUserParameters(int observerLongitude, int observerLatitude, int observerElevation, int centerAzimuth, int horizonrtalFieldOfView, int maxDistance, int width, int height, int samplingExponent) {
 
         this(createMap(observerLongitude, observerLatitude, observerElevation, centerAzimuth, horizonrtalFieldOfView, maxDistance, width, height, samplingExponent));
-
     }
 
-    public static EnumMap<UserParameter, Integer> createMap(int observerLongitude, int observerLatitude, int observerElevation, int centerAzimuth, int horizonrtalFieldOfView, int maxDistance, int width, int height, int samplingExponent) {
+    /**
+     * Private method that creates a map from integer values
+     * @param observerLongitude the longitude of the observer
+     * @param observerLatitude the latitude of the observer
+     * @param observerElevation the observer elevation
+     * @param centerAzimuth the azimuth in the center of the panorama
+     * @param horizonrtalFieldOfView the horizontal field of view
+     * @param maxDistance the maximum distance of sight
+     * @param width the width of the panorama
+     * @param height the height of the panorama
+     * @param samplingExponent the sampling exponent
+     * @return a new EnumMap created from the integer values
+     */
+    private static EnumMap<UserParameter, Integer> createMap(int observerLongitude, int observerLatitude, int observerElevation, int centerAzimuth, int horizonrtalFieldOfView, int maxDistance, int width, int height, int samplingExponent) {
         
             EnumMap<UserParameter, Integer> map = new EnumMap<>(UserParameter.class);
             map.put(UserParameter.OBSERVER_LONGITUDE, observerLongitude);
@@ -51,77 +79,119 @@ public final class PanoramaUserParameters {
             map.put(UserParameter.SUPER_SAMPLING_EXPONENT, samplingExponent);
             return map;
         }
-    public int get(UserParameter p)
-    {
+    
+    /**
+     *
+     * @param p UserParameter of which we want to know the associated integer value
+     * @return the integer value of the parameter p stored in the map
+     */
+    public int get(UserParameter p){
         return parameters.get(p);//what to do if p is not in map?
     }
-    public int observerLongitude()//pas de meilleure idee pour l'instant
-    {
-//        for (Map.Entry<UserParameter, Integer> e : parameters.entrySet()) {
-//           if(e.getKey().name().equals("OBSERVER_LONGITUDE"))
-//           {
-//               return e.getValue();
-//           }
-//        }
-//        throw new NullPointerException();
-        
+    
+    /**
+     * 
+     * @return the observer longitude
+     */
+    public int observerLongitude(){        
         return get(UserParameter.OBSERVER_LONGITUDE);
     }
+    
+    /**
+     * 
+     * @return the observer latitude
+     */
     public int observerLatitude(){
         return get(UserParameter.OBSERVER_LATITUDE);
     }
+    
+    /**
+     * 
+     * @return
+     */
     public int observerElevation(){
         return get(UserParameter.OBSERVER_ELEVATION);
     }
+    
+    /**
+     * 
+     * @return the center azimuth
+     */
     public int centerAzimuth(){
         return get(UserParameter.CENTER_AZIMUTH);
     }
+    
+    /**
+     * 
+     * @return the horizontal field of view
+     */
     public int horizontalFieldOfView(){
         return get(UserParameter.HORIZONTAL_FIELD_OF_VIEW);
     }
+    
+    /**
+     * 
+     * @return the maximum distance of sight
+     */
     public int maxDistance(){
         return get(UserParameter.MAX_DISTANCE);
     }
+    
+    /**
+     * 
+     * @return the width of the panorama
+     */
     public int width(){
         return get(UserParameter.WIDTH);
     }
+    
+    /**
+     * 
+     * @return the height of the panorama
+     */
     public int height(){
         return get(UserParameter.HEIGHT);
     }
+    
+    /**
+     * 
+     * @return the super sampling exponent
+     */
     public int superSamplingExponent(){
         return get(UserParameter.SUPER_SAMPLING_EXPONENT);
     }
-    public PanoramaParameters panoramaParameters()
-    {
+    
+    /**
+     * Creates a new PanoramaParameters considering the super sampling exponent
+     * @return new PanoramaParameters 
+     */
+    public PanoramaParameters panoramaParameters(){
         return new PanoramaParameters(new GeoPoint(Math.toRadians((double)observerLongitude()/10000), Math.toRadians((double)observerLatitude()/10000)), observerElevation(), Math.toRadians((double)centerAzimuth()), Math.toRadians((double)horizontalFieldOfView()), maxDistance()*1000, applySuperSampling(width()), applySuperSampling(height()));
     }
-    public PanoramaParameters panoramaDisplayParameters()
-    {
+    
+    /**
+     * Creates a new PanoramaParameters without considering the super sampling exponent
+     * @return new PanoramaParameters
+     */
+    public PanoramaParameters panoramaDisplayParameters(){
         return new PanoramaParameters(new GeoPoint(Math.toRadians((double)observerLongitude()/10000), Math.toRadians((double)observerLatitude()/10000)), observerElevation(), Math.toRadians((double)centerAzimuth()), Math.toRadians((double)horizontalFieldOfView()), maxDistance()*1000, width(), height());
     }
-    private int applySuperSampling(int p)
-    {
+    
+    /**
+     * Applies the super sampling exponent to 2 and multiply it by p
+     * @param p integer that multiplies 2 to the power superSamplingExponent
+     * @return 2 to the power superSamplingExponent multiplied by p
+     */
+    private int applySuperSampling(int p){
         return (int)Math.pow(2, superSamplingExponent())*p;
     }
 
     @Override
     public boolean equals(Object o){
-        
         if(o instanceof PanoramaUserParameters){
             return (((PanoramaUserParameters) o).parameters.equals(parameters));
         }
-        
         return false;
-//        if(o instanceof PanoramaUserParameters){
-//            for(Map.Entry<UserParameter, Integer> e : parameters.entrySet()){
-//               
-//                if(!(((Integer)((PanoramaUserParameters) o).get(e.getKey())).equals(e.getValue()))){
-//                    return false;
-//                }
-//            }
-//            return true;
-//        }
-//        return false;
     }
     
     @Override

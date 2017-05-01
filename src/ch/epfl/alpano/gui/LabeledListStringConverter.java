@@ -1,3 +1,9 @@
+/**
+ * LabeledListStringConverter
+ * 
+ * @author Andrea Scalisi (259183)
+ * @author Gerald Sula (257396)
+ */
 package ch.epfl.alpano.gui;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +14,10 @@ public class LabeledListStringConverter extends StringConverter<Integer> {
 
     List<String> list;
     
+    /**
+     * Creates a new LabeledListStringConverter that stores several strings in an array
+     * @param string list of multiple strings 
+     */
     public LabeledListStringConverter(String...string){
         list = new ArrayList<>();
         for(String s : string){
