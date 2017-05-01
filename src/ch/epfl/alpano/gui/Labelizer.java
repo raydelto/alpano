@@ -62,7 +62,7 @@ public final class Labelizer {
             
             if(distX<=p.maxDistance()){
                  
-                double distY= (PanoramaComputer.rayToGroundDistance(ep, 0,  0)).applyAsDouble(distX);    // ??? distX ???     
+                double distY= (PanoramaComputer.rayToGroundDistance(ep, p.observerElevation(),  0)).applyAsDouble(distX);    // ??? distX ???     
                 double summitAngle = Math.atan2(distY, distX);
     
                 if(summitAngle<=p.verticalFieldOfView()/2.0 && summitAngle>=(-p.verticalFieldOfView())/2.0){
