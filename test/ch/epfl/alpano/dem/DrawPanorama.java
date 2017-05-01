@@ -4,6 +4,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import static java.lang.Math.*;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -15,8 +16,10 @@ import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.PanoramaParameters;
 import ch.epfl.alpano.gui.ChannelPainter;
 import ch.epfl.alpano.gui.ImagePainter;
+import ch.epfl.alpano.gui.Labelizer;
 import ch.epfl.alpano.gui.PanoramaRenderer;
 import ch.epfl.alpano.gui.PredefinedPanoramas;
+import ch.epfl.alpano.summit.GazetteerParser;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
@@ -55,8 +58,8 @@ final class DrawPanorama {
                 .computePanorama(PredefinedPanoramas.NIESEN.panoramaParameters());
         
         
-        
-        
+        Labelizer lab=new Labelizer(cDEM, GazetteerParser.readSummitsFrom(new File("alps.txt")));
+        lab.labels(PARAMS);
 
 //        BufferedImage i =
 //          new BufferedImage(IMAGE_WIDTH,
