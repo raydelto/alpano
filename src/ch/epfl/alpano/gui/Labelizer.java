@@ -30,6 +30,7 @@ import javafx.scene.transform.Translate;
 public final class Labelizer {
     private final ContinuousElevationModel cev;
     private final List <Summit> summitList;
+    private final int STEP=64,TOLERANCE=200;
     public Labelizer(ContinuousElevationModel cev, List <Summit> summitList) {
         this.cev=cev;
         this.summitList=summitList;
@@ -43,7 +44,6 @@ public final class Labelizer {
     {
         List<visibleSummit> visible=listOfVisibleSummit(parameters);
         Collections.sort(visible);
-        visible.forEach(x -> System.out.println(x.summit+", x: "+x.xPixel+" , y: "+x.yPixel));
         return this.positionLabels(visible, parameters);
         
     }
@@ -74,14 +74,11 @@ public final class Labelizer {
                     if(Math.abs(deltaAzimuth)<=p.horizontalFieldOfView()/2.0){  
                        
                         DoubleUnaryOperator op = PanoramaComputer.rayToGroundDistance(ep, p.observerElevation(), distY/distX);
-                        double intersection = firstIntervalContainingRoot(op, 0, distX, 64);
+                        double intersection = firstIntervalContainingRoot(op, 0, distX, STEP);
                         
-                        
-                        if(intersection > distX-200){
-                            
+                        if(intersection > distX-TOLERANCE){
                             
                             visible.add(new visibleSummit(s, (int)Math.round(p.xForAzimuth(summitAzimuth)), (int)Math.round(p.yForAltitude(summitAngle))));
-                            
 
                         }   
                         
@@ -89,9 +86,6 @@ public final class Labelizer {
                 }
             }               
         }
-
-       // System.out.println(visible);
-        
         return visible;
     }
     
@@ -130,11 +124,7 @@ public final class Labelizer {
             txt.getTransforms().addAll(new Translate(s.xPixel, printingY), new Rotate(30, 0, 0));
             nList.add(line); 
             
-            System.out.println(s.summit);
-            
-            
         }
-        nList.forEach(x -> System.out.println(x));
         return nList;
     }
     
@@ -143,7 +133,7 @@ public final class Labelizer {
      * 
      * Also implements Comparable so that it makes it easier to sort the visible Summits according to their y coordinate in pixels
      */
-    class visibleSummit implements Comparable<visibleSummit>//can't extend summit
+    class visibleSummit implements Comparable<visibleSummit>
     {
         Summit summit;
         int xPixel, yPixel;
