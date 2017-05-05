@@ -21,6 +21,10 @@ import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.dem.ElevationProfile;
 import ch.epfl.alpano.summit.Summit;
 import javafx.scene.Node;
+import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Translate;
 
 
 public final class Labelizer {
@@ -39,7 +43,7 @@ public final class Labelizer {
     {
         List<visibleSummit> visible=listOfVisibleSummit(parameters);
         Collections.sort(visible);
-        System.out.println("done");
+        visible.forEach(x -> System.out.println(x.summit+", x: "+x.xPixel+" , y: "+x.yPixel));
         return this.positionLabels(visible, parameters);
         
     }
@@ -57,12 +61,12 @@ public final class Labelizer {
             double distX= s.position().distanceTo(p.observerPosition());
             double summitAzimuth=p.observerPosition().azimuthTo(s.position());
             double deltaAzimuth = angularDistance(p.centerAzimuth(), summitAzimuth);
-            ElevationProfile ep = new ElevationProfile(cev, p.observerPosition(), summitAzimuth, p.maxDistance());
+            ElevationProfile ep = new ElevationProfile(cev, p.observerPosition(), summitAzimuth, distX);
            
             
             if(distX<=p.maxDistance()){
                  
-                double distY= (PanoramaComputer.rayToGroundDistance(ep, p.observerElevation(),  0)).applyAsDouble(distX);    // ??? distX ???     
+                double distY= -(PanoramaComputer.rayToGroundDistance(ep, p.observerElevation(),  0)).applyAsDouble(distX);    
                 double summitAngle = Math.atan2(distY, distX);
     
                 if(summitAngle<=p.verticalFieldOfView()/2.0 && summitAngle>=(-p.verticalFieldOfView())/2.0){
@@ -70,14 +74,15 @@ public final class Labelizer {
                     if(Math.abs(deltaAzimuth)<=p.horizontalFieldOfView()/2.0){  
                        
                         DoubleUnaryOperator op = PanoramaComputer.rayToGroundDistance(ep, p.observerElevation(), distY/distX);
-                        double intersection = firstIntervalContainingRoot(op, 0, p.maxDistance(), 64);
-                        System.out.println("intersection : "+intersection);
-                        System.out.println("distX : "+distX);
+                        double intersection = firstIntervalContainingRoot(op, 0, distX, 64);
+                        
+                        
                         if(intersection > distX-200){
                             
-                            visible.add(new visibleSummit(s, (int)Math.round(p.xForAzimuth(summitAngle)), (int)Math.round(p.yForAltitude(summitAngle))));//possible mistake in the arguments here
                             
-                            //shif se te enonce e ka von AzimuthForX jo anasjelltas
+                            visible.add(new visibleSummit(s, (int)Math.round(p.xForAzimuth(summitAzimuth)), (int)Math.round(p.yForAltitude(summitAngle))));
+                            
+
                         }   
                         
                     }    
@@ -85,7 +90,8 @@ public final class Labelizer {
             }               
         }
 
-        System.out.println(visible);
+       // System.out.println(visible);
+        
         return visible;
     }
     
@@ -102,18 +108,33 @@ public final class Labelizer {
         List<Node> nList=new LinkedList<>();
         for( visibleSummit s: summitList ) 
         {
+            
             if(s.yPixel<170)continue;
+            
             if(s.xPixel<20||s.xPixel>parameters.width()-20)continue;
-            if(labelizable.nextSetBit(s.xPixel)<s.xPixel+20)continue;
+            
+            int nextsSetBit=labelizable.nextSetBit(s.xPixel);
+            if(nextsSetBit!=-1&&nextsSetBit<s.xPixel+20)continue;
+            
             if(printingY==-1)printingY=s.yPixel;
+           
             
             labelizable.set(s.xPixel, s.xPixel+20);
-            //nList.add(new Node) for the moment empty, right?
+            Line line = new Line();
+            line.setStartX(s.xPixel);
+            line.setEndX(s.xPixel);
+            line.setStartY(s.yPixel);
+            line.setEndY(printingY);
             
-            System.out.println(s);
+            Text txt= new Text(s.summit.name()+" ("+s.summit.elevation()+"m)");
+            txt.getTransforms().addAll(new Translate(s.xPixel, printingY), new Rotate(30, 0, 0));
+            nList.add(line); 
+            
+            System.out.println(s.summit);
             
             
         }
+        nList.forEach(x -> System.out.println(x));
         return nList;
     }
     
@@ -137,8 +158,14 @@ public final class Labelizer {
         
         @Override
         public int compareTo(visibleSummit other) {
-            if(this.yPixel>=other.yPixel) return 1;
-            else return -1;
+            if(this.yPixel>other.yPixel) return 1;
+            else if(this.yPixel<other.yPixel) return -1;
+            else {
+                if(this.summit.elevation()>other.summit.elevation()){
+                    return -1;
+                }
+                else return 1;
+            }
         }
         
 
