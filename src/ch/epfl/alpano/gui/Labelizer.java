@@ -53,7 +53,7 @@ public final class Labelizer {
      * @param p the parameters of the panorama 
      * @return a list of visibleSummits, after applying the conditions of a visible summit
      */
-    private List<visibleSummit> listOfVisibleSummit(PanoramaParameters p){
+    private List<visibleSummit> listOfVisibleSummit(PanoramaParameters p){//maybe change the order for better efficiency?
         List<visibleSummit> visible=new LinkedList<>();
         
         for( Summit s: summitList ) 
