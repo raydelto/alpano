@@ -18,6 +18,12 @@ public class PanoramaParametersBean {
     private EnumMap<UserParameter, ObjectProperty<Integer>> map;
     private ObjectProperty<PanoramaUserParameters> parameters;
     
+    /**
+     * Creates a new PanoramaParametersBean
+     * Stores all the parameters in both a map and a PanoramaUserParameters
+     * Adds a listener on every parameter in the map
+     * @param parameters the parameters of the Panorama
+     */
     public PanoramaParametersBean(PanoramaUserParameters parameters){
       
         this.parameters = new SimpleObjectProperty<>(parameters);
@@ -29,6 +35,9 @@ public class PanoramaParametersBean {
         } 
     }
     
+    /**
+     * Private method that synchronizes the parameters entered by the user with the actual parameters of the Panorama
+     */
     private void synchronizeParameters(){
         PanoramaUserParameters actualParameters = 
                 new PanoramaUserParameters(observerLongitudeProperty().getValue(), observerLatitudeProperty().getValue(), 
@@ -43,33 +52,82 @@ public class PanoramaParametersBean {
         
     }
 
+    /**
+     * 
+     * @return All the parameters of the Panorama
+     */
     public ReadOnlyObjectProperty<PanoramaUserParameters> parametersProperty(){
         return parameters;
     }
+    
+    /**
+     * 
+     * @return Longitude of the observer
+     */
     public ObjectProperty<Integer> observerLongitudeProperty(){
         return map.get(UserParameter.OBSERVER_LONGITUDE);
     }
+    
+    /**
+     * 
+     * @return Latitude of the observer
+     */
     public ObjectProperty<Integer> observerLatitudeProperty(){
         return map.get(UserParameter.OBSERVER_LATITUDE);
     }
+    
+    /**
+     * 
+     * @return Observer elevation
+     */
     public ObjectProperty<Integer> observerElevationProperty(){
         return map.get(UserParameter.OBSERVER_ELEVATION);
     }
+    
+    /**
+     * 
+     * @return Center Azimuth of the Panorama
+     */
     public ObjectProperty<Integer> centerAzimuthProperty(){
         return map.get(UserParameter.CENTER_AZIMUTH);
     }
+    
+    /**
+     * 
+     * @return Horizontal field of view of the Panorama
+     */
     public ObjectProperty<Integer> horizontalFieldOfViewProperty(){
         return map.get(UserParameter.HORIZONTAL_FIELD_OF_VIEW);
     }
+    
+    /**
+     * 
+     * @return Maximum distance of the Panorama
+     */
     public ObjectProperty<Integer> maxDistanceProperty(){
         return map.get(UserParameter.MAX_DISTANCE);
     }
+    
+    /**
+     * 
+     * @return Width of the Panorama
+     */
     public ObjectProperty<Integer> widthProperty(){
         return map.get(UserParameter.WIDTH);
     }
+    
+    /**
+     * 
+     * @return Height of the Panorama
+     */
     public ObjectProperty<Integer> heightProperty(){
         return map.get(UserParameter.HEIGHT);
     }
+    
+    /**
+     * 
+     * @return Super sampling exponent
+     */
     public ObjectProperty<Integer> superSamplingExponentProperty(){
         return map.get(UserParameter.SUPER_SAMPLING_EXPONENT);
     }    
