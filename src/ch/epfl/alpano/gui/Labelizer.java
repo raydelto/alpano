@@ -105,12 +105,12 @@ public final class Labelizer {
             
             if(s.yPixel<170)continue;
             
-            if(s.xPixel<20||s.xPixel>parameters.width()-20)continue;
+            if(s.xPixel<20||s.xPixel>parameters.width()-20)continue;//CONSTANTS
             
             int nextsSetBit=labelizable.nextSetBit(s.xPixel);
             if(nextsSetBit!=-1&&nextsSetBit<s.xPixel+20)continue;
             
-            if(printingY==-1)printingY=s.yPixel;
+            if(printingY==-1)printingY=s.yPixel-22;
            
             
             labelizable.set(s.xPixel, s.xPixel+20);
@@ -121,8 +121,10 @@ public final class Labelizer {
             line.setEndY(printingY);
             
             Text txt= new Text(s.summit.name()+" ("+s.summit.elevation()+"m)");
-            txt.getTransforms().addAll(new Translate(s.xPixel, printingY), new Rotate(30, 0, 0));
+            txt.getTransforms().addAll(new Translate(s.xPixel, printingY), new Rotate(-60, 0, 0));
             nList.add(line); 
+            nList.add(txt);
+            
             
         }
         return nList;

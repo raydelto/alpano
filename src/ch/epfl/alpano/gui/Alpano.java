@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -22,6 +23,7 @@ import ch.epfl.alpano.dem.HgtDiscreteElevationModel;
 import ch.epfl.alpano.summit.GazetteerParser;
 import ch.epfl.alpano.summit.Summit;
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
@@ -64,8 +66,9 @@ public final class Alpano extends Application {
      computerBean.setParameters(PredefinedPanoramas.ALPES_JURA);
       
     ImageView panoView = new ImageView();
-    Pane labelsPane = new Pane(); //TODO args
-    StackPane panoGroup = new StackPane(labelsPane, panoView);
+    Pane labelsPane = new Pane(); 
+    
+    StackPane panoGroup = new StackPane( panoView,labelsPane);//order makes a difference!
     ScrollPane panoScrollPane = new ScrollPane(panoGroup);
     Text updateText = new Text(); 
     StackPane updateNotice = new StackPane(updateText);
@@ -121,6 +124,11 @@ public final class Alpano extends Application {
         }
         
     });
+    
+    labelsPane.prefWidthProperty().bind(parametersBean.widthProperty());
+    labelsPane.prefHeightProperty().bind(parametersBean.heightProperty());
+    Bindings.bindContent( labelsPane.getChildren(),computerBean.getLabels());
+     
 
     primaryStage.setTitle("Alpano");
     primaryStage.setScene(scene);

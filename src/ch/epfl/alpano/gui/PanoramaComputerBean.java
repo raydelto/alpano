@@ -19,12 +19,12 @@ import ch.epfl.alpano.summit.Summit;
 import static javafx.collections.FXCollections.observableArrayList;
 public class PanoramaComputerBean {
     private final ObjectProperty<PanoramaUserParameters>  panoramaUserParamProperty;
-    ObjectProperty<Panorama> panoramaProperty;
-    ObjectProperty<Image> imageProperty;//shif mos ke importu gabim
-    ObjectProperty<ObservableList<Node>> labelsProperty;
-    ObservableList<Node> labelsList;
-    PanoramaComputer panComp;
-    Labelizer labels;
+    private ObjectProperty<Panorama> panoramaProperty;
+    private ObjectProperty<Image> imageProperty;//shif mos ke importu gabim
+    private ObjectProperty<ObservableList<Node>> labelsProperty;
+    private ObservableList<Node> labelsList;
+    private PanoramaComputer panComp;
+    private Labelizer labels;
     
     PanoramaComputerBean(ContinuousElevationModel cem, List<Summit> summits)
     {
