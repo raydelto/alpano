@@ -1,11 +1,12 @@
 package ch.epfl.alpano.gui;
 
 import ch.epfl.alpano.Panorama;
+import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 public interface PanoramaRenderer {
     
-    static WritableImage renderPanorama(Panorama pan, ImagePainter painter)
+    static Image renderPanorama(Panorama pan, ImagePainter painter)//needs fix?
     {
         WritableImage wi=new WritableImage(pan.parameters().width(), pan.parameters().height());
         PixelWriter pi = wi.getPixelWriter();
