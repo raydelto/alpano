@@ -6,10 +6,12 @@
  */
 package ch.epfl.alpano.gui;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -24,13 +26,24 @@ import ch.epfl.alpano.summit.GazetteerParser;
 import ch.epfl.alpano.summit.Summit;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanExpression;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import static java.lang.Math.toDegrees;
@@ -64,17 +77,63 @@ public final class Alpano extends Application {
      PanoramaParametersBean parametersBean = new PanoramaParametersBean(PredefinedPanoramas.ALPES_JURA);
      PanoramaComputerBean computerBean = new PanoramaComputerBean(new ContinuousElevationModel(DEM), summitList);
      computerBean.setParameters(PredefinedPanoramas.ALPES_JURA);
+     
+     
       
     ImageView panoView = new ImageView();
     Pane labelsPane = new Pane(); 
     
+
+    TextField tfLat=new TextField(String.valueOf(computerBean.getPanorama().parameters().observerPosition().latitude()));
+    tfLat.setAlignment(Pos.CENTER_RIGHT);
+    tfLat.setPrefColumnCount(7);
+    TextField tfLong=new TextField();
+    tfLong.setAlignment(Pos.CENTER_RIGHT);
+    tfLong.setPrefColumnCount(7);
+    TextField tfAlt=new TextField();
+    tfAlt.setAlignment(Pos.CENTER_RIGHT);
+    tfAlt.setPrefColumnCount(4);
+    TextField tfAzim=new TextField();
+    tfAzim.setPrefColumnCount(3);
+    tfAzim.setAlignment(Pos.CENTER_RIGHT);
+    TextField tfAngle=new TextField();
+    tfAngle.setAlignment(Pos.CENTER_RIGHT);
+    tfAngle.setPrefColumnCount(3);
+    TextField tfVisib=new TextField();
+    tfVisib.setAlignment(Pos.CENTER_RIGHT);
+    tfVisib.setPrefColumnCount(3);
+    TextField tfLarg=new TextField();
+    tfLarg.setAlignment(Pos.CENTER_RIGHT);
+    tfLarg.setPrefColumnCount(4);
+    TextField tfHaut=new TextField();
+    tfHaut.setAlignment(Pos.CENTER_RIGHT);
+    tfHaut.setPrefColumnCount(4);
+    
+    List<Node> nodeList= new ArrayList<>(Arrays.asList(new Label("Latitude (°)"),tfLat,new Label("Longitude (°)"),tfLong,new Label("Altitude (m)"),tfAlt,new Label("Azimuth (°)"),
+            tfAzim,new Label("Angle de vue (°)"),tfAngle,new Label("Visibilité (km)"),tfVisib,new Label("Largeur (px)"),tfLarg,new Label("Hauteur (px)"),tfHaut,new Label("Surechantillionage"), new Label("Surechantillionage")));
+    
+    GridPane paramsGrid=new GridPane();
+    for(int i=0;i<3;i++)
+    {
+        for(int j=0; j<6;j++)
+        {
+            paramsGrid.add(nodeList.get(i*6+j), j,i);
+        }
+    }
+    
+   
+    
     StackPane panoGroup = new StackPane( panoView,labelsPane);//order makes a difference!
     ScrollPane panoScrollPane = new ScrollPane(panoGroup);
     Text updateText = new Text(); 
+    
     StackPane updateNotice = new StackPane(updateText);
+    Color color = new Color(1,1,1,0.9);
+    updateNotice.setBackground(new Background( new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
     StackPane panoPane = new StackPane(updateNotice, panoScrollPane);
     
     BorderPane root = new BorderPane(panoPane);
+    root.setBottom(paramsGrid);
     Scene scene = new Scene(root);
     
     panoView.fitWidthProperty().bind(parametersBean.widthProperty());
@@ -94,14 +153,14 @@ public final class Alpano extends Application {
         latitude = toDegrees(computerBean.getPanorama().latitudeAt((int)posX, (int)posY));
         distance = computerBean.getPanorama().distanceAt((int)posX, (int)posY)/1000;
         azimuth = computerBean.getPanorama().parameters().azimuthForX(posX);
-        direction = Azimuth.toOctantString(azimuth, "(N)", "(E)", "(S)", "(W)");
+        direction = Azimuth.toOctantString(azimuth, "(N)", "(E)", "(S)", "(W)");//kujdes kto 
         azimuth = toDegrees(azimuth);
         elevation = toDegrees(computerBean.getPanorama().parameters().altitudeForY(posY));
         altitude = (int)(computerBean.getPanorama().elevationAt((int)posX, (int)posY));
-        System.out.println("Longitude : "+longitude+", latitude : "+latitude);
-        System.out.println("Distance : "+distance);
-        System.out.println("Altitude : "+altitude);
-        System.out.println("Azimuth : "+azimuth+" "+direction+", Elevation : "+elevation);
+        //System.out.println("Longitude : "+longitude+", latitude : "+latitude);
+        //System.out.println("Distance : "+distance);
+        //System.out.println("Altitude : "+altitude);
+        //System.out.println("Azimuth : "+azimuth+" "+direction+", Elevation : "+elevation);
                 
         
     });
@@ -128,6 +187,10 @@ public final class Alpano extends Application {
     labelsPane.prefWidthProperty().bind(parametersBean.widthProperty());
     labelsPane.prefHeightProperty().bind(parametersBean.heightProperty());
     Bindings.bindContent( labelsPane.getChildren(),computerBean.getLabels());
+    labelsPane.setMouseTransparent(true);
+    
+   //BooleanExpression check=computerBean.parametersProperty().isNotEqualTo(parametersBean.parametersProperty());
+    //System.out.println(check.get()); 
      
 
     primaryStage.setTitle("Alpano");
