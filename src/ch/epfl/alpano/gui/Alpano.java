@@ -53,8 +53,7 @@ import ch.epfl.alpano.dem.DiscreteElevationModel;
 import ch.epfl.alpano.dem.HgtDiscreteElevationModel;
 import ch.epfl.alpano.summit.GazetteerParser;
 import ch.epfl.alpano.summit.Summit;
-
-
+import static java.lang.String.format;
 
 public final class Alpano extends Application {
     
@@ -124,7 +123,7 @@ public final class Alpano extends Application {
         }
     }
     
-    paramsGrid.add(area,7,1,40,2);
+    paramsGrid.add(area,7,0,40,3);
    
     
     StackPane panoGroup = new StackPane(panoView,labelsPane);
@@ -159,8 +158,7 @@ public final class Alpano extends Application {
     
     panoView.setOnMouseMoved(x -> {
         
-        double longitude, latitude, distance, azimuth, elevation;
-        int altitude;
+        double longitude, latitude, distance, azimuth, elevation, altitude;
         double posX = x.getX();
         double posY = x.getY();
         String direction;
@@ -171,16 +169,19 @@ public final class Alpano extends Application {
         direction = Azimuth.toOctantString(azimuth, "N", "E", "S", "W");
         azimuth = toDegrees(azimuth);
         elevation = toDegrees(computerBean.getPanorama().parameters().altitudeForY(posY));
-        altitude = (int)(computerBean.getPanorama().elevationAt((int)posX, (int)posY));
+        altitude = (computerBean.getPanorama().elevationAt((int)posX, (int)posY));
         //System.out.println("Longitude : "+longitude+", latitude : "+latitude);
         //System.out.println("Distance : "+distance);
         //System.out.println("Altitude : "+altitude);
         //System.out.println("Azimuth : "+azimuth+" "+direction+", Elevation : "+elevation);
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("Position : ").append(format("%.4f", longitude)).append("°N ").append(format("%.4f", latitude)).append("°E")
+        .append("\n Distance : ").append(format("%.1f", distance)).append(" km")
+        .append("\n Altitude : ").append(format("%.0f", altitude)).append(" m")
+        .append("\n Azimuth : ").append(format("%.1f", azimuth)).append("°(").append(direction).append(") Elévation : ").append(format("%.1f", elevation)).append("°");
                 
-        area.setText(" Position : "+longitude+"°N "+latitude+"°E"
-                + "\n Distance : "+distance+" km"
-                +"\n Altitude : "+altitude+" m"
-                +"\n Azimuth : " +azimuth+"°("+direction+") Elévation: "+elevation+"°");
+        area.setText(sb.toString());
         
     });
     
@@ -188,8 +189,8 @@ public final class Alpano extends Application {
         double longitude, latitude;
         longitude = toDegrees(computerBean.getPanorama().longitudeAt((int)x.getX(), (int)x.getY()));
         latitude = toDegrees(computerBean.getPanorama().latitudeAt((int)x.getX(), (int)x.getY()));
-        String longitudeStr = String.format((Locale)null, "%.6f", longitude);
-        String latitudeStr = String.format((Locale)null, "%.6f", latitude);
+        String longitudeStr = format((Locale)null, "%.6f", longitude);
+        String latitudeStr = format((Locale)null, "%.6f", latitude);
         String qy = "mlat="+latitudeStr+"&mlon="+longitudeStr;  // "query" : partie après le ?
         String fg = "map=15/"+latitudeStr+"/"+longitudeStr;  // "fragment" : partie après le #
         URI osmURI;

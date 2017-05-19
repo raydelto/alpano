@@ -89,7 +89,7 @@ public class PanoramaComputerBean {
     private void update()
     {
         PanoramaParameters param=panoramaUserParamProperty.get().panoramaParameters();
-        labelsList.setAll(labels.labels(param));// jo cast apo jo
+        labelsList.setAll(labels.labels(panoramaUserParamProperty.getValue().panoramaDisplayParameters()));// jo cast apo jo
         panoramaProperty.set(panComp.computePanorama(param));
         
         Panorama p=panoramaProperty.get();
