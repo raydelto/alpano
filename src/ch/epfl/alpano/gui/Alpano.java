@@ -29,6 +29,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.ImageView;
@@ -103,10 +104,13 @@ public final class Alpano extends Application {
     ChoiceBox<Integer> choice =new ChoiceBox<>();
     choice.getItems().addAll(0, 1, 2);
     StringConverter<Integer> stringConverterChoice = new LabeledListStringConverter("non", "2×", "4×");
-
     choice.valueProperty().bindBidirectional(parametersBean.superSamplingExponentProperty());
-    
     choice.setConverter(stringConverterChoice);
+    
+    TextArea area = new TextArea();
+    area.setEditable(false);
+    area.setPrefRowCount(2);
+    
     
     List<Node> nodeList= new ArrayList<>(Arrays.asList(new Label("Latitude (°)"),tfLat,new Label("Longitude (°)"),tfLong,new Label("Altitude (m)"),tfAlt,new Label("Azimuth (°)"),
             tfAzim,new Label("Angle de vue (°)"),tfAngle,new Label("Visibilité (km)"),tfVisib,new Label("Largeur (px)"),tfLarg,new Label("Hauteur (px)"),tfHaut,new Label("Surechantillionage"), choice));
@@ -120,6 +124,7 @@ public final class Alpano extends Application {
         }
     }
     
+    paramsGrid.add(area,7,1,40,2);
    
     
     StackPane panoGroup = new StackPane(panoView,labelsPane);
@@ -163,7 +168,7 @@ public final class Alpano extends Application {
         latitude = toDegrees(computerBean.getPanorama().latitudeAt((int)posX, (int)posY));
         distance = computerBean.getPanorama().distanceAt((int)posX, (int)posY)/1000;
         azimuth = computerBean.getPanorama().parameters().azimuthForX(posX);
-        direction = Azimuth.toOctantString(azimuth, "(N)", "(E)", "(S)", "(W)");//kujdes kto 
+        direction = Azimuth.toOctantString(azimuth, "N", "E", "S", "W");
         azimuth = toDegrees(azimuth);
         elevation = toDegrees(computerBean.getPanorama().parameters().altitudeForY(posY));
         altitude = (int)(computerBean.getPanorama().elevationAt((int)posX, (int)posY));
@@ -172,6 +177,10 @@ public final class Alpano extends Application {
         //System.out.println("Altitude : "+altitude);
         //System.out.println("Azimuth : "+azimuth+" "+direction+", Elevation : "+elevation);
                 
+        area.setText(" Position : "+longitude+"°N "+latitude+"°E"
+                + "\n Distance : "+distance+" km"
+                +"\n Altitude : "+altitude+" m"
+                +"\n Azimuth : " +azimuth+"°("+direction+") Elévation: "+elevation+"°");
         
     });
     
