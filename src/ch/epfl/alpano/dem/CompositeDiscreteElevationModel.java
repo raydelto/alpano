@@ -9,8 +9,7 @@ package ch.epfl.alpano.dem;
 import ch.epfl.alpano.Interval2D;
 import static ch.epfl.alpano.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
-
-public final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
+ final class CompositeDiscreteElevationModel implements DiscreteElevationModel {
     private final DiscreteElevationModel dem1, dem2;
     private final Interval2D ext;
 

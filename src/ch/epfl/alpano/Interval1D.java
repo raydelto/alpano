@@ -78,11 +78,7 @@ public final class Interval1D {
             return 0;
         }
         
-        int iArr[] = {this.includedTo(),that.includedFrom(),that.includedTo(),this.includedFrom()};
-        sort(iArr);
-        
-        return iArr[2]-iArr[1]+1; //to calculate the size if the intersection, after making sure that the intersections are unionable,
-                                //substract the 2° biggest bound to the 3° biggest bound to calculate the size
+        return Math.min(this.includedTo, that.includedTo)-Math.max(this.includedFrom, that.includedFrom)+1;
     }
     
     /**

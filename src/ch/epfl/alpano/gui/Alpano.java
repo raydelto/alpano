@@ -8,9 +8,15 @@ package ch.epfl.alpano.gui;
 
 
 import static ch.epfl.alpano.Azimuth.toOctantString;
+import static ch.epfl.alpano.gui.PredefinedPanoramas.ALPES_JURA;
+import static ch.epfl.alpano.summit.GazetteerParser.readSummitsFrom;
 import static java.lang.Math.toDegrees;
 import static java.lang.String.format;
+import static javafx.beans.binding.Bindings.bindContent;
+import static javafx.geometry.Pos.CENTER_RIGHT;
+import static javafx.scene.text.TextAlignment.CENTER;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -20,17 +26,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import ch.epfl.alpano.dem.ContinuousElevationModel;
-import ch.epfl.alpano.dem.DiscreteElevationModel;
-import ch.epfl.alpano.dem.HgtDiscreteElevationModel;
-import ch.epfl.alpano.summit.GazetteerParser;
-import ch.epfl.alpano.summit.Summit;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.ObjectProperty;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
@@ -50,17 +50,26 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import javafx.util.converter.IntegerStringConverter;
+import ch.epfl.alpano.dem.ContinuousElevationModel;
+import ch.epfl.alpano.dem.DiscreteElevationModel;
+import ch.epfl.alpano.dem.HgtDiscreteElevationModel;
+import ch.epfl.alpano.summit.GazetteerParser;
+import ch.epfl.alpano.summit.Summit;
 
 public final class Alpano extends Application {
 
+    private final int hTabWidth=4, hTabHeight=2;
     private final String [][] hgtNames = {{"N45E006.hgt", "N45E007.hgt", "N45E008.hgt", "N45E009.hgt"}, {"N46E006.hgt", "N46E007.hgt", "N46E008.hgt", "N46E009.hgt"}};
-    private HgtDiscreteElevationModel [][] hTab = new HgtDiscreteElevationModel[2][4];
+    private HgtDiscreteElevationModel [][] hTab = new HgtDiscreteElevationModel[hTabHeight][hTabWidth];
     private DiscreteElevationModel DEM;
     private List<Summit> summitList;
+    private PanoramaParametersBean parametersBean;
+    private PanoramaComputerBean computerBean;
+    private TextArea area;
+
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -69,26 +78,71 @@ public final class Alpano extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
-        for(int i=0; i<2; ++i){
-            for(int j=0; j<4; ++j){
+        for(int i=0; i<hTabHeight; ++i){
+            for(int j=0; j<hTabWidth; ++j){
                 hTab[i][j] = new HgtDiscreteElevationModel(new File(hgtNames[i][j]));
             } 
         }
 
-        DiscreteElevationModel dem1 = ((hTab[0][0].union(hTab[0][1])).union(hTab[0][2])).union(hTab[0][3]);
-        DiscreteElevationModel dem2 =((hTab[1][0].union(hTab[1][1])).union(hTab[1][2])).union(hTab[1][3]);  // CONSTANTS ??
-        DEM = dem1.union(dem2);
-        summitList = GazetteerParser.readSummitsFrom(new File("alps.txt"));
-        PanoramaParametersBean parametersBean = new PanoramaParametersBean(PredefinedPanoramas.ALPES_JURA);
-        PanoramaComputerBean computerBean = new PanoramaComputerBean(new ContinuousElevationModel(DEM), summitList);
-        computerBean.setParameters(PredefinedPanoramas.ALPES_JURA);
-
-
-
-        ImageView panoView = new ImageView();
+        DEM = createDem(hTab);
+        summitList = readSummitsFrom(new File("alps.txt"));
+        parametersBean = new PanoramaParametersBean(ALPES_JURA);
+        computerBean = new PanoramaComputerBean(new ContinuousElevationModel(DEM), summitList);
+        computerBean.setParameters(ALPES_JURA);
+        
+        ImageView panoView = getPanoView();
         Pane labelsPane = new Pane(); 
 
+        GridPane paramsGrid=getGridPane();
+        
 
+
+        StackPane panoGroup = new StackPane(panoView,labelsPane);
+        ScrollPane panoScrollPane = new ScrollPane(panoGroup);
+
+        StackPane updateNotice = getUpdateNotice();
+
+
+        StackPane panoPane = new StackPane(panoScrollPane,updateNotice);
+
+
+
+        BorderPane root = new BorderPane(panoPane);
+        root.setBottom(paramsGrid);
+        Scene scene = new Scene(root);
+
+        
+
+        labelsPane.prefWidthProperty().bind(parametersBean.widthProperty());
+        labelsPane.prefHeightProperty().bind(parametersBean.heightProperty());
+        bindContent( labelsPane.getChildren(),computerBean.getLabels());
+        labelsPane.setMouseTransparent(true);
+
+        BooleanExpression check=computerBean.parametersProperty().isNotEqualTo(parametersBean.parametersProperty());
+        updateNotice.visibleProperty().bind(check);
+
+        primaryStage.setTitle("Alpano");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+    
+    private StackPane getUpdateNotice(){
+        
+        StackPane updateNotice = new StackPane();
+        Text updateText = new Text("Les paramètres du panorama ont changé.\n Cliquez ici pour mettre à jour."); 
+        updateText.setFont(new Font(40));
+        updateText.setTextAlignment(CENTER);
+        updateNotice.getChildren().add(updateText);
+        Color color = new Color(1,1,1,0.9);
+        updateNotice.setBackground(new Background( new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
+        updateNotice.setOnMouseClicked(x->{
+            computerBean.setParameters(parametersBean.parametersProperty().getValue());
+        });
+        
+        return updateNotice;
+    }
+    private GridPane getGridPane()
+    {
         StringConverter<Integer> stringConverteFourDecimal = new FixedPointStringConverter(4);
         StringConverter<Integer> stringConverteZeroDecimal = new IntegerStringConverter();
         TextField tfLat=createField(7, stringConverteFourDecimal, parametersBean.observerLatitudeProperty());
@@ -106,48 +160,28 @@ public final class Alpano extends Application {
         choice.valueProperty().bindBidirectional(parametersBean.superSamplingExponentProperty());
         choice.setConverter(stringConverterChoice);
 
-        TextArea area = new TextArea();
+        area = new TextArea();
         area.setEditable(false);
         area.setPrefRowCount(2);
-
-
+        
         List<Node> nodeList= new ArrayList<>(Arrays.asList(new Label("Latitude (°)"),tfLat,new Label("Longitude (°)"),tfLong,new Label("Altitude (m)"),tfAlt,new Label("Azimuth (°)"),
                 tfAzim,new Label("Angle de vue (°)"),tfAngle,new Label("Visibilité (km)"),tfVisib,new Label("Largeur (px)"),tfLarg,new Label("Hauteur (px)"),tfHaut,new Label("Surechantillionage"), choice));
 
         GridPane paramsGrid=new GridPane();
-        for(int i=0;i<3;i++){
-            for(int j=0; j<6;j++){
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0; j<6;j++)
+            {
                 paramsGrid.add(nodeList.get(i*6+j), j,i);
             }
         }
 
         paramsGrid.add(area,7,0,40,3);
-
-
-        StackPane panoGroup = new StackPane(panoView,labelsPane);
-        ScrollPane panoScrollPane = new ScrollPane(panoGroup);
-
-
-        StackPane updateNotice = new StackPane();
-        Text updateText = new Text("Les paramètres du panorama ont changé.\n Cliquez ici pour mettre à jour."); 
-        updateText.setFont(new Font(40));
-        updateText.setTextAlignment(TextAlignment.CENTER);
-        updateNotice.getChildren().add(updateText);
-        Color color = new Color(1,1,1,0.9);
-        updateNotice.setBackground(new Background( new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
-        updateNotice.setOnMouseClicked(x->{
-            computerBean.setParameters(parametersBean.parametersProperty().getValue());
-        });
-
-
-        StackPane panoPane = new StackPane(panoScrollPane,updateNotice);
-
-
-
-        BorderPane root = new BorderPane(panoPane);
-        root.setBottom(paramsGrid);
-        Scene scene = new Scene(root);
-
+        return paramsGrid;
+    }
+    private ImageView getPanoView(){
+        
+        ImageView panoView = new ImageView();
         panoView.fitWidthProperty().bind(parametersBean.widthProperty());
         panoView.imageProperty().bind(computerBean.imageProperty());
         panoView.setPreserveRatio(true);
@@ -168,7 +202,6 @@ public final class Alpano extends Application {
             azimuth = toDegrees(azimuth);
             elevation = toDegrees(computerBean.getPanorama().parameters().altitudeForY(posY));
             altitude = (computerBean.getPanorama().elevationAt((int)posX, (int)posY));
-
 
             StringBuilder sb = new StringBuilder();
             sb.append("Position : ").append(format("%.4f", longitude)).append("°N ").append(format("%.4f", latitude)).append("°E")
@@ -191,33 +224,36 @@ public final class Alpano extends Application {
             URI osmURI;
             try {
                 osmURI = new URI("http", "www.openstreetmap.org", "/", qy, fg);
-                java.awt.Desktop.getDesktop().browse(osmURI);
+                Desktop.getDesktop().browse(osmURI);
             } catch (URISyntaxException | IOException e) {
+
                 e.printStackTrace();
             }
 
         });
-
-        labelsPane.prefWidthProperty().bind(parametersBean.widthProperty());
-        labelsPane.prefHeightProperty().bind(parametersBean.heightProperty());
-        Bindings.bindContent( labelsPane.getChildren(),computerBean.getLabels());
-        labelsPane.setMouseTransparent(true);
-
-        BooleanExpression check=computerBean.parametersProperty().isNotEqualTo(parametersBean.parametersProperty());
-        updateNotice.visibleProperty().bind(check);
-
-        primaryStage.setTitle("Alpano");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        
+        return panoView;
     }
-
+    
     private TextField createField(int columnCount, StringConverter<Integer> stringConverter, ObjectProperty<Integer> property){
         TextField tf=new TextField();
-        tf.setAlignment(Pos.CENTER_RIGHT);
+        tf.setAlignment(CENTER_RIGHT);
         TextFormatter<Integer> formatter =   new TextFormatter<>(stringConverter);
         formatter.valueProperty().bindBidirectional(property);
         tf.setPrefColumnCount(columnCount);
         tf.setTextFormatter(formatter);
-        return tf;      
+        return tf;
+
+
+    }
+    private DiscreteElevationModel createDem (HgtDiscreteElevationModel [][] hTab){
+        DiscreteElevationModel temp[]=new DiscreteElevationModel[hTab.length];
+        for(int i=0;i<hTab.length;i++){
+            temp[i]=hTab[i][0].union(hTab[i][1]);
+            for(int j=1;j<hTab[i].length-1;j++){
+                temp[i]=temp[i].union(hTab[i][j+1]);
+            }
+        }
+        return temp[0].union(temp[1]);
     }
 }

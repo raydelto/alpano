@@ -23,6 +23,11 @@ public final class PanoramaParameters {
     private final int width;
     private final int height;
     private final double delta;
+    private final double vericalFieldOfView;
+    private final double middleHeight;
+    private final double middleWidth;
+    
+    
  
     /**
      * Constructs a new PanoramaParameters
@@ -52,6 +57,9 @@ public final class PanoramaParameters {
         this.width = width;
         this.height = height;
         this.delta = horizontalFieldOfView/(width-1);
+        this.vericalFieldOfView = delta*(height-1);
+        this.middleHeight = (height-1)/2.0;
+        this.middleWidth = (width-1)/2.0;
     }
     
     /**
@@ -123,7 +131,7 @@ public final class PanoramaParameters {
      */
     public double verticalFieldOfView(){
         
-        return delta*(height-1);
+        return vericalFieldOfView;
     }
     
     /**
@@ -132,7 +140,7 @@ public final class PanoramaParameters {
      */
     private double middleHeight(){
         
-        return (height-1)/2.0;
+        return middleHeight;
     }
     
     /**
@@ -141,7 +149,7 @@ public final class PanoramaParameters {
      */
     private double middleWidth(){
         
-        return (width-1)/2.0;
+        return middleWidth;
     }
     
     /**

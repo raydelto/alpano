@@ -13,6 +13,7 @@ import ch.epfl.alpano.dem.ElevationProfile;
 import static ch.epfl.alpano.Math2.sq;
 import static ch.epfl.alpano.Math2.firstIntervalContainingRoot;
 import static ch.epfl.alpano.Math2.improveRoot;
+import static ch.epfl.alpano.Distance.EARTH_RADIUS;
 
 
 import static java.lang.Double.POSITIVE_INFINITY;
@@ -23,8 +24,10 @@ import java.util.function.DoubleUnaryOperator;
 public final class PanoramaComputer {
 
     private final ContinuousElevationModel dem;
-    private final static double EARTH_RADIUS = 6371000;
     private final static double K = 0.13;
+    private final static int ROOTSTEP=64;
+    private final static int RAYSTEP=4;
+    private final static double CALCULATIONCONSTANT=(1 - K) / (2 * EARTH_RADIUS);
 
     /**
      * Creates a PanoramaComputer
@@ -58,14 +61,14 @@ public final class PanoramaComputer {
             while (posY >= 0) {
 
                 DoubleUnaryOperator op = rayToGroundDistance(ep, parameters.observerElevation(),Math.tan(parameters.altitudeForY(posY)));
-                double lowerBound = firstIntervalContainingRoot(op, intersectionWithGroundTemp,parameters.maxDistance(), 64);
+                double lowerBound = firstIntervalContainingRoot(op, intersectionWithGroundTemp,parameters.maxDistance(), ROOTSTEP);
 
                 if (lowerBound == POSITIVE_INFINITY) {
                     break;
                 }
 
                 else {
-                    intersectionWithGroundx = improveRoot(op, lowerBound, lowerBound + 64, 4);
+                    intersectionWithGroundx = improveRoot(op, lowerBound, lowerBound + ROOTSTEP, RAYSTEP);
                     intersectionWithGroundTemp = intersectionWithGroundx;
                     double distance = intersectionWithGroundx / Math.cos(parameters.altitudeForY(posY));
 
@@ -105,6 +108,6 @@ public final class PanoramaComputer {
      */
     private static double d(double x) {
         
-        return ((1 - K) / (2 * EARTH_RADIUS)) * sq(x);
+        return CALCULATIONCONSTANT * sq(x);
     }
 }
