@@ -6,6 +6,17 @@
  */
 package ch.epfl.alpano.gui;
 
+import static ch.epfl.alpano.gui.UserParameter.CENTER_AZIMUTH;
+import static ch.epfl.alpano.gui.UserParameter.HEIGHT;
+import static ch.epfl.alpano.gui.UserParameter.HORIZONTAL_FIELD_OF_VIEW;
+import static ch.epfl.alpano.gui.UserParameter.MAX_DISTANCE;
+import static ch.epfl.alpano.gui.UserParameter.OBSERVER_ELEVATION;
+import static ch.epfl.alpano.gui.UserParameter.OBSERVER_LATITUDE;
+import static ch.epfl.alpano.gui.UserParameter.OBSERVER_LONGITUDE;
+import static ch.epfl.alpano.gui.UserParameter.SUPER_SAMPLING_EXPONENT;
+import static ch.epfl.alpano.gui.UserParameter.WIDTH;
+import static java.lang.Math.min;
+
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -22,10 +33,10 @@ public final class PanoramaUserParameters {
     public PanoramaUserParameters(Map<UserParameter, Integer> parameters) {
                 
         this.parameters = new EnumMap<>(UserParameter.class);
-        int maxH = Math.min(UserParameter.HEIGHT.sanitize(parameters.get(UserParameter.HEIGHT)), (170*((UserParameter.WIDTH.sanitize(parameters.get(UserParameter.WIDTH))-1)/UserParameter.HORIZONTAL_FIELD_OF_VIEW.sanitize(parameters.get(UserParameter.HORIZONTAL_FIELD_OF_VIEW)))+1));
+        int maxH = min(HEIGHT.sanitize(parameters.get(HEIGHT)), (170*((WIDTH.sanitize(parameters.get(WIDTH))-1)/HORIZONTAL_FIELD_OF_VIEW.sanitize(parameters.get(HORIZONTAL_FIELD_OF_VIEW)))+1));
         
         for (Map.Entry<UserParameter, Integer> e : parameters.entrySet()) {
-            if(e.getKey().equals(UserParameter.HEIGHT)){
+            if(e.getKey().equals(HEIGHT)){
                 this.parameters.put(e.getKey(), e.getKey().sanitize(maxH));
             }
             
@@ -68,15 +79,15 @@ public final class PanoramaUserParameters {
     private static EnumMap<UserParameter, Integer> createMap(int observerLongitude, int observerLatitude, int observerElevation, int centerAzimuth, int horizonrtalFieldOfView, int maxDistance, int width, int height, int samplingExponent) {
         
             EnumMap<UserParameter, Integer> map = new EnumMap<>(UserParameter.class);
-            map.put(UserParameter.OBSERVER_LONGITUDE, observerLongitude);
-            map.put(UserParameter.OBSERVER_LATITUDE, observerLatitude);
-            map.put(UserParameter.OBSERVER_ELEVATION, observerElevation);
-            map.put(UserParameter.CENTER_AZIMUTH, centerAzimuth);
-            map.put(UserParameter.HORIZONTAL_FIELD_OF_VIEW,horizonrtalFieldOfView);
-            map.put(UserParameter.MAX_DISTANCE, maxDistance);
-            map.put(UserParameter.WIDTH, width);
-            map.put(UserParameter.HEIGHT, height);
-            map.put(UserParameter.SUPER_SAMPLING_EXPONENT, samplingExponent);
+            map.put(OBSERVER_LONGITUDE, observerLongitude);
+            map.put(OBSERVER_LATITUDE, observerLatitude);
+            map.put(OBSERVER_ELEVATION, observerElevation);
+            map.put(CENTER_AZIMUTH, centerAzimuth);
+            map.put(HORIZONTAL_FIELD_OF_VIEW,horizonrtalFieldOfView);
+            map.put(MAX_DISTANCE, maxDistance);
+            map.put(WIDTH, width);
+            map.put(HEIGHT, height);
+            map.put(SUPER_SAMPLING_EXPONENT, samplingExponent);
             return map;
         }
     
@@ -94,7 +105,7 @@ public final class PanoramaUserParameters {
      * @return the observer longitude
      */
     public int observerLongitude(){        
-        return get(UserParameter.OBSERVER_LONGITUDE);
+        return get(OBSERVER_LONGITUDE);
     }
     
     /**
@@ -102,7 +113,7 @@ public final class PanoramaUserParameters {
      * @return the observer latitude
      */
     public int observerLatitude(){
-        return get(UserParameter.OBSERVER_LATITUDE);
+        return get(OBSERVER_LATITUDE);
     }
     
     /**
@@ -110,7 +121,7 @@ public final class PanoramaUserParameters {
      * @return
      */
     public int observerElevation(){
-        return get(UserParameter.OBSERVER_ELEVATION);
+        return get(OBSERVER_ELEVATION);
     }
     
     /**
@@ -118,7 +129,7 @@ public final class PanoramaUserParameters {
      * @return the center azimuth
      */
     public int centerAzimuth(){
-        return get(UserParameter.CENTER_AZIMUTH);
+        return get(CENTER_AZIMUTH);
     }
     
     /**
@@ -126,7 +137,7 @@ public final class PanoramaUserParameters {
      * @return the horizontal field of view
      */
     public int horizontalFieldOfView(){
-        return get(UserParameter.HORIZONTAL_FIELD_OF_VIEW);
+        return get(HORIZONTAL_FIELD_OF_VIEW);
     }
     
     /**
@@ -134,7 +145,7 @@ public final class PanoramaUserParameters {
      * @return the maximum distance of sight
      */
     public int maxDistance(){
-        return get(UserParameter.MAX_DISTANCE);
+        return get(MAX_DISTANCE);
     }
     
     /**

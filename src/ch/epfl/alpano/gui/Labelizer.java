@@ -8,14 +8,17 @@ package ch.epfl.alpano.gui;
 
 import static ch.epfl.alpano.Math2.angularDistance;
 import static ch.epfl.alpano.Math2.firstIntervalContainingRoot;
+import static ch.epfl.alpano.PanoramaComputer.rayToGroundDistance;
+import static java.lang.Math.abs;
+import static java.lang.Math.atan2;
+import static java.lang.Math.round;
+import static java.util.Collections.sort;
 
 import java.util.BitSet;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 
-import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.PanoramaParameters;
 import ch.epfl.alpano.dem.ContinuousElevationModel;
 import ch.epfl.alpano.dem.ElevationProfile;
@@ -28,12 +31,18 @@ import javafx.scene.transform.Translate;
 
 
 public final class Labelizer {
+    private static final double HALF = 0.5;
+    private static final int DISTANCEFROMHIGHEST = 22;
+    private static final int MINIMALDISTANCEFROMTOP = 170;
+    private static final int BORDERDISTANCE = 20;
     private final ContinuousElevationModel cev;
-    private final List <Summit> summitList;
-    private final int STEP=64,TOLERANCE=200;
-    public Labelizer(ContinuousElevationModel cev, List <Summit> summitList) {
-        this.cev=cev;
-        this.summitList=summitList;
+    private final List<Summit> summitList;
+    private final int STEP = 64, TOLERANCE = 200;
+    final int ROTATIONANGLE = -60;
+
+    public Labelizer(ContinuousElevationModel cev, List<Summit> summitList) {
+        this.cev = cev;
+        this.summitList = summitList;
     }
     /**
      * Checks all the Summits and returns the labels only of the ones that are visible and labelisable 
@@ -41,11 +50,11 @@ public final class Labelizer {
      * @return  a list of nodes representing the labels of the summits
      */
     public List<Node> labels(PanoramaParameters parameters)
-    {
-        List<visibleSummit> visible=listOfVisibleSummit(parameters);
-        Collections.sort(visible);
+ {
+        List<visibleSummit> visible = listOfVisibleSummit(parameters);
+        sort(visible);
         return this.positionLabels(visible, parameters);
-        
+
     }
    
     /**
@@ -53,38 +62,36 @@ public final class Labelizer {
      * @param p the parameters of the panorama 
      * @return a list of visibleSummits, after applying the conditions of a visible summit
      */
-    private List<visibleSummit> listOfVisibleSummit(PanoramaParameters p){//maybe change the order for better efficiency?
-        List<visibleSummit> visible=new LinkedList<>();
-        
-        for( Summit s: summitList ) 
-        {
-            double distX= s.position().distanceTo(p.observerPosition());
-            double summitAzimuth=p.observerPosition().azimuthTo(s.position());
+    private List<visibleSummit> listOfVisibleSummit(PanoramaParameters p){
+        List<visibleSummit> visible = new LinkedList<>();
+
+        for (Summit s : summitList) {
+            double distX = s.position().distanceTo(p.observerPosition());
+            double summitAzimuth = p.observerPosition().azimuthTo(s.position());
             double deltaAzimuth = angularDistance(p.centerAzimuth(), summitAzimuth);
             ElevationProfile ep = new ElevationProfile(cev, p.observerPosition(), summitAzimuth, distX);
-           
-            
-            if(distX<=p.maxDistance()){
-                 
-                double distY= -(PanoramaComputer.rayToGroundDistance(ep, p.observerElevation(),  0)).applyAsDouble(distX);    
-                double summitAngle = Math.atan2(distY, distX);
-    
-                if(summitAngle<=p.verticalFieldOfView()/2.0 && summitAngle>=(-p.verticalFieldOfView())/2.0){
-                   
-                    if(Math.abs(deltaAzimuth)<=p.horizontalFieldOfView()/2.0){  
-                       
-                        DoubleUnaryOperator op = PanoramaComputer.rayToGroundDistance(ep, p.observerElevation(), distY/distX);
-                        double intersection = firstIntervalContainingRoot(op, 0, distX, STEP);
-                        
-                        if(intersection > distX-TOLERANCE){
-                            
-                            visible.add(new visibleSummit(s, (int)Math.round(p.xForAzimuth(summitAzimuth)), (int)Math.round(p.yForAltitude(summitAngle))));
 
-                        }   
-                        
-                    }    
+            if (distX <= p.maxDistance()) {
+
+                double distY = -(rayToGroundDistance(ep, p.observerElevation(), 0)).applyAsDouble(distX);
+                double summitAngle = atan2(distY, distX);
+
+                if (summitAngle <= p.verticalFieldOfView() * HALF && summitAngle >= (-p.verticalFieldOfView())  *HALF) {
+
+                    if (abs(deltaAzimuth) <= p.horizontalFieldOfView() *HALF) {
+
+                        DoubleUnaryOperator op = rayToGroundDistance(ep,  p.observerElevation(), distY / distX);
+                        double intersection = firstIntervalContainingRoot(op, 0, distX, STEP);
+
+                        if (intersection > distX - TOLERANCE) {
+
+                            visible.add(new visibleSummit(s, (int) round(p.xForAzimuth(summitAzimuth)), (int) round(p.yForAltitude(summitAngle))));
+
+                        }
+
+                    }
                 }
-            }               
+            }
         }
         return visible;
     }
@@ -103,17 +110,17 @@ public final class Labelizer {
         for( visibleSummit s: summitList ) 
         {
             
-            if(s.yPixel<170)continue;
+            if(s.yPixel<MINIMALDISTANCEFROMTOP)continue;
             
-            if(s.xPixel<20||s.xPixel>parameters.width()-20)continue;//CONSTANTS
+            if(s.xPixel<BORDERDISTANCE||s.xPixel>parameters.width()-BORDERDISTANCE)continue;
             
             int nextsSetBit=labelizable.nextSetBit(s.xPixel);
-            if(nextsSetBit!=-1&&nextsSetBit<s.xPixel+20)continue;
+            if(nextsSetBit!=-1&&nextsSetBit<s.xPixel+BORDERDISTANCE)continue;
             
-            if(printingY==-1)printingY=s.yPixel-22;
+            if(printingY==-1)printingY=s.yPixel-DISTANCEFROMHIGHEST;
            
             
-            labelizable.set(s.xPixel, s.xPixel+20);
+            labelizable.set(s.xPixel, s.xPixel+BORDERDISTANCE);
             Line line = new Line();
             line.setStartX(s.xPixel);
             line.setEndX(s.xPixel);
@@ -121,7 +128,8 @@ public final class Labelizer {
             line.setEndY(printingY);
             
             Text txt= new Text(s.summit.name()+" ("+s.summit.elevation()+"m)");
-            txt.getTransforms().addAll(new Translate(s.xPixel, printingY), new Rotate(-60, 0, 0));
+            
+            txt.getTransforms().addAll(new Translate(s.xPixel, printingY), new Rotate(ROTATIONANGLE, 0, 0));
             nList.add(line); 
             nList.add(txt);
             
@@ -150,16 +158,17 @@ public final class Labelizer {
         
         @Override
         public int compareTo(visibleSummit other) {
-            if(this.yPixel>other.yPixel) return 1;
-            else if(this.yPixel<other.yPixel) return -1;
+            if (this.yPixel > other.yPixel)
+                return 1;
+            else if (this.yPixel < other.yPixel)
+                return -1;
             else {
-                if(this.summit.elevation()>other.summit.elevation()){
+                if (this.summit.elevation() > other.summit.elevation()) {
                     return -1;
-                }
-                else return 1;
+                } else
+                    return 1;
             }
         }
-        
 
     }
 

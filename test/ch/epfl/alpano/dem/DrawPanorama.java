@@ -58,8 +58,8 @@ final class DrawPanorama {
                 .computePanorama(PredefinedPanoramas.NIESEN.panoramaParameters());
         
         
-        Labelizer lab=new Labelizer(cDEM, GazetteerParser.readSummitsFrom(new File("alps.txt")));
-        lab.labels(PredefinedPanoramas.NIESEN.panoramaParameters());
+       // Labelizer lab=new Labelizer(cDEM, GazetteerParser.readSummitsFrom(new File("alps.txt")));
+       // lab.labels(PredefinedPanoramas.NIESEN.panoramaParameters());
 
 //        BufferedImage i =
 //          new BufferedImage(IMAGE_WIDTH,

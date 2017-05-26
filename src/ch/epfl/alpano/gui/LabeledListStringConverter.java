@@ -5,9 +5,11 @@
  * @author Gerald Sula (257396)
  */
 package ch.epfl.alpano.gui;
+import static ch.epfl.alpano.Preconditions.checkArgument;
+
 import java.util.ArrayList;
 import java.util.List;
-import static ch.epfl.alpano.Preconditions.checkArgument;
+
 import javafx.util.StringConverter;
 
 public class LabeledListStringConverter extends StringConverter<Integer> {
@@ -18,9 +20,9 @@ public class LabeledListStringConverter extends StringConverter<Integer> {
      * Creates a new LabeledListStringConverter that stores several strings in an array
      * @param string list of multiple strings 
      */
-    public LabeledListStringConverter(String...string){
+    public LabeledListStringConverter(String... string) {
         list = new ArrayList<>();
-        for(String s : string){
+        for (String s : string) {
             list.add(s);
         }
     }
@@ -34,7 +36,7 @@ public class LabeledListStringConverter extends StringConverter<Integer> {
 
     @Override
     public String toString(Integer index) {
-        checkArgument(index<list.size()&& index>=0, "Invalid index");
+        checkArgument(index < list.size() && index >= 0, "Invalid index");
         return list.get(index);
     }
 

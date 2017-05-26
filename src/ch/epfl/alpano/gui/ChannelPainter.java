@@ -6,10 +6,12 @@
  */
 package ch.epfl.alpano.gui;
 
+import static ch.epfl.alpano.Preconditions.checkArgument;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static ch.epfl.alpano.Preconditions.checkArgument;
+
 import java.util.function.DoubleUnaryOperator;
+
 import ch.epfl.alpano.Panorama;
 
 public interface ChannelPainter {
