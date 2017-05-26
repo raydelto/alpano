@@ -9,6 +9,7 @@ package ch.epfl.alpano.gui;
 import static ch.epfl.alpano.Azimuth.toOctantString;
 import static ch.epfl.alpano.gui.PredefinedPanoramas.ALPES_JURA;
 import static ch.epfl.alpano.summit.GazetteerParser.readSummitsFrom;
+import static java.lang.Math.pow;
 import static java.lang.Math.toDegrees;
 import static java.lang.String.format;
 import static javafx.beans.binding.Bindings.bindContent;
@@ -199,8 +200,9 @@ public final class Alpano extends Application {
         panoView.setOnMouseMoved(x -> {
 
             double longitude, latitude, distance, azimuth, elevation, altitude;
-            double posX = x.getX();
-            double posY = x.getY();
+            double pow = pow(2, computerBean.getParameters().superSamplingExponent());
+            double posX = x.getX()*pow;
+            double posY = x.getY()*pow;
             String direction;
             longitude = toDegrees(computerBean.getPanorama().longitudeAt((int)posX, (int)posY));
             latitude = toDegrees(computerBean.getPanorama().latitudeAt((int)posX, (int)posY));
@@ -224,8 +226,11 @@ public final class Alpano extends Application {
         panoView.setOnMouseClicked(x ->{
 
             double longitude, latitude;
-            longitude = toDegrees(computerBean.getPanorama().longitudeAt((int)x.getX(), (int)x.getY()));
-            latitude = toDegrees(computerBean.getPanorama().latitudeAt((int)x.getX(), (int)x.getY()));
+            double pow = pow(2, computerBean.getParameters().superSamplingExponent());
+            int posX = (int)(x.getX()*pow);
+            int posY = (int)(x.getY()*pow);
+            longitude = toDegrees(computerBean.getPanorama().longitudeAt(posX, posY));
+            latitude = toDegrees(computerBean.getPanorama().latitudeAt(posX, posY));
             String longitudeStr = format((Locale)null, "%.6f", longitude);
             String latitudeStr = format((Locale)null, "%.6f", latitude);
             String qy = "mlat="+latitudeStr+"&mlon="+longitudeStr;  
@@ -277,7 +282,8 @@ public final class Alpano extends Application {
                 temp[i]=temp[i].union(hTab[i][j+1]);
             }
         }
-
+        
+        //We suppose that there are always only 2 rows in HTAB 
         return temp[0].union(temp[1]);
     }
 }

@@ -26,8 +26,8 @@ import javafx.beans.property.SimpleObjectProperty;
 
 public class PanoramaParametersBean {
     
-    private EnumMap<UserParameter, ObjectProperty<Integer>> map;
-    private ObjectProperty<PanoramaUserParameters> parameters;
+    private final EnumMap<UserParameter, ObjectProperty<Integer>> map;
+    private final ObjectProperty<PanoramaUserParameters> parameters;
     
     /**
      * Creates a new PanoramaParametersBean

@@ -29,12 +29,12 @@ import ch.epfl.alpano.summit.Summit;
 public class PanoramaComputerBean {
     
     private final ObjectProperty<PanoramaUserParameters>  panoramaUserParamProperty;
-    private ObjectProperty<Panorama> panoramaProperty;
-    private ObjectProperty<Image> imageProperty;
-    private ObjectProperty<ObservableList<Node>> labelsProperty;
-    private ObservableList<Node> labelsList;
-    private PanoramaComputer panComp;
-    private Labelizer labels;
+    private final ObjectProperty<Panorama> panoramaProperty;
+    private final ObjectProperty<Image> imageProperty;
+    private final ObjectProperty<ObservableList<Node>> labelsProperty;
+    private final ObservableList<Node> labelsList;
+    private final PanoramaComputer panComp;
+    private final Labelizer labels;
     
     /**
      * Creates a Panorama Computer bean
