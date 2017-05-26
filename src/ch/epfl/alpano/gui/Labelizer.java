@@ -148,7 +148,6 @@ public final class Labelizer {
 
     /**
      * Helper class that stores a summit, and it's coordinates in the panorama in pixels
-     * 
      * Also implements Comparable so that it makes it easier to sort the visible Summits according to their y coordinate in pixels
      */
     class visibleSummit implements Comparable<visibleSummit>{
