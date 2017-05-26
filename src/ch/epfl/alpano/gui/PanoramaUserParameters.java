@@ -24,6 +24,7 @@ import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.PanoramaParameters;
 
 public final class PanoramaUserParameters {
+    
     private final Map<UserParameter, Integer> parameters;
 
     /**
@@ -88,6 +89,7 @@ public final class PanoramaUserParameters {
             map.put(WIDTH, width);
             map.put(HEIGHT, height);
             map.put(SUPER_SAMPLING_EXPONENT, samplingExponent);
+            
             return map;
         }
     
@@ -97,6 +99,7 @@ public final class PanoramaUserParameters {
      * @return the integer value of the parameter p stored in the map
      */
     public int get(UserParameter p){
+        
         return parameters.get(p);//what to do if p is not in map?
     }
     
@@ -104,7 +107,8 @@ public final class PanoramaUserParameters {
      * 
      * @return the observer longitude
      */
-    public int observerLongitude(){        
+    public int observerLongitude(){       
+        
         return get(OBSERVER_LONGITUDE);
     }
     
@@ -113,6 +117,7 @@ public final class PanoramaUserParameters {
      * @return the observer latitude
      */
     public int observerLatitude(){
+        
         return get(OBSERVER_LATITUDE);
     }
     
@@ -121,6 +126,7 @@ public final class PanoramaUserParameters {
      * @return
      */
     public int observerElevation(){
+        
         return get(OBSERVER_ELEVATION);
     }
     
@@ -129,6 +135,7 @@ public final class PanoramaUserParameters {
      * @return the center azimuth
      */
     public int centerAzimuth(){
+        
         return get(CENTER_AZIMUTH);
     }
     
@@ -137,6 +144,7 @@ public final class PanoramaUserParameters {
      * @return the horizontal field of view
      */
     public int horizontalFieldOfView(){
+        
         return get(HORIZONTAL_FIELD_OF_VIEW);
     }
     
@@ -145,6 +153,7 @@ public final class PanoramaUserParameters {
      * @return the maximum distance of sight
      */
     public int maxDistance(){
+        
         return get(MAX_DISTANCE);
     }
     
@@ -153,6 +162,7 @@ public final class PanoramaUserParameters {
      * @return the width of the panorama
      */
     public int width(){
+        
         return get(UserParameter.WIDTH);
     }
     
@@ -161,6 +171,7 @@ public final class PanoramaUserParameters {
      * @return the height of the panorama
      */
     public int height(){
+        
         return get(UserParameter.HEIGHT);
     }
     
@@ -169,6 +180,7 @@ public final class PanoramaUserParameters {
      * @return the super sampling exponent
      */
     public int superSamplingExponent(){
+        
         return get(UserParameter.SUPER_SAMPLING_EXPONENT);
     }
     
@@ -177,6 +189,7 @@ public final class PanoramaUserParameters {
      * @return new PanoramaParameters 
      */
     public PanoramaParameters panoramaParameters(){
+        
         return new PanoramaParameters(new GeoPoint(Math.toRadians((double)observerLongitude()/10000), Math.toRadians((double)observerLatitude()/10000)), observerElevation(), Math.toRadians((double)centerAzimuth()), Math.toRadians((double)horizontalFieldOfView()), maxDistance()*1000, applySuperSampling(width()), applySuperSampling(height()));
     }
     
@@ -185,6 +198,7 @@ public final class PanoramaUserParameters {
      * @return new PanoramaParameters
      */
     public PanoramaParameters panoramaDisplayParameters(){
+        
         return new PanoramaParameters(new GeoPoint(Math.toRadians((double)observerLongitude()/10000), Math.toRadians((double)observerLatitude()/10000)), observerElevation(), Math.toRadians((double)centerAzimuth()), Math.toRadians((double)horizontalFieldOfView()), maxDistance()*1000, width(), height());
     }
     
@@ -194,19 +208,24 @@ public final class PanoramaUserParameters {
      * @return 2 to the power superSamplingExponent multiplied by p
      */
     private int applySuperSampling(int p){
+        
         return (int)Math.pow(2, superSamplingExponent())*p;
     }
 
     @Override
     public boolean equals(Object o){
+        
         if(o instanceof PanoramaUserParameters){
+            
             return (((PanoramaUserParameters) o).parameters.equals(parameters));
         }
+        
         return false;
     }
     
     @Override
     public int hashCode(){
+        
         return parameters.hashCode();
     }
 }

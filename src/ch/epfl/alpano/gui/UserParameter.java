@@ -7,6 +7,7 @@
 package ch.epfl.alpano.gui;
 
 public enum UserParameter {
+    
     OBSERVER_LONGITUDE(60000, 120000),
     OBSERVER_LATITUDE(450000, 480000),
     OBSERVER_ELEVATION(300, 10000),
@@ -26,6 +27,7 @@ public enum UserParameter {
      * @param maxValue maximal value of the enum
      */
     private UserParameter(int minValue, int maxValue){
+        
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
@@ -36,16 +38,18 @@ public enum UserParameter {
      * @return the value sanitized
      */
     public int sanitize(int value){
+        
         if(value> maxValue){
+            
             return maxValue;
         }
         else if(value<minValue){
+            
             return minValue;
         }
         else{
+            
             return value;
         }
     }
-    
-
 }

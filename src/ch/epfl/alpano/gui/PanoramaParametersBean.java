@@ -39,6 +39,7 @@ public class PanoramaParametersBean {
       
         this.parameters = new SimpleObjectProperty<>(parameters);
         map = new EnumMap<>(UserParameter.class);
+        
         for(UserParameter p : values()){
             ObjectProperty<Integer> obj = new SimpleObjectProperty<>(parameters.get(p));
             obj.addListener((b, o, n) -> runLater(this::synchronizeParameters));
@@ -50,8 +51,8 @@ public class PanoramaParametersBean {
      * Private method that synchronizes the parameters entered by the user with the actual parameters of the Panorama
      */
     private void synchronizeParameters(){
-        PanoramaUserParameters actualParameters = 
-                new PanoramaUserParameters(observerLongitudeProperty().getValue(), observerLatitudeProperty().getValue(), 
+        
+        PanoramaUserParameters actualParameters = new PanoramaUserParameters(observerLongitudeProperty().getValue(), observerLatitudeProperty().getValue(), 
                         observerElevationProperty().getValue(), centerAzimuthProperty().getValue(), horizontalFieldOfViewProperty().getValue(),
                         maxDistanceProperty().getValue(), widthProperty().getValue(), heightProperty().getValue(), superSamplingExponentProperty().getValue());
         
@@ -59,8 +60,7 @@ public class PanoramaParametersBean {
         
         for(UserParameter p : UserParameter.values()){
             map.get(p).set(actualParameters.get(p));
-        }
-        
+        }  
     }
 
     /**
@@ -68,6 +68,7 @@ public class PanoramaParametersBean {
      * @return All the parameters of the Panorama
      */
     public ReadOnlyObjectProperty<PanoramaUserParameters> parametersProperty(){
+        
         return parameters;
     }
     
@@ -76,6 +77,7 @@ public class PanoramaParametersBean {
      * @return Longitude of the observer
      */
     public ObjectProperty<Integer> observerLongitudeProperty(){
+        
         return map.get(OBSERVER_LONGITUDE);
     }
     
@@ -84,6 +86,7 @@ public class PanoramaParametersBean {
      * @return Latitude of the observer
      */
     public ObjectProperty<Integer> observerLatitudeProperty(){
+        
         return map.get(OBSERVER_LATITUDE);
     }
     
@@ -92,6 +95,7 @@ public class PanoramaParametersBean {
      * @return Observer elevation
      */
     public ObjectProperty<Integer> observerElevationProperty(){
+        
         return map.get(OBSERVER_ELEVATION);
     }
     
@@ -100,6 +104,7 @@ public class PanoramaParametersBean {
      * @return Center Azimuth of the Panorama
      */
     public ObjectProperty<Integer> centerAzimuthProperty(){
+        
         return map.get(CENTER_AZIMUTH);
     }
     
@@ -108,6 +113,7 @@ public class PanoramaParametersBean {
      * @return Horizontal field of view of the Panorama
      */
     public ObjectProperty<Integer> horizontalFieldOfViewProperty(){
+        
         return map.get(HORIZONTAL_FIELD_OF_VIEW);
     }
     
@@ -116,6 +122,7 @@ public class PanoramaParametersBean {
      * @return Maximum distance of the Panorama
      */
     public ObjectProperty<Integer> maxDistanceProperty(){
+        
         return map.get(MAX_DISTANCE);
     }
     
@@ -124,6 +131,7 @@ public class PanoramaParametersBean {
      * @return Width of the Panorama
      */
     public ObjectProperty<Integer> widthProperty(){
+        
         return map.get(WIDTH);
     }
     
@@ -132,6 +140,7 @@ public class PanoramaParametersBean {
      * @return Height of the Panorama
      */
     public ObjectProperty<Integer> heightProperty(){
+        
         return map.get(HEIGHT);
     }
     
@@ -140,7 +149,7 @@ public class PanoramaParametersBean {
      * @return Super sampling exponent
      */
     public ObjectProperty<Integer> superSamplingExponentProperty(){
+        
         return map.get(SUPER_SAMPLING_EXPONENT);
-    }    
-    
+    }     
 }
