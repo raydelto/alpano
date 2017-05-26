@@ -133,6 +133,7 @@ public class PanoramaComputerBean {
         
         return labelsProperty.get();
     }
+    
    /**
     * updates the values stored in the properties to the new values
     */
