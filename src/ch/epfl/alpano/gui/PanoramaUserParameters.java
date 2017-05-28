@@ -13,6 +13,7 @@ import static ch.epfl.alpano.gui.UserParameter.MAX_DISTANCE;
 import static ch.epfl.alpano.gui.UserParameter.OBSERVER_ELEVATION;
 import static ch.epfl.alpano.gui.UserParameter.OBSERVER_LATITUDE;
 import static ch.epfl.alpano.gui.UserParameter.OBSERVER_LONGITUDE;
+import static ch.epfl.alpano.gui.UserParameter.PAINTER;
 import static ch.epfl.alpano.gui.UserParameter.SUPER_SAMPLING_EXPONENT;
 import static ch.epfl.alpano.gui.UserParameter.WIDTH;
 import static java.lang.Math.min;
@@ -59,9 +60,9 @@ public final class PanoramaUserParameters {
      * @param height the height of the panorama
      * @param samplingExponent the sampling exponent
      */
-    public PanoramaUserParameters(int observerLongitude, int observerLatitude, int observerElevation, int centerAzimuth, int horizonrtalFieldOfView, int maxDistance, int width, int height, int samplingExponent) {
+    public PanoramaUserParameters(int observerLongitude, int observerLatitude, int observerElevation, int centerAzimuth, int horizonrtalFieldOfView, int maxDistance, int width, int height, int samplingExponent,int paint) {
 
-        this(createMap(observerLongitude, observerLatitude, observerElevation, centerAzimuth, horizonrtalFieldOfView, maxDistance, width, height, samplingExponent));
+        this(createMap(observerLongitude, observerLatitude, observerElevation, centerAzimuth, horizonrtalFieldOfView, maxDistance, width, height, samplingExponent,paint));
     }
 
     /**
@@ -77,7 +78,7 @@ public final class PanoramaUserParameters {
      * @param samplingExponent the sampling exponent
      * @return a new EnumMap created from the integer values
      */
-    private static EnumMap<UserParameter, Integer> createMap(int observerLongitude, int observerLatitude, int observerElevation, int centerAzimuth, int horizonrtalFieldOfView, int maxDistance, int width, int height, int samplingExponent) {
+    private static EnumMap<UserParameter, Integer> createMap(int observerLongitude, int observerLatitude, int observerElevation, int centerAzimuth, int horizonrtalFieldOfView, int maxDistance, int width, int height, int samplingExponent,int paint) {
         
             EnumMap<UserParameter, Integer> map = new EnumMap<>(UserParameter.class);
             map.put(OBSERVER_LONGITUDE, observerLongitude);
@@ -89,6 +90,7 @@ public final class PanoramaUserParameters {
             map.put(WIDTH, width);
             map.put(HEIGHT, height);
             map.put(SUPER_SAMPLING_EXPONENT, samplingExponent);
+            map.put(PAINTER, paint);
             
             return map;
         }
@@ -100,7 +102,7 @@ public final class PanoramaUserParameters {
      */
     public int get(UserParameter p){
         
-        return parameters.get(p);//what to do if p is not in map?
+        return parameters.get(p);
     }
     
     /**
@@ -182,6 +184,12 @@ public final class PanoramaUserParameters {
     public int superSamplingExponent(){
         
         return get(UserParameter.SUPER_SAMPLING_EXPONENT);
+    }
+    
+    ///comment
+    public int painter(){
+        
+        return get(UserParameter.PAINTER);
     }
     
     /**

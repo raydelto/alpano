@@ -13,6 +13,7 @@ import static ch.epfl.alpano.gui.UserParameter.MAX_DISTANCE;
 import static ch.epfl.alpano.gui.UserParameter.OBSERVER_ELEVATION;
 import static ch.epfl.alpano.gui.UserParameter.OBSERVER_LATITUDE;
 import static ch.epfl.alpano.gui.UserParameter.OBSERVER_LONGITUDE;
+import static ch.epfl.alpano.gui.UserParameter.PAINTER;
 import static ch.epfl.alpano.gui.UserParameter.SUPER_SAMPLING_EXPONENT;
 import static ch.epfl.alpano.gui.UserParameter.WIDTH;
 import static ch.epfl.alpano.gui.UserParameter.values;
@@ -54,7 +55,7 @@ public class PanoramaParametersBean {
         
         PanoramaUserParameters actualParameters = new PanoramaUserParameters(observerLongitudeProperty().getValue(), observerLatitudeProperty().getValue(), 
                         observerElevationProperty().getValue(), centerAzimuthProperty().getValue(), horizontalFieldOfViewProperty().getValue(),
-                        maxDistanceProperty().getValue(), widthProperty().getValue(), heightProperty().getValue(), superSamplingExponentProperty().getValue());
+                        maxDistanceProperty().getValue(), widthProperty().getValue(), heightProperty().getValue(), superSamplingExponentProperty().getValue(),painterProperty().getValue());
         
         parameters.set(actualParameters);
         
@@ -151,5 +152,14 @@ public class PanoramaParametersBean {
     public ObjectProperty<Integer> superSamplingExponentProperty(){
         
         return map.get(SUPER_SAMPLING_EXPONENT);
-    }     
+    }  
+    /**
+     * 
+     * @return the number that correspond to the painter
+     */
+    public ObjectProperty<Integer> painterProperty(){
+        
+        return map.get(PAINTER);
+    }  
+    
 }

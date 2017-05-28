@@ -8,6 +8,11 @@ package ch.epfl.alpano.gui;
 
 import static ch.epfl.alpano.Azimuth.toOctantString;
 import static ch.epfl.alpano.gui.PredefinedPanoramas.ALPES_JURA;
+import static ch.epfl.alpano.gui.PredefinedPanoramas.FINSTERAARHORN;
+import static ch.epfl.alpano.gui.PredefinedPanoramas.MONT_RACINE;
+import static ch.epfl.alpano.gui.PredefinedPanoramas.NIESEN;
+import static ch.epfl.alpano.gui.PredefinedPanoramas.PLAGE_PELICAN;
+import static ch.epfl.alpano.gui.PredefinedPanoramas.TOUR_SAUVABELIN;
 import static ch.epfl.alpano.summit.GazetteerParser.readSummitsFrom;
 import static java.lang.Math.pow;
 import static java.lang.Math.toDegrees;
@@ -157,7 +162,18 @@ public final class Alpano extends Application {
         StringConverter<Integer> stringConverterChoice = new LabeledListStringConverter("non", "2×", "4×");
         choice.valueProperty().bindBidirectional(parametersBean.superSamplingExponentProperty());
         choice.setConverter(stringConverterChoice);
-
+        ChoiceBox<Integer> choicePaint =new ChoiceBox<>();
+        choicePaint.getItems().addAll(0, 1, 2, 3);
+        StringConverter<Integer> stringConverterChoicePint = new LabeledListStringConverter("Default", "Dark","Winter", "Black And White");
+        choicePaint.valueProperty().bindBidirectional(parametersBean.painterProperty());
+        choicePaint.setConverter(stringConverterChoicePint);
+        
+        ChoiceBox<PanoramaUserParameters> choicePredef =new ChoiceBox<>();
+        choicePredef.getItems().addAll(ALPES_JURA,FINSTERAARHORN,MONT_RACINE,NIESEN,PLAGE_PELICAN,TOUR_SAUVABELIN);
+        //StringConverter<PanoramaUserParameters> stringConverterChoicePredef = new LabeledListStringConverter("non", "2×", "4×");
+        //choicePredef.valueProperty().getValue().observerElevation().bind(computerBean.parametersProperty());
+       //choicePredef.setConverter(stringConverterChoicePredef);
+        
         area = new TextArea();
         area.setEditable(false);
         area.setPrefRowCount(2);
@@ -173,7 +189,9 @@ public final class Alpano extends Application {
             }
         }
 
-        paramsGrid.add(area,7,0,40,3);
+        paramsGrid.add(choicePaint, 7, 0);
+        paramsGrid.add(choicePredef, 7, 1);
+        paramsGrid.add(area,8,0,40,3);
         paramsGrid.setAlignment(Pos.CENTER);
         paramsGrid.setHgap(10);
         paramsGrid.setVgap(3);

@@ -144,12 +144,45 @@ public class PanoramaComputerBean {
         panoramaProperty.set(panComp.computePanorama(param));
         Panorama p=panoramaProperty.get();
         ChannelPainter distance = p::distanceAt;
-        ChannelPainter opacity = distance.map(d -> d == POSITIVE_INFINITY ? 0 : 1);
-        ChannelPainter h = (x,y)->360*distance.div(100000).cycling().valueAt(x, y);
-        ChannelPainter s = distance.div(200000).clamped().inverted();
         ChannelPainter slope = p::slopeAt;
-        ChannelPainter b = (x,y)->0.3f+0.7f*slope.mul(2).div((float)PI).inverted().valueAt(x, y);
-        ImagePainter painter = hsb(h, s, b, opacity);
+        ChannelPainter h,s,b,o=distance.map(d -> d == POSITIVE_INFINITY ? 0 : 1);
+        ImagePainter painter;
+        switch(panoramaUserParamProperty.getValue().painter())
+        {
+            case 3://black and white
+                
+                h=null;s=null; b=null;
+                ChannelPainter gray = ChannelPainter.maxDistanceToNeighbors(p).sub(500).div(45).clamped().inverted();
+                painter = ImagePainter.gray(gray, o);
+                break;
+                
+            case 2://winter
+                
+                h = (x,y)->360*distance.div(100000).cycling().valueAt(x, y);
+                s = distance.div(2000).clamped().inverted();
+                b = (x,y)->0.3f+0.7f*slope.mul(2).div((float)PI).inverted().valueAt(x, y);
+                painter = hsb(h, s, b, o);
+                break;
+                
+            case 1://dark
+                
+                h = (x,y)->360*distance.div(100000).valueAt(x, y);
+                s = distance.div(200000).clamped().inverted();
+                b = (x,y)->0.3f+0.7f*slope.mul(2).div((float)PI).valueAt(x, y);
+                painter = hsb(h, s, b, o);
+               break;
+               
+            default://default
+              
+               h = (x,y)->360*distance.div(100000).cycling().valueAt(x, y);
+               s = distance.div(200000).clamped().inverted();
+               b = (x,y)->0.3f+0.7f*slope.mul(2).div((float)PI).inverted().valueAt(x, y);
+               painter = hsb(h, s, b, o);
+               
+               
+            
+        }
+
         imageProperty.set(renderPanorama(p, painter));     
     }
 }
