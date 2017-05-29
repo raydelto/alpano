@@ -31,6 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import javax.imageio.ImageIO;
+
 import javafx.application.Application;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.ObjectProperty;
@@ -44,6 +46,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -97,7 +100,11 @@ public final class Alpano extends Application {
         ImageView panoView = getPanoView();
         Pane labelsPane = new Pane(); 
         GridPane paramsGrid=getGridPane();
-        StackPane panoGroup = new StackPane(panoView,labelsPane);
+
+        
+        Image image = new Image("dem.png");
+        ImageView imgView= new ImageView(image);
+        StackPane panoGroup = new StackPane(imgView,panoView,labelsPane);
         ScrollPane panoScrollPane = new ScrollPane(panoGroup);
         StackPane updateNotice = getUpdateNotice();
         StackPane panoPane = new StackPane(panoScrollPane,updateNotice);
@@ -126,14 +133,20 @@ public final class Alpano extends Application {
     private StackPane getUpdateNotice(){
 
         StackPane updateNotice = new StackPane();
-        Text updateText = new Text("Les paramètres du panorama ont changé.\n Cliquez ici pour mettre à jour."); 
+        String clicktxt= "Les paramètres du panorama ont changé.\n Cliquez ici pour mettre à jour.";
+        Text updateText = new Text(clicktxt); 
         updateText.setFont(new Font(40));
         updateText.setTextAlignment(CENTER);
         updateNotice.getChildren().add(updateText);
+        
         Color color = new Color(1,1,1,0.9);
         updateNotice.setBackground(new Background( new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
-        updateNotice.setOnMouseClicked(x->{
+        
+        updateNotice.setOnMousePressed(x-> updateText.setText("Veuillez patienter"));
+        updateNotice.setOnMouseClicked(x->{ 
             computerBean.setParameters(parametersBean.parametersProperty().getValue());
+            updateText.setText(clicktxt);
+           
         });
 
         return updateNotice;
@@ -170,6 +183,8 @@ public final class Alpano extends Application {
         
         ChoiceBox<PanoramaUserParameters> choicePredef =new ChoiceBox<>();
         choicePredef.getItems().addAll(ALPES_JURA,FINSTERAARHORN,MONT_RACINE,NIESEN,PLAGE_PELICAN,TOUR_SAUVABELIN);
+       
+        
         //StringConverter<PanoramaUserParameters> stringConverterChoicePredef = new LabeledListStringConverter("non", "2×", "4×");
         //choicePredef.valueProperty().getValue().observerElevation().bind(computerBean.parametersProperty());
        //choicePredef.setConverter(stringConverterChoicePredef);

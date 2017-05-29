@@ -68,7 +68,7 @@ public class PanoramaParametersBean {
      * 
      * @return All the parameters of the Panorama
      */
-    public ReadOnlyObjectProperty<PanoramaUserParameters> parametersProperty(){
+    public ObjectProperty<PanoramaUserParameters> parametersProperty(){//READONLY!!!!!!!!!!!!!!!!!
         
         return parameters;
     }
