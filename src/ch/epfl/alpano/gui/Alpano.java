@@ -22,6 +22,7 @@ import static javafx.geometry.Pos.CENTER_RIGHT;
 import static javafx.scene.text.TextAlignment.CENTER;
 
 import java.awt.Desktop;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -36,10 +37,12 @@ import javax.imageio.ImageIO;
 import javafx.application.Application;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.ObjectProperty;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -48,6 +51,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -76,6 +80,8 @@ public final class Alpano extends Application {
     private PanoramaParametersBean parametersBean;
     private PanoramaComputerBean computerBean;
     private TextArea area;
+    private StackPane panoGroup;
+    private Integer ImageNr=0;
 
 
     public static void main(String[] args) {
@@ -101,10 +107,11 @@ public final class Alpano extends Application {
         Pane labelsPane = new Pane(); 
         GridPane paramsGrid=getGridPane();
 
-        
-        Image image = new Image("dem.png");
+        BufferedImage bufferedImageBck = ImageIO.read(new File("lead.jpg"));
+        Image image = SwingFXUtils.toFXImage(bufferedImageBck, null);
         ImageView imgView= new ImageView(image);
-        StackPane panoGroup = new StackPane(imgView,panoView,labelsPane);
+        
+        panoGroup = new StackPane(imgView,panoView,labelsPane);
         ScrollPane panoScrollPane = new ScrollPane(panoGroup);
         StackPane updateNotice = getUpdateNotice();
         StackPane panoPane = new StackPane(panoScrollPane,updateNotice);
@@ -120,6 +127,8 @@ public final class Alpano extends Application {
         labelsPane.setMouseTransparent(true);
         BooleanExpression check=computerBean.parametersProperty().isNotEqualTo(parametersBean.parametersProperty());
         updateNotice.visibleProperty().bind(check);
+        
+       
 
         primaryStage.setTitle("Alpano");
         primaryStage.setScene(scene);
@@ -143,7 +152,7 @@ public final class Alpano extends Application {
         updateNotice.setBackground(new Background( new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
         
         updateNotice.setOnMousePressed(x-> updateText.setText("Veuillez patienter"));
-        updateNotice.setOnMouseClicked(x->{ 
+        updateNotice.setOnMouseReleased(x->{ 
             computerBean.setParameters(parametersBean.parametersProperty().getValue());
             updateText.setText(clicktxt);
            
@@ -181,6 +190,25 @@ public final class Alpano extends Application {
         choicePaint.valueProperty().bindBidirectional(parametersBean.painterProperty());
         choicePaint.setConverter(stringConverterChoicePint);
         
+        Button saveBut = new Button("save...");
+        saveBut.setOnAction(e->{
+          
+            
+            WritableImage writableImage = new WritableImage((int)(panoGroup.getWidth()), (int)(panoGroup.getHeight()));//super sampling
+            panoGroup.snapshot(null, writableImage);
+            BufferedImage bImage = SwingFXUtils.fromFXImage(writableImage, null);
+           
+                try {
+                    ImageIO.write(bImage, "png", new File("SnapShot_"+ImageNr+".png"));
+                    ImageNr++;
+                } catch (Exception e1) {
+                    
+                    e1.printStackTrace();
+                }
+            
+        });
+      
+        
         ChoiceBox<PanoramaUserParameters> choicePredef =new ChoiceBox<>();
         choicePredef.getItems().addAll(ALPES_JURA,FINSTERAARHORN,MONT_RACINE,NIESEN,PLAGE_PELICAN,TOUR_SAUVABELIN);
        
@@ -206,6 +234,8 @@ public final class Alpano extends Application {
 
         paramsGrid.add(choicePaint, 7, 0);
         paramsGrid.add(choicePredef, 7, 1);
+        paramsGrid.add(saveBut,7,2);
+        
         paramsGrid.add(area,8,0,40,3);
         paramsGrid.setAlignment(Pos.CENTER);
         paramsGrid.setHgap(10);
