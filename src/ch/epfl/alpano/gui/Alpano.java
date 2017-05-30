@@ -34,6 +34,7 @@ import java.util.Locale;
 
 import javax.imageio.ImageIO;
 
+
 import javafx.application.Application;
 import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.ObjectProperty;
@@ -101,15 +102,18 @@ public final class Alpano extends Application {
         DEM = createDem();
         summitList = readSummitsFrom(new File("alps.txt"));
         parametersBean = new PanoramaParametersBean(ALPES_JURA);
+      
         computerBean = new PanoramaComputerBean(new ContinuousElevationModel(DEM), summitList);
 
         ImageView panoView = getPanoView();
         Pane labelsPane = new Pane(); 
         GridPane paramsGrid=getGridPane();
 
-        BufferedImage bufferedImageBck = ImageIO.read(new File("lead.jpg"));
+        BufferedImage bufferedImageBck = ImageIO.read(new File("sky.jpg"));
         Image image = SwingFXUtils.toFXImage(bufferedImageBck, null);
         ImageView imgView= new ImageView(image);
+        imgView.fitWidthProperty().bind(parametersBean.widthProperty());
+        imgView.fitHeightProperty().bind(parametersBean.heightProperty());
         
         panoGroup = new StackPane(imgView,panoView,labelsPane);
         ScrollPane panoScrollPane = new ScrollPane(panoGroup);
@@ -127,7 +131,8 @@ public final class Alpano extends Application {
         labelsPane.setMouseTransparent(true);
         BooleanExpression check=computerBean.parametersProperty().isNotEqualTo(parametersBean.parametersProperty());
         updateNotice.visibleProperty().bind(check);
-        
+        BooleanExpression checkNull=computerBean.parametersProperty().isNotEqualTo(new PanoramaComputerBean(new ContinuousElevationModel(DEM), summitList).parametersProperty());//compares it to an "empty" computer bean
+        imgView.visibleProperty().bind(checkNull);
        
 
         primaryStage.setTitle("Alpano");
@@ -186,9 +191,9 @@ public final class Alpano extends Application {
         choice.setConverter(stringConverterChoice);
         ChoiceBox<Integer> choicePaint =new ChoiceBox<>();
         choicePaint.getItems().addAll(0, 1, 2, 3);
-        StringConverter<Integer> stringConverterChoicePint = new LabeledListStringConverter("Default", "Dark","Winter", "Black And White");
+        StringConverter<Integer> stringConverterChoicePaint = new LabeledListStringConverter("Default", "Dark","Winter", "Black And White");
         choicePaint.valueProperty().bindBidirectional(parametersBean.painterProperty());
-        choicePaint.setConverter(stringConverterChoicePint);
+        choicePaint.setConverter(stringConverterChoicePaint);
         
         Button saveBut = new Button("save...");
         saveBut.setOnAction(e->{
@@ -211,12 +216,12 @@ public final class Alpano extends Application {
         
         ChoiceBox<PanoramaUserParameters> choicePredef =new ChoiceBox<>();
         choicePredef.getItems().addAll(ALPES_JURA,FINSTERAARHORN,MONT_RACINE,NIESEN,PLAGE_PELICAN,TOUR_SAUVABELIN);
-       
-        
-        //StringConverter<PanoramaUserParameters> stringConverterChoicePredef = new LabeledListStringConverter("non", "2×", "4×");
-        //choicePredef.valueProperty().getValue().observerElevation().bind(computerBean.parametersProperty());
-       //choicePredef.setConverter(stringConverterChoicePredef);
-        
+        choicePredef.setValue(ALPES_JURA);
+        choicePredef.setOnAction( c-> {
+            parametersBean.setBean(choicePredef.getValue());
+            
+        });
+
         area = new TextArea();
         area.setEditable(false);
         area.setPrefRowCount(2);
@@ -327,6 +332,7 @@ public final class Alpano extends Application {
         formatter.valueProperty().bindBidirectional(property);
         tf.setPrefColumnCount(columnCount);
         tf.setTextFormatter(formatter);
+        
 
         return tf;
     }

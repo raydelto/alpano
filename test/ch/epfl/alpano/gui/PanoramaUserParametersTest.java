@@ -24,13 +24,13 @@ public class PanoramaUserParametersTest {
     
     @Test
     public void equalsTest1(){
-        PanoramaUserParameters p = new PanoramaUserParameters(68_087,470_085,1380,162,27,300,2500,800,0,0);
+        PanoramaUserParameters p = new PanoramaUserParameters(68_087,470_085,1380,162,27,300,2500,800,0,0,"bla");
         assertTrue(p.equals(PredefinedPanoramas.ALPES_JURA));
     }
 
     @Test
     public void equalsTest2(){
-        PanoramaUserParameters p = new PanoramaUserParameters(68_086,470_085,1380,162,27,300,2500,800,0,0);
+        PanoramaUserParameters p = new PanoramaUserParameters(68_086,470_085,1380,162,27,300,2500,800,0,0,"bla");
         assertFalse(p.equals(PredefinedPanoramas.ALPES_JURA));
     }
     
@@ -42,33 +42,33 @@ public class PanoramaUserParametersTest {
     
     @Test
     public void sanitizedMin(){
-        PanoramaUserParameters underMin = new PanoramaUserParameters(59_999,449_999,299,-1,0,9,29,9,-1,0);
-        PanoramaUserParameters min = new PanoramaUserParameters(60_000,450_000,300,0,1,10,30,10,0,0);
+        PanoramaUserParameters underMin = new PanoramaUserParameters(59_999,449_999,299,-1,0,9,29,9,-1,0,"bla");
+        PanoramaUserParameters min = new PanoramaUserParameters(60_000,450_000,300,0,1,10,30,10,0,0,"bla");
         assertTrue(min.equals(underMin));
     }
     
     @Test
     public void sanitizedMax(){
-        PanoramaUserParameters overMax = new PanoramaUserParameters(12_001,480_001,10001,360,361,601,16001,4001,2,0);
-        PanoramaUserParameters max = new PanoramaUserParameters(12_000,480_000,10000,359,360,600,16000,4000,2,0);
+        PanoramaUserParameters overMax = new PanoramaUserParameters(12_001,480_001,10001,360,361,601,16001,4001,2,0,"bla");
+        PanoramaUserParameters max = new PanoramaUserParameters(12_000,480_000,10000,359,360,600,16000,4000,2,0,"bla");
         assertTrue(max.equals(overMax));
     }
     
     @Test
     public void verticalFieldOfViewTest(){
-        PanoramaUserParameters p = new PanoramaUserParameters(68_087,470_085,1380,162,2,300,30,4000,0,0);
+        PanoramaUserParameters p = new PanoramaUserParameters(68_087,470_085,1380,162,2,300,30,4000,0,0,"bla");
         assertTrue(((p.height()-1)/(p.width()-1))*p.horizontalFieldOfView() <= 170);
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void illegalConstruction1(){
-        new PanoramaUserParameters(new HashMap<UserParameter, Integer>());
+        new PanoramaUserParameters(new HashMap<UserParameter, Integer>(),"bla");
     }
     
     @Test(expected = IllegalArgumentException.class)
     public void illegalConstruction2(){
         Map<UserParameter, Integer> m = new HashMap<>();
         m.put(UserParameter.CENTER_AZIMUTH, 50);
-        new PanoramaUserParameters(m);
+        new PanoramaUserParameters(m,"bla");
     }
 }

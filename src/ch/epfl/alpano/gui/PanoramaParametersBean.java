@@ -27,8 +27,8 @@ import javafx.beans.property.SimpleObjectProperty;
 
 public class PanoramaParametersBean {
     
-    private final EnumMap<UserParameter, ObjectProperty<Integer>> map;
-    private final ObjectProperty<PanoramaUserParameters> parameters;
+    private  EnumMap<UserParameter, ObjectProperty<Integer>> map;
+    private  ObjectProperty<PanoramaUserParameters> parameters;
     
     /**
      * Creates a new PanoramaParametersBean
@@ -47,6 +47,15 @@ public class PanoramaParametersBean {
             map.put(p, obj);
         } 
     }
+    public void setBean(PanoramaUserParameters parameters)
+    {
+        this.parameters.set(parameters);
+ 
+        for(UserParameter p : values()){
+           
+            map.get(p).setValue(parameters.get(p));
+        } 
+    }
     
     /**
      * Private method that synchronizes the parameters entered by the user with the actual parameters of the Panorama
@@ -55,7 +64,7 @@ public class PanoramaParametersBean {
         
         PanoramaUserParameters actualParameters = new PanoramaUserParameters(observerLongitudeProperty().getValue(), observerLatitudeProperty().getValue(), 
                         observerElevationProperty().getValue(), centerAzimuthProperty().getValue(), horizontalFieldOfViewProperty().getValue(),
-                        maxDistanceProperty().getValue(), widthProperty().getValue(), heightProperty().getValue(), superSamplingExponentProperty().getValue(),painterProperty().getValue());
+                        maxDistanceProperty().getValue(), widthProperty().getValue(), heightProperty().getValue(), superSamplingExponentProperty().getValue(),painterProperty().getValue(),parameters.getValue().toString());
         
         parameters.set(actualParameters);
         
@@ -68,7 +77,7 @@ public class PanoramaParametersBean {
      * 
      * @return All the parameters of the Panorama
      */
-    public ObjectProperty<PanoramaUserParameters> parametersProperty(){//READONLY!!!!!!!!!!!!!!!!!
+    public ReadOnlyObjectProperty<PanoramaUserParameters> parametersProperty(){
         
         return parameters;
     }

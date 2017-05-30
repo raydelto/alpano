@@ -27,13 +27,16 @@ import ch.epfl.alpano.PanoramaParameters;
 public final class PanoramaUserParameters {
     
     private final Map<UserParameter, Integer> parameters;
+    private final String name;
+    
 
     /**
      * Creates a new PanoramaUserParameters from a map
      * @param parameters a map composed of UserParameters and Integer to be stored
      */
-    public PanoramaUserParameters(Map<UserParameter, Integer> parameters) {
+    public PanoramaUserParameters(Map<UserParameter, Integer> parameters, String name) {
                 
+        this.name=name;
         this.parameters = new EnumMap<>(UserParameter.class);
         int maxH = min(HEIGHT.sanitize(parameters.get(HEIGHT)), (170*((WIDTH.sanitize(parameters.get(WIDTH))-1)/HORIZONTAL_FIELD_OF_VIEW.sanitize(parameters.get(HORIZONTAL_FIELD_OF_VIEW)))+1));
         
@@ -60,11 +63,12 @@ public final class PanoramaUserParameters {
      * @param height the height of the panorama
      * @param samplingExponent the sampling exponent
      */
-    public PanoramaUserParameters(int observerLongitude, int observerLatitude, int observerElevation, int centerAzimuth, int horizonrtalFieldOfView, int maxDistance, int width, int height, int samplingExponent,int paint) {
-
-        this(createMap(observerLongitude, observerLatitude, observerElevation, centerAzimuth, horizonrtalFieldOfView, maxDistance, width, height, samplingExponent,paint));
+    public PanoramaUserParameters(int observerLongitude, int observerLatitude, int observerElevation, int centerAzimuth, int horizonrtalFieldOfView, int maxDistance, int width, int height, int samplingExponent,int paint,String name) {
+        
+        this(createMap(observerLongitude, observerLatitude, observerElevation, centerAzimuth, horizonrtalFieldOfView, maxDistance, width, height, samplingExponent,paint),name);
+        
     }
-
+    
     /**
      * Private method that creates a map from integer values
      * @param observerLongitude the longitude of the observer
@@ -186,7 +190,10 @@ public final class PanoramaUserParameters {
         return get(UserParameter.SUPER_SAMPLING_EXPONENT);
     }
     
-    ///comment
+    /**
+     * 
+     * @return the integer representing the ChannelPainter
+     */
     public int painter(){
         
         return get(UserParameter.PAINTER);
@@ -236,4 +243,9 @@ public final class PanoramaUserParameters {
         
         return parameters.hashCode();
     }
+    @Override
+    public String toString() {
+        return name;
+    }
+    
 }
