@@ -27,8 +27,8 @@ import javafx.beans.property.SimpleObjectProperty;
 
 public class PanoramaParametersBean {
     
-    private  EnumMap<UserParameter, ObjectProperty<Integer>> map;
-    private  ObjectProperty<PanoramaUserParameters> parameters;
+    private EnumMap<UserParameter, ObjectProperty<Integer>> map;
+    private ObjectProperty<PanoramaUserParameters> parameters;
     
     /**
      * Creates a new PanoramaParametersBean
@@ -47,6 +47,10 @@ public class PanoramaParametersBean {
             map.put(p, obj);
         } 
     }
+    /**
+     * Changes the values of the PanoramaUserParameters to the new ones
+     * @param parameters the new user parameters
+     */
     public void setBean(PanoramaUserParameters parameters)
     {
         this.parameters.set(parameters);

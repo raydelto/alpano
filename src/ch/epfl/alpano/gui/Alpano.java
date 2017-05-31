@@ -199,7 +199,7 @@ public final class Alpano extends Application {
         saveBut.setOnAction(e->{
           
             
-            WritableImage writableImage = new WritableImage((int)(panoGroup.getWidth()), (int)(panoGroup.getHeight()));//super sampling
+            WritableImage writableImage = new WritableImage((int)(panoGroup.getWidth()), (int)(panoGroup.getHeight()));
             panoGroup.snapshot(null, writableImage);
             BufferedImage bImage = SwingFXUtils.fromFXImage(writableImage, null);
            

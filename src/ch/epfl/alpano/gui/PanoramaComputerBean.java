@@ -147,6 +147,8 @@ public class PanoramaComputerBean {
         ChannelPainter slope = p::slopeAt;
         ChannelPainter h,s,b,o=distance.map(d -> d == POSITIVE_INFINITY ? 0 : 1);
         ImagePainter painter;
+        
+        //selects the painter
         switch(panoramaUserParamProperty.getValue().painter())
         {
             case 3://black and white

@@ -33,6 +33,7 @@ public final class PanoramaUserParameters {
     /**
      * Creates a new PanoramaUserParameters from a map
      * @param parameters a map composed of UserParameters and Integer to be stored
+     * @param name the name to identify the predefined parameters
      */
     public PanoramaUserParameters(Map<UserParameter, Integer> parameters, String name) {
                 
@@ -62,6 +63,8 @@ public final class PanoramaUserParameters {
      * @param width the width of the panorama
      * @param height the height of the panorama
      * @param samplingExponent the sampling exponent
+     * @param paint the number that determines the channel painter
+     * @param name the name to identify the predefined parameters
      */
     public PanoramaUserParameters(int observerLongitude, int observerLatitude, int observerElevation, int centerAzimuth, int horizonrtalFieldOfView, int maxDistance, int width, int height, int samplingExponent,int paint,String name) {
         
@@ -80,6 +83,7 @@ public final class PanoramaUserParameters {
      * @param width the width of the panorama
      * @param height the height of the panorama
      * @param samplingExponent the sampling exponent
+     * @param paint the number that determines the channel painter
      * @return a new EnumMap created from the integer values
      */
     private static EnumMap<UserParameter, Integer> createMap(int observerLongitude, int observerLatitude, int observerElevation, int centerAzimuth, int horizonrtalFieldOfView, int maxDistance, int width, int height, int samplingExponent,int paint) {
