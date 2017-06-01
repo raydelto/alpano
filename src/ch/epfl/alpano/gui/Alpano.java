@@ -31,9 +31,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Properties;
 
 import javax.imageio.ImageIO;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import javafx.application.Application;
 import javafx.beans.binding.BooleanExpression;
@@ -131,7 +133,7 @@ public final class Alpano extends Application {
         labelsPane.setMouseTransparent(true);
         BooleanExpression check=computerBean.parametersProperty().isNotEqualTo(parametersBean.parametersProperty());
         updateNotice.visibleProperty().bind(check);
-        BooleanExpression checkNull=computerBean.parametersProperty().isNotEqualTo(new PanoramaComputerBean(new ContinuousElevationModel(DEM), summitList).parametersProperty());//compares it to an "empty" computer bean
+        BooleanExpression checkNull=computerBean.parametersProperty().isNotNull();//if the computer bean is still empty, the image is not visible
         imgView.visibleProperty().bind(checkNull);
        
 
