@@ -9,8 +9,6 @@ package ch.epfl.alpano;
 import static java.util.Objects.hash;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Objects;
-
 public final class Interval2D 
 {
     private final Interval1D iX,iY;

@@ -12,8 +12,6 @@ import javax.imageio.ImageIO;
 import ch.epfl.alpano.GeoPoint;
 import ch.epfl.alpano.Interval1D;
 import ch.epfl.alpano.Interval2D;
-import ch.epfl.alpano.dem.ContinuousElevationModel;
-import ch.epfl.alpano.dem.DiscreteElevationModel;
 
 public final class DrawDEM {
   @SuppressWarnings("resource")

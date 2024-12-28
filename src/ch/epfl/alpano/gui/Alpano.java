@@ -31,11 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Properties;
-
 import javax.imageio.ImageIO;
-
-import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import javafx.application.Application;
 import javafx.beans.binding.BooleanExpression;

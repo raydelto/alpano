@@ -1,12 +1,8 @@
 package ch.epfl.alpano.dem;
 
 import ch.epfl.alpano.Interval2D;
-import ch.epfl.alpano.dem.DiscreteElevationModel;
-
-import static ch.epfl.alpano.Math2.sq;
 import static java.lang.Math.PI;
 import static java.lang.Math.sin;
-import static java.lang.Math.sqrt;
 import static java.lang.Math.cos;
 
 final class WavyDEM implements DiscreteElevationModel {

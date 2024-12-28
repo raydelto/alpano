@@ -1,8 +1,5 @@
 package ch.epfl.alpano.dem;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import static java.lang.Math.toRadians;
@@ -10,10 +7,6 @@ import javax.imageio.ImageIO;
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
 import ch.epfl.alpano.GeoPoint;
-import ch.epfl.alpano.dem.ContinuousElevationModel;
-import ch.epfl.alpano.dem.DiscreteElevationModel;
-import ch.epfl.alpano.dem.ElevationProfile;
-import ch.epfl.alpano.dem.HgtDiscreteElevationModel;
 
 final class DrawElevationProfile {
     final static File HGT_FILE = new File("N46E006.hgt");
@@ -51,10 +44,4 @@ final class DrawElevationProfile {
 
       ImageIO.write(i, "png", new File("profile.png"));
     }
-    
-    private static int gray(double v) {
-        double clampedV = max(0, min(v, 1));
-        int gray = (int) (255.9999 * clampedV);
-        return (gray << 16) | (gray << 8) | gray;
-      }
   }

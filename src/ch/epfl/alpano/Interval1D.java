@@ -11,8 +11,6 @@ import static ch.epfl.alpano.Preconditions.checkArgument;
 import static java.util.Arrays.sort;
 import static java.util.Objects.hash;
 
-import java.util.Objects;
-
 public final class Interval1D {
     private final int includedFrom,  includedTo;
     

@@ -1,7 +1,6 @@
 package ch.epfl.alpano.gui;
 import static ch.epfl.alpano.gui.PredefinedPanoramas.*;
 
-import ch.epfl.alpano.gui.PanoramaParametersBean;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;

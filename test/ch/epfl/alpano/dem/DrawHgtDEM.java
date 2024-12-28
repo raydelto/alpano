@@ -4,15 +4,9 @@ import static java.lang.Math.*;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-
 import javax.imageio.ImageIO;
-
 import ch.epfl.alpano.GeoPoint;
-import ch.epfl.alpano.Interval1D;
-import ch.epfl.alpano.Interval2D;
-import ch.epfl.alpano.dem.ContinuousElevationModel;
-import ch.epfl.alpano.dem.DiscreteElevationModel;
+
 
 final class DrawHgtDEM {
     final static File HGT_FILE = new File("N46E006.hgt");

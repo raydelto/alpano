@@ -1,11 +1,7 @@
 package ch.epfl.alpano.dem;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 import static java.lang.Math.*;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
@@ -16,10 +12,8 @@ import ch.epfl.alpano.PanoramaComputer;
 import ch.epfl.alpano.PanoramaParameters;
 import ch.epfl.alpano.gui.ChannelPainter;
 import ch.epfl.alpano.gui.ImagePainter;
-import ch.epfl.alpano.gui.Labelizer;
 import ch.epfl.alpano.gui.PanoramaRenderer;
 import ch.epfl.alpano.gui.PredefinedPanoramas;
-import ch.epfl.alpano.summit.GazetteerParser;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
@@ -131,13 +125,7 @@ final class DrawPanorama {
        Image i = PanoramaRenderer.renderPanorama(p, l2);
        ImageIO.write(SwingFXUtils.fromFXImage(i, null), "png", new File("niesen-profile.png"));
       }
-      
-
-      
+            
     }
-    private static int gray(double v) {
-        double clampedV = max(0, min(v, 1));
-        int gray = (int) (255.9999 * clampedV);
-        return (gray << 16) | (gray << 8) | gray;
-      }
+
   }

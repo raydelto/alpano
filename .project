@@ -14,4 +14,10 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>JAVAFX_HOME</name>
+			<value>file:/C:/ray/javafx-sdk-23.0.1</value>
+		</variable>
+	</variableList>
 </projectDescription>

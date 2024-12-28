@@ -10,9 +10,6 @@ package ch.epfl.alpano;
 import static java.util.Arrays.fill;
 import static java.util.Objects.requireNonNull;
 
-import java.util.Arrays;
-import java.util.Objects;
-
 public final class Panorama {
 
     private final PanoramaParameters parameters;
