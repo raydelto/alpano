@@ -356,16 +356,16 @@ public final class Alpano extends Application {
      */
     private DiscreteElevationModel createDem() {
 
-        DiscreteElevationModel temp[] = new DiscreteElevationModel[HTABHEIGHT];
+        DiscreteElevationModel dem[] = new DiscreteElevationModel[HTABHEIGHT];
 
         for (int i = 0; i < HTABHEIGHT; i++) {
-            temp[i] = hTab[i][0].union(hTab[i][1]);
+            dem[i] = hTab[i][0].union(hTab[i][1]);
             for (int j = 1; j < HTABWIDTH - 1; j++) {
-                temp[i] = temp[i].union(hTab[i][j + 1]);
+                dem[i] = dem[i].union(hTab[i][j + 1]);
             }
         }
 
         // We suppose that there are always only 2 rows in HTAB
-        return temp[0].union(temp[1]);
+        return dem[0].union(dem[1]);
     }
 }
