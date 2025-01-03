@@ -24,55 +24,56 @@ public class GazetteerParser {
     /**
      * private constructor of GazetteerParser
      */
-    private GazetteerParser() {};
+    private GazetteerParser() {
+    };
 
     /**
      * Extracts the information from a file to a list of Summits
+     * 
      * @param file the source file
      * @return list with all the information extracted from the file
-     * @throws IOException if there are problems with the file, or if it is not formatted the correct way
+     * @throws IOException if there are problems with the file, or if it is not
+     *                     formatted the correct way
      */
     public static List<Summit> readSummitsFrom(File file) throws IOException {
-        
+
         ArrayList<Summit> tab = new ArrayList<Summit>();
         String name, longitude, latitude, elevation;
 
-        if (file.length() == 0){
+        if (file.length() == 0) {
             throw new IOException("length is 0");
         }
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+        BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 
-            String line = br.readLine();
-            while (line != null) {
-                StringTokenizer token = new StringTokenizer(line);
+        String line;
+        while ((line = br.readLine()) != null) {
+            StringTokenizer token = new StringTokenizer(line);
 
-                longitude = token.nextToken();
-                latitude = token.nextToken();
-                elevation = token.nextToken();
+            longitude = token.nextToken();
+            latitude = token.nextToken();
+            elevation = token.nextToken();
 
-                for (int i = 0; i < 3; i++){
-                    token.nextToken();
-                }
-                    
-                name = token.nextToken("/n").trim();
-
-                tab.add(new Summit(name,new GeoPoint(extractDegrees(longitude, "long"), extractDegrees(latitude, "lat")),Integer.parseInt(elevation)));
-                line = br.readLine();
+            for (int i = 0; i < 3; i++) {
+                token.nextToken();
             }
-        } catch (IOException e) {
-            throw e;
-        } catch (Exception e) {//in case the file is corrupted, or other unexpected errors
-            throw new IOException("Problems with the source file");
+
+            name = token.nextToken("/n").trim();
+
+            tab.add(new Summit(name,
+                    new GeoPoint(extractDegrees(longitude, "long"), extractDegrees(latitude, "lat")),
+                    Integer.parseInt(elevation)));
         }
+        br.close();
 
         return Collections.unmodifiableList(tab);
     }
 
     /**
-     * extracts the information from a deg:min:sec format and returns the result in degrees
+     * extracts the information from a deg:min:sec format and returns the result in
+     * degrees
      * 
-     * @param degree the raw deg:min:sec format string
+     * @param degree    the raw deg:min:sec format string
      * @param direction 'long' for longitude and 'lat' for latitude
      * @return the result in degrees
      * @throws IOException if the string is not formatted the right way
@@ -83,12 +84,12 @@ public class GazetteerParser {
 
         int counter = 0;
         for (int i = 0; i < degree.length(); i++) {
-            if (degree.charAt(i) == ':'){
-                 counter++;
+            if (degree.charAt(i) == ':') {
+                counter++;
             }
         }
 
-        if (counter != 2){
+        if (counter != 2) {
             throw exception;
         }
 
@@ -97,21 +98,21 @@ public class GazetteerParser {
         try {
             deg = parseInt(hms[0]);
 
-            if (direction.equals("long") && !(deg > -180 && deg < 180)){
+            if (direction.equals("long") && !(deg > -180 && deg < 180)) {
                 throw exception;
             }
 
-            if (direction.equals("lat") && !(deg > -90 && deg < 90)){
+            if (direction.equals("lat") && !(deg > -90 && deg < 90)) {
                 throw exception;
             }
-                
+
             min = parseInt(hms[1]);
-            if (!(min >= 0 && min <= 59)){
-                 throw exception;
+            if (!(min >= 0 && min <= 59)) {
+                throw exception;
             }
-              
+
             sec = parseInt(hms[2]);
-            if (!(sec >= 0 && sec <= 59)){
+            if (!(sec >= 0 && sec <= 59)) {
                 throw exception;
             }
 
@@ -119,11 +120,11 @@ public class GazetteerParser {
             throw exception;
         }
 
-        if (hms[0].trim().charAt(0) == '-'){
-            
+        if (hms[0].trim().charAt(0) == '-') {
+
             return -toRadians((((deg * 60) + min) * 60 + sec) / 3600d);
         }
-        
+
         return toRadians((((deg * 60) + min) * 60 + sec) / 3600d);
     }
 }

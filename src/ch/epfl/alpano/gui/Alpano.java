@@ -71,17 +71,17 @@ import ch.epfl.alpano.summit.Summit;
 
 public final class Alpano extends Application {
 
-    private final static String [][] HGTNAMES = {{"N45E006.hgt", "N45E007.hgt", "N45E008.hgt", "N45E009.hgt"}, {"N46E006.hgt", "N46E007.hgt", "N46E008.hgt", "N46E009.hgt"}};
+    private final static String[][] HGTNAMES = { { "N45E006.hgt", "N45E007.hgt", "N45E008.hgt", "N45E009.hgt" },
+            { "N46E006.hgt", "N46E007.hgt", "N46E008.hgt", "N46E009.hgt" } };
     private final static int HTABWIDTH = HGTNAMES[0].length, HTABHEIGHT = HGTNAMES.length;
-    private HgtDiscreteElevationModel [][] hTab = new HgtDiscreteElevationModel[HTABHEIGHT][HTABWIDTH];
+    private HgtDiscreteElevationModel[][] hTab = new HgtDiscreteElevationModel[HTABHEIGHT][HTABWIDTH];
     private DiscreteElevationModel DEM;
     private List<Summit> summitList;
     private PanoramaParametersBean parametersBean;
     private PanoramaComputerBean computerBean;
     private TextArea area;
     private StackPane panoGroup;
-    private Integer ImageNr=0;
-
+    private Integer ImageNr = 0;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -90,48 +90,48 @@ public final class Alpano extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
 
-        //Creating an array filled with all the HGT files
-        for(int i=0; i<HTABHEIGHT; ++i){
-            for(int j=0; j<HTABWIDTH; ++j){
+        // Creating an array filled with all the HGT files
+        for (int i = 0; i < HTABHEIGHT; ++i) {
+            for (int j = 0; j < HTABWIDTH; ++j) {
                 hTab[i][j] = new HgtDiscreteElevationModel(new File(HGTNAMES[i][j]));
-            } 
+            }
         }
 
         DEM = createDem();
         summitList = readSummitsFrom(new File("alps.txt"));
         parametersBean = new PanoramaParametersBean(ALPES_JURA);
-      
+
         computerBean = new PanoramaComputerBean(new ContinuousElevationModel(DEM), summitList);
 
         ImageView panoView = getPanoView();
-        Pane labelsPane = new Pane(); 
-        GridPane paramsGrid=getGridPane();
+        Pane labelsPane = new Pane();
+        GridPane paramsGrid = getGridPane();
 
         BufferedImage bufferedImageBck = ImageIO.read(new File("sky.jpg"));
         Image image = SwingFXUtils.toFXImage(bufferedImageBck, null);
-        ImageView imgView= new ImageView(image);
+        ImageView imgView = new ImageView(image);
         imgView.fitWidthProperty().bind(parametersBean.widthProperty());
         imgView.fitHeightProperty().bind(parametersBean.heightProperty());
-        
-        panoGroup = new StackPane(imgView,panoView,labelsPane);
+
+        panoGroup = new StackPane(imgView, panoView, labelsPane);
         ScrollPane panoScrollPane = new ScrollPane(panoGroup);
         StackPane updateNotice = getUpdateNotice();
-        StackPane panoPane = new StackPane(panoScrollPane,updateNotice);
+        StackPane panoPane = new StackPane(panoScrollPane, updateNotice);
         BorderPane root = new BorderPane(panoPane);
 
         root.setBottom(paramsGrid);
 
-        Scene scene = new Scene(root);       
+        Scene scene = new Scene(root);
 
         labelsPane.prefWidthProperty().bind(parametersBean.widthProperty());
         labelsPane.prefHeightProperty().bind(parametersBean.heightProperty());
-        bindContent( labelsPane.getChildren(),computerBean.getLabels());
+        bindContent(labelsPane.getChildren(), computerBean.getLabels());
         labelsPane.setMouseTransparent(true);
-        BooleanExpression check=computerBean.parametersProperty().isNotEqualTo(parametersBean.parametersProperty());
+        BooleanExpression check = computerBean.parametersProperty().isNotEqualTo(parametersBean.parametersProperty());
         updateNotice.visibleProperty().bind(check);
-        BooleanExpression checkNull=computerBean.parametersProperty().isNotNull();//if the computer bean is still empty, the image is not visible
+        BooleanExpression checkNull = computerBean.parametersProperty().isNotNull();// if the computer bean is still
+                                                                                    // empty, the image is not visible
         imgView.visibleProperty().bind(checkNull);
-       
 
         primaryStage.setTitle("Alpano");
         primaryStage.setScene(scene);
@@ -140,25 +140,26 @@ public final class Alpano extends Application {
 
     /**
      * Creates the notice that indicates that the parameters have been modified
+     * 
      * @return StackPane corresponding to the update notice
      */
-    private StackPane getUpdateNotice(){
+    private StackPane getUpdateNotice() {
 
         StackPane updateNotice = new StackPane();
-        String clicktxt= "Les paramètres du panorama ont changé.\n Cliquez ici pour mettre à jour.";
-        Text updateText = new Text(clicktxt); 
+        String clicktxt = "Les paramètres du panorama ont changé.\n Cliquez ici pour mettre à jour.";
+        Text updateText = new Text(clicktxt);
         updateText.setFont(new Font(40));
         updateText.setTextAlignment(CENTER);
         updateNotice.getChildren().add(updateText);
-        
-        Color color = new Color(1,1,1,0.9);
-        updateNotice.setBackground(new Background( new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
-        
-        updateNotice.setOnMousePressed(x-> updateText.setText("Veuillez patienter"));
-        updateNotice.setOnMouseReleased(x->{ 
+
+        Color color = new Color(1, 1, 1, 0.9);
+        updateNotice.setBackground(new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY)));
+
+        updateNotice.setOnMousePressed(x -> updateText.setText("Veuillez patienter"));
+        updateNotice.setOnMouseReleased(x -> {
             computerBean.setParameters(parametersBean.parametersProperty().getValue());
             updateText.setText(clicktxt);
-           
+
         });
 
         return updateNotice;
@@ -166,80 +167,84 @@ public final class Alpano extends Application {
 
     /**
      * Creates the GridPane where the user can adjust the parameters
+     * 
      * @return GridPane bottom left with the parametersBean
      */
-    private GridPane getGridPane(){
+    private GridPane getGridPane() {
 
         StringConverter<Integer> stringConverteFourDecimal = new FixedPointStringConverter(4);
         StringConverter<Integer> stringConverteZeroDecimal = new IntegerStringConverter();
 
-        TextField tfLat=createField(7, stringConverteFourDecimal, parametersBean.observerLatitudeProperty());
-        TextField tfLong=createField(7, stringConverteFourDecimal, parametersBean.observerLongitudeProperty());
-        TextField tfAlt=createField(4, stringConverteZeroDecimal, parametersBean.observerElevationProperty());
-        TextField tfAzim=createField(3, stringConverteZeroDecimal, parametersBean.centerAzimuthProperty());
-        TextField tfAngle=createField(3, stringConverteZeroDecimal, parametersBean.horizontalFieldOfViewProperty());
-        TextField tfVisib=createField(3, stringConverteZeroDecimal, parametersBean.maxDistanceProperty());
-        TextField tfLarg=createField(4, stringConverteZeroDecimal, parametersBean.widthProperty());
-        TextField tfHaut=createField(4, stringConverteZeroDecimal, parametersBean.heightProperty());
+        TextField tfLat = createField(7, stringConverteFourDecimal, parametersBean.observerLatitudeProperty());
+        TextField tfLong = createField(7, stringConverteFourDecimal, parametersBean.observerLongitudeProperty());
+        TextField tfAlt = createField(4, stringConverteZeroDecimal, parametersBean.observerElevationProperty());
+        TextField tfAzim = createField(3, stringConverteZeroDecimal, parametersBean.centerAzimuthProperty());
+        TextField tfAngle = createField(3, stringConverteZeroDecimal, parametersBean.horizontalFieldOfViewProperty());
+        TextField tfVisib = createField(3, stringConverteZeroDecimal, parametersBean.maxDistanceProperty());
+        TextField tfLarg = createField(4, stringConverteZeroDecimal, parametersBean.widthProperty());
+        TextField tfHaut = createField(4, stringConverteZeroDecimal, parametersBean.heightProperty());
 
-        ChoiceBox<Integer> choice =new ChoiceBox<>();
+        ChoiceBox<Integer> choice = new ChoiceBox<>();
         choice.getItems().addAll(0, 1, 2);
         StringConverter<Integer> stringConverterChoice = new LabeledListStringConverter("non", "2×", "4×");
         choice.valueProperty().bindBidirectional(parametersBean.superSamplingExponentProperty());
         choice.setConverter(stringConverterChoice);
-        ChoiceBox<Integer> choicePaint =new ChoiceBox<>();
+        ChoiceBox<Integer> choicePaint = new ChoiceBox<>();
         choicePaint.getItems().addAll(0, 1, 2, 3);
-        StringConverter<Integer> stringConverterChoicePaint = new LabeledListStringConverter("Default", "Dark","Winter", "Black And White");
+        StringConverter<Integer> stringConverterChoicePaint = new LabeledListStringConverter("Default", "Dark",
+                "Winter", "Black And White");
         choicePaint.valueProperty().bindBidirectional(parametersBean.painterProperty());
         choicePaint.setConverter(stringConverterChoicePaint);
-        
+
         Button saveBut = new Button("save...");
-        saveBut.setOnAction(e->{
-          
-            
-            WritableImage writableImage = new WritableImage((int)(panoGroup.getWidth()), (int)(panoGroup.getHeight()));
+        saveBut.setOnAction(e -> {
+
+            WritableImage writableImage = new WritableImage((int) (panoGroup.getWidth()),
+                    (int) (panoGroup.getHeight()));
             panoGroup.snapshot(null, writableImage);
             BufferedImage bImage = SwingFXUtils.fromFXImage(writableImage, null);
-           
-                try {
-                    ImageIO.write(bImage, "png", new File("SnapShot_"+ImageNr+".png"));
-                    ImageNr++;
-                } catch (Exception e1) {
-                    
-                    e1.printStackTrace();
-                }
-            
+
+            try {
+                ImageIO.write(bImage, "png", new File("SnapShot_" + ImageNr + ".png"));
+                ImageNr++;
+            } catch (Exception e1) {
+
+                e1.printStackTrace();
+            }
+
         });
-      
-        
-        ChoiceBox<PanoramaUserParameters> choicePredef =new ChoiceBox<>();
-        choicePredef.getItems().addAll(ALPES_JURA,FINSTERAARHORN,MONT_RACINE,NIESEN,PLAGE_PELICAN,TOUR_SAUVABELIN);
+
+        ChoiceBox<PanoramaUserParameters> choicePredef = new ChoiceBox<>();
+        choicePredef.getItems().addAll(ALPES_JURA, FINSTERAARHORN, MONT_RACINE, NIESEN, PLAGE_PELICAN, TOUR_SAUVABELIN);
         choicePredef.setValue(ALPES_JURA);
-        choicePredef.setOnAction( c-> {
+        choicePredef.setOnAction(c -> {
             parametersBean.setBean(choicePredef.getValue());
-            
+
         });
 
         area = new TextArea();
         area.setEditable(false);
         area.setPrefRowCount(2);
 
-        List<Node> nodeList= new ArrayList<>(Arrays.asList(new Label("Latitude (°)"),tfLat,new Label("Longitude (°)"),tfLong,new Label("Altitude (m)"),tfAlt,new Label("Azimuth (°)"),
-                tfAzim,new Label("Angle de vue (°)"),tfAngle,new Label("Visibilité (km)"),tfVisib,new Label("Largeur (px)"),tfLarg,new Label("Hauteur (px)"),tfHaut,new Label("Surechantillionage"), choice));
+        List<Node> nodeList = new ArrayList<>(Arrays.asList(new Label("Latitude (°)"), tfLat,
+                new Label("Longitude (°)"), tfLong, new Label("Altitude (m)"), tfAlt, new Label("Azimuth (°)"),
+                tfAzim, new Label("Angle de vue (°)"), tfAngle, new Label("Visibilité (km)"), tfVisib,
+                new Label("Largeur (px)"), tfLarg, new Label("Hauteur (px)"), tfHaut, new Label("Surechantillionage"),
+                choice));
 
-        GridPane paramsGrid=new GridPane();
+        GridPane paramsGrid = new GridPane();
 
-        for(int i=0;i<3;i++){
-            for(int j=0; j<6;j++){
-                paramsGrid.add(nodeList.get(i*6+j), j,i);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 6; j++) {
+                paramsGrid.add(nodeList.get(i * 6 + j), j, i);
             }
         }
 
         paramsGrid.add(choicePaint, 7, 0);
         paramsGrid.add(choicePredef, 7, 1);
-        paramsGrid.add(saveBut,7,2);
-        
-        paramsGrid.add(area,8,0,40,3);
+        paramsGrid.add(saveBut, 7, 2);
+
+        paramsGrid.add(area, 8, 0, 40, 3);
         paramsGrid.setAlignment(Pos.CENTER);
         paramsGrid.setHgap(10);
         paramsGrid.setVgap(3);
@@ -250,12 +255,15 @@ public final class Alpano extends Application {
 
     /**
      * Creates the ImageView of the Panorama
-     * Adds a listener on the mouse moved, that stores all the parameters of the Panorama at the position indicated by the mouse
-     * Adds a lister on the mouse clicked, once left clicked it opens the website "openstreetmap.org" at the position that corresponds 
+     * Adds a listener on the mouse moved, that stores all the parameters of the
+     * Panorama at the position indicated by the mouse
+     * Adds a lister on the mouse clicked, once left clicked it opens the website
+     * "openstreetmap.org" at the position that corresponds
      * to the parameters at the position indicated by the mouse
+     * 
      * @return ImageView containing the Panorama
      */
-    private ImageView getPanoView(){
+    private ImageView getPanoView() {
 
         ImageView panoView = new ImageView();
         panoView.fitWidthProperty().bind(parametersBean.widthProperty());
@@ -267,40 +275,42 @@ public final class Alpano extends Application {
 
             double longitude, latitude, distance, azimuth, elevation, altitude;
             double pow = pow(2, computerBean.getParameters().superSamplingExponent());
-            double posX = x.getX()*pow;
-            double posY = x.getY()*pow;
+            double posX = x.getX() * pow;
+            double posY = x.getY() * pow;
             String direction;
-            longitude = toDegrees(computerBean.getPanorama().longitudeAt((int)posX, (int)posY));
-            latitude = toDegrees(computerBean.getPanorama().latitudeAt((int)posX, (int)posY));
-            distance = computerBean.getPanorama().distanceAt((int)posX, (int)posY)/1000;
+            longitude = toDegrees(computerBean.getPanorama().longitudeAt((int) posX, (int) posY));
+            latitude = toDegrees(computerBean.getPanorama().latitudeAt((int) posX, (int) posY));
+            distance = computerBean.getPanorama().distanceAt((int) posX, (int) posY) / 1000;
             azimuth = computerBean.getPanorama().parameters().azimuthForX(posX);
             direction = toOctantString(azimuth, "N", "E", "S", "W");
             azimuth = toDegrees(azimuth);
             elevation = toDegrees(computerBean.getPanorama().parameters().altitudeForY(posY));
-            altitude = (computerBean.getPanorama().elevationAt((int)posX, (int)posY));
+            altitude = (computerBean.getPanorama().elevationAt((int) posX, (int) posY));
 
             StringBuilder sb = new StringBuilder();
-            sb.append("Position : ").append(format("%.4f", longitude)).append("°").append(longitude > 0 ? "N" : "S").append(" ").append(format("%.4f", latitude)).append("°").append(latitude > 0 ? "E" : "W")
-            .append("\n Distance : ").append(format("%.1f", distance)).append(" km")
-            .append("\n Altitude : ").append(format("%.0f", altitude)).append(" m")
-            .append("\n Azimuth : ").append(format("%.1f", azimuth)).append("°(").append(direction).append(") Elévation : ").append(format("%.1f", elevation)).append("°");
+            sb.append("Position : ").append(format("%.4f", longitude)).append("°").append(longitude > 0 ? "N" : "S")
+                    .append(" ").append(format("%.4f", latitude)).append("°").append(latitude > 0 ? "E" : "W")
+                    .append("\n Distance : ").append(format("%.1f", distance)).append(" km")
+                    .append("\n Altitude : ").append(format("%.0f", altitude)).append(" m")
+                    .append("\n Azimuth : ").append(format("%.1f", azimuth)).append("°(").append(direction)
+                    .append(") Elévation : ").append(format("%.1f", elevation)).append("°");
 
             area.setText(sb.toString());
 
         });
 
-        panoView.setOnMouseClicked(x ->{
+        panoView.setOnMouseClicked(x -> {
 
             double longitude, latitude;
             double pow = pow(2, computerBean.getParameters().superSamplingExponent());
-            int posX = (int)(x.getX()*pow);
-            int posY = (int)(x.getY()*pow);
+            int posX = (int) (x.getX() * pow);
+            int posY = (int) (x.getY() * pow);
             longitude = toDegrees(computerBean.getPanorama().longitudeAt(posX, posY));
             latitude = toDegrees(computerBean.getPanorama().latitudeAt(posX, posY));
-            String longitudeStr = format((Locale)null, "%.6f", longitude);
-            String latitudeStr = format((Locale)null, "%.6f", latitude);
-            String qy = "mlat="+latitudeStr+"&mlon="+longitudeStr;  
-            String fg = "map=15/"+latitudeStr+"/"+longitudeStr;  
+            String longitudeStr = format((Locale) null, "%.6f", longitude);
+            String latitudeStr = format((Locale) null, "%.6f", latitude);
+            String qy = "mlat=" + latitudeStr + "&mlon=" + longitudeStr;
+            String fg = "map=15/" + latitudeStr + "/" + longitudeStr;
             URI osmURI;
 
             try {
@@ -316,41 +326,46 @@ public final class Alpano extends Application {
     }
 
     /**
-     * Creates a TextField for the given parameters 
-     * @param columnCount the maximum length of the TextField
-     * @param stringConverter a String converter that converts form int to String and from int to String
-     * @param property the property of the parameter corresponding to the TextField
+     * Creates a TextField for the given parameters
+     * 
+     * @param columnCount     the maximum length of the TextField
+     * @param stringConverter a String converter that converts form int to String
+     *                        and from int to String
+     * @param property        the property of the parameter corresponding to the
+     *                        TextField
      * @return TextField corresponding to the given parameters
      */
-    private TextField createField(int columnCount, StringConverter<Integer> stringConverter, ObjectProperty<Integer> property){
+    private TextField createField(int columnCount, StringConverter<Integer> stringConverter,
+            ObjectProperty<Integer> property) {
 
-        TextField tf=new TextField();
+        TextField tf = new TextField();
         tf.setAlignment(CENTER_RIGHT);
-        TextFormatter<Integer> formatter =   new TextFormatter<>(stringConverter);
+        TextFormatter<Integer> formatter = new TextFormatter<>(stringConverter);
         formatter.valueProperty().bindBidirectional(property);
         tf.setPrefColumnCount(columnCount);
         tf.setTextFormatter(formatter);
-        
 
         return tf;
     }
 
     /**
-     * This method creates a DEM doing the union between all the HGT files that has been loaded in HTAB
+     * This method creates a DEM doing the union between all the HGT files that has
+     * been loaded in HTAB
+     * 
      * @return Discrete Elevation Model of all the HGT files
      */
-    private DiscreteElevationModel createDem (){
+    private DiscreteElevationModel createDem() {
 
-        DiscreteElevationModel temp[]=new DiscreteElevationModel[HTABHEIGHT];
+        DiscreteElevationModel temp[] = new DiscreteElevationModel[HTABHEIGHT];
 
-        for(int i=0;i<HTABHEIGHT;i++){
-            temp[i]=hTab[i][0].union(hTab[i][1]);
-            for(int j=1;j<HTABWIDTH-1;j++){
-                temp[i]=temp[i].union(hTab[i][j+1]);
+        for (int i = 0; i < HTABHEIGHT; i++) {
+            temp[i] = hTab[i][0].union(hTab[i][1]);
+            for (int j = 1; j < HTABWIDTH - 1; j++) {
+                temp[i] = temp[i].union(hTab[i][j + 1]);
             }
         }
-        
-        //We suppose that there are always only 2 rows in HTAB 
+
+        // We suppose that there are always only 2 rows in HTAB
         return temp[0].union(temp[1]);
     }
 }

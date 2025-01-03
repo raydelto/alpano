@@ -18,8 +18,10 @@ public class LabeledListStringConverter extends StringConverter<Integer> {
     List<String> list;
 
     /**
-     * Creates a new LabeledListStringConverter that stores several Strings in an array
-     * @param String list of multiple strings 
+     * Creates a new LabeledListStringConverter that stores several Strings in an
+     * array
+     * 
+     * @param String list of multiple strings
      */
     public LabeledListStringConverter(String... string) {
 
