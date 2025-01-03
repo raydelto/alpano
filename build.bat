@@ -1,5 +1,5 @@
 @echo off
 REM Batch script for starting Alpano on Windows
 echo "Building Alpano..."
-mvn clean install
+mvn install
 exit /b 0
