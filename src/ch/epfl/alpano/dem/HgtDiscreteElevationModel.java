@@ -117,9 +117,6 @@ public final class HgtDiscreteElevationModel implements DiscreteElevationModel {
 
         try {
             longitudeTemp = parseInt(name.substring(4, 7));// check longitude
-        } catch (NumberFormatException e) {
-
-            return false;
         } catch (Exception e) {
 
             return false;

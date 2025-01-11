@@ -75,7 +75,7 @@ public final class Alpano extends Application {
             { "N46E006.hgt", "N46E007.hgt", "N46E008.hgt", "N46E009.hgt" } };
     private final static int HTABWIDTH = HGTNAMES[0].length, HTABHEIGHT = HGTNAMES.length;
     private HgtDiscreteElevationModel[][] hTab = new HgtDiscreteElevationModel[HTABHEIGHT][HTABWIDTH];
-    private DiscreteElevationModel DEM;
+    private DiscreteElevationModel elevationModel;
     private List<Summit> summitList;
     private PanoramaParametersBean parametersBean;
     private PanoramaComputerBean computerBean;
@@ -97,11 +97,11 @@ public final class Alpano extends Application {
             }
         }
 
-        DEM = createDem();
+        elevationModel = createDem();
         summitList = readSummitsFrom(new File("alps.txt"));
         parametersBean = new PanoramaParametersBean(ALPES_JURA);
 
-        computerBean = new PanoramaComputerBean(new ContinuousElevationModel(DEM), summitList);
+        computerBean = new PanoramaComputerBean(new ContinuousElevationModel(elevationModel), summitList);
 
         ImageView panoView = getPanoView();
         Pane labelsPane = new Pane();
